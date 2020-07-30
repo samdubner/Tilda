@@ -73,7 +73,7 @@ let continueUser = async (message, args, type) => {
   let user = await Users.findOne({ where: { userId: message.author.id } });
 
   if (!user) {
-    user = createUser(message);
+    user = await createUser(message);
     console.log(
       `Added <${user.userId}> ${message.author.username} to the database`
     );
@@ -465,9 +465,9 @@ let createUser = async (message) => {
     .setTitle(`${message.author.username} has registered with Tilda!`)
     .setThumbnail(message.author.displayAvatarURL())
     .addField("New Account Balance", `You currently have 100 coins`, false)
-    .setFooter("Thank you for registering with Tilda", client.user.displayAvatarURL)
+    .setFooter("Thank you for registering with Tilda", message.client.user.displayAvatarURL())
 
-  message.chanel.send(embed);
+  message.channel.send(embed);
 
   return user;
 };
