@@ -1,4 +1,4 @@
-import { Client, MessageEmbed, MessageCollector } from "discord.js";
+import { Client, MessageEmbed } from "discord.js";
 const client = new Client();
 
 import fs from "fs"
