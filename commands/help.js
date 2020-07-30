@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+const MessageEmbed = require('discord.js').MessageEmbed
 
 let help = (message) => {
   let embed = new MessageEmbed()
@@ -42,4 +42,4 @@ let help = (message) => {
   message.channel.send(embed);
 };
 
-export default help;
+module.exports.help = help;

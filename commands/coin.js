@@ -1,6 +1,6 @@
-import { MessageEmbed } from "discord.js";
+const MessageEmbed = require('discord.js').MessageEmbed
 
-import Sequelize from "sequelize";
+const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize("database", "user", "password", {
   host: "localhost",
@@ -465,7 +465,10 @@ let createUser = async (message) => {
     .setTitle(`${message.author.username} has registered with Tilda!`)
     .setThumbnail(message.author.displayAvatarURL())
     .addField("New Account Balance", `You currently have 100 coins`, false)
-    .setFooter("Thank you for registering with Tilda", message.client.user.displayAvatarURL())
+    .setFooter(
+      "Thank you for registering with Tilda",
+      message.client.user.displayAvatarURL()
+    );
 
   message.channel.send(embed);
 
@@ -486,7 +489,7 @@ let getUser = async (userId) => {
   return user;
 };
 
-export {
+module.exports = {
   sync,
   leaderboard,
   continueUser,

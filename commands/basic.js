@@ -1,3 +1,5 @@
+const { MessageEmbed } = require("discord.js");
+
 let request = (message, MessageEmbed) => {
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -49,4 +51,4 @@ let eightBall = (message, args) => {
   message.channel.send({ embed }).catch(console.error);
 };
 
-export { request, eightBall };
+module.exports = { request, eightBall };

@@ -1,3 +1,7 @@
+const MessageEmbed = require("discord.js").MessageEmbed;
+
+var wiki = require("wikijs").default;
+
 let ui = (message) => {
   let person = message.mentions.members.first();
 
@@ -110,4 +114,32 @@ let pfp = (message, MessageEmbed) => {
   }
 };
 
-export { ui, si, pfp };
+let wikiSearch = async (message, args) => {
+  if (message.author.id != "340002869912666114") return;
+
+  wiki()
+    .page(args)
+    .catch((err) => console.log(err))
+    .then((page) => page.sections())
+    .catch((err) => console.log(err))
+    .then((sections) => {
+      let embed = new MessageEmbed()
+        .setAuthor(`8ball`, message.author.avatarURL())
+        .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+
+      for (var i = 0; i < sections.length; i++) {
+
+        if (sections[i].content == "") sections[i].content = "This field is empty, check wikipedia for more info!";
+
+        sections[i].content = sections[i].content.split(".")[0]
+        if (sections[i].content.length > 1024) sections[i].content = "This field is too long, check wikipedia for more info!"
+
+        embed.addField(sections[i].title, sections[i].content);
+      }
+
+
+      message.channel.send(embed).catch(console.error);
+    });
+};
+
+module.exports = { ui, si, pfp, wikiSearch };

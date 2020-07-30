@@ -1,12 +1,12 @@
-import { Client, MessageEmbed } from "discord.js";
-const client = new Client();
+const Discord = require("discord.js");
+const client = new Discord.Client();
 
-import fs from "fs"
+const fs = require("fs");
 
-import * as basic from "./commands/basic.js";
-import * as info from "./commands/info.js";
-import * as coin from "./commands/coin.js";
-import help from "./commands/help.js";
+const basic = require("./commands/basic.js");
+const info = require("./commands/info.js");
+const coin = require("./commands/coin.js");
+const help = require("./commands/help.js");
 
 client.on("ready", async () => {
   console.log(
@@ -50,7 +50,7 @@ client.on("guildMemberAdd", (guildMember) => {
 });
 
 client.on("guildBanAdd", (guild, user) => {
-  let embed = new MessageEmbed()
+  let embed = new Discord.MessageEmbed()
     .setAuthor("Ban", guild.iconURL)
     .setColor(`#ff0000`)
     .setTitle(
@@ -86,7 +86,7 @@ client.on("message", async (message) => {
       basic.request(message, MessageEmbed);
       break;
     case "~help":
-      help(message);
+      help.help(message);
       break;
     case "~pfp":
       info.pfp(message, MessageEmbed);
@@ -99,6 +99,9 @@ client.on("message", async (message) => {
       break;
     case "~8ball":
       basic.eightBall(message, args);
+      break;
+    case "~wiki":
+      info.wikiSearch(message, args);
       break;
     case "~leaderboard":
     case "~l":
@@ -131,4 +134,4 @@ client.on("message", async (message) => {
   }
 });
 
-client.login(JSON.parse(fs.readFileSync('./token.json')).token);
+client.login(JSON.parse(fs.readFileSync("./token.json")).token);
