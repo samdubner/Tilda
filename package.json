@@ -1,0 +1,19 @@
+{
+  "name": "tilda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node tilda.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "node-fetch": "^2.6.0",
+    "sequelize": "^5.21.5",
+    "sqlite3": "^4.1.1",
+    "wikijs": "^6.0.1"
+  }
+}
