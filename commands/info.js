@@ -115,31 +115,45 @@ let pfp = (message, MessageEmbed) => {
 };
 
 let wikiSearch = async (message, args) => {
-  if (message.author.id != "340002869912666114") return;
-
-  wiki()
+  let page = await wiki()
     .page(args)
-    .catch((err) => console.log(err))
-    .then((page) => page.sections())
-    .catch((err) => console.log(err))
-    .then((sections) => {
+    .catch((err) => {
       let embed = new MessageEmbed()
-        .setAuthor(`8ball`, message.author.avatarURL())
-        .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-
-      for (var i = 0; i < sections.length; i++) {
-
-        if (sections[i].content == "") sections[i].content = "This field is empty, check wikipedia for more info!";
-
-        sections[i].content = sections[i].content.split(".")[0]
-        if (sections[i].content.length > 1024) sections[i].content = "This field is too long, check wikipedia for more info!"
-
-        embed.addField(sections[i].title, sections[i].content);
-      }
-
+        .setAuthor(
+          `Wikipedia`,
+          "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
+        )
+        .setTitle(`Could not find Wikipedia article on ${args}`);
 
       message.channel.send(embed).catch(console.error);
+      return;
     });
+
+  let sections = await page.sections();
+  let summary = await page.summary();
+  let mainImage = await page.mainImage();
+  let url = await page.url();
+
+  let embed = new MessageEmbed()
+    .setAuthor(
+      `Wikipedia`,
+      "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
+    )
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setImage(mainImage)
+    .setDescription(summary.split(".")[0])
+    .setTimestamp()
+    .setFooter(url);
+
+  for (var i = 0; i < sections.length; i++) {
+    if (sections[i].content == "") continue;
+    sections[i].content = sections[i].content.split(".")[0];
+    if (sections[i].content.length > 1024) continue;
+
+    embed.addField(sections[i].title, sections[i].content);
+  }
+
+  message.channel.send(embed).catch(console.error);
 };
 
 module.exports = { ui, si, pfp, wikiSearch };
