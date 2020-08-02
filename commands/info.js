@@ -94,7 +94,7 @@ let si = (message) => {
   message.channel.send(embed).catch(console.error);
 };
 
-let pfp = (message, MessageEmbed) => {
+let pfp = (message) => {
   if (message.mentions.users.first() == undefined) {
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)

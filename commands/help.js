@@ -54,7 +54,7 @@ let help = (message) => {
         embed
           .setDescription("Basic Commands")
           .addField(
-            "~suggest [message]",
+            "~request [message]",
             `Sends <@340002869912666114> a message with your idea to improve Tilda`,
             false
           )

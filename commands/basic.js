@@ -1,6 +1,6 @@
-const { MessageEmbed } = require("discord.js");
+const MessageEmbed = require("discord.js").MessageEmbed;
 
-let request = (message, MessageEmbed) => {
+let request = (message) => {
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle("Bot Request Sent")

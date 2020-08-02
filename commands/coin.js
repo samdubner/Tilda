@@ -1,6 +1,6 @@
-const MessageEmbed = require('discord.js').MessageEmbed
+const MessageEmbed = require("discord.js").MessageEmbed;
 
-const Sequelize = require('sequelize')
+const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize("database", "user", "password", {
   host: "localhost",

@@ -83,13 +83,13 @@ client.on("message", async (message) => {
 
   switch (command) {
     case "~suggest":
-      basic.request(message, MessageEmbed);
+      basic.request(message);
       break;
     case "~help":
       help.help(message);
       break;
     case "~pfp":
-      info.pfp(message, MessageEmbed);
+      info.pfp(message);
       break;
     case "~ui":
       info.ui(message);
