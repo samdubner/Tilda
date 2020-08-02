@@ -1,5 +1,5 @@
 # Tilda
-My personal discord bot writted using the discord.js discord API wrapper
+My personal discord bot writted using the discord.js
 
 # Features
 * basic info commands

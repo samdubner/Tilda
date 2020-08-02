@@ -123,7 +123,7 @@ let wikiSearch = async (message, args) => {
           `Wikipedia`,
           "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
         )
-        .setTitle(`Could not find Wikipedia article on ${args}`);
+        .setTitle(`Could not find a Wikipedia article on ${args}`);
 
       message.channel.send(embed).catch(console.error);
       return;
@@ -131,8 +131,8 @@ let wikiSearch = async (message, args) => {
 
   let sections = await page.sections();
   let summary = await page.summary();
-  let mainImage = await page.mainImage();
   let url = await page.url();
+  let mainImage = await page.mainImage();
 
   let embed = new MessageEmbed()
     .setAuthor(
@@ -140,10 +140,10 @@ let wikiSearch = async (message, args) => {
       "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
     )
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setImage(mainImage)
     .setDescription(summary.split(".")[0])
-    .setTimestamp()
-    .setFooter(url);
+    .setThumbnail(mainImage)
+    .setFooter(url)
+    .setTimestamp();
 
   for (var i = 0; i < sections.length; i++) {
     if (sections[i].content == "") continue;

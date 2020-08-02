@@ -1,45 +1,114 @@
-const MessageEmbed = require('discord.js').MessageEmbed
+const MessageEmbed = require("discord.js").MessageEmbed;
 
 let help = (message) => {
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle(`Help`)
     .setThumbnail(message.guild.iconURL())
-    .addField(
-      "~suggest [message]",
-      `Sends <@340002869912666114> a message with your idea to improve Tilda`,
-      false
-    )
-    .addField(
-      "~pfp <@person>",
-      `Gets the pfp of mentioned users, can work with multiple mentions`,
-      false
-    )
-    .addField("~ui <@person>", `Gets user info of mentioned users`, false)
-    .addField("~si", `Get basic server information`, false)
-    .addField(
-      "~8ball [question]",
-      `Ask the all powerful 8ball your questions`,
-      false
-    )
-    .addField(
-      "~leaderboard",
-      `Get the top coin scores of everyone in the server!`,
-      false
-    )
-    .addField("~balance", `View the amount of coins you have`, false)
-    .addField("~flip [amount of coins]", `50/50`, false)
-    .addField("~daily", `Get 100 coins once every 24 hours`, false)
-    .addField("~beg", `Get 10 coins every 10 minutes`, false)
-    .addField(
-      "~give [amount of coins] <@person>",
-      `Give \`x\` amount of coins to mentioned person`,
-      false
-    )
-    .addField("~help", `How did you end up here?!?!`, false)
-    .setTimestamp();
+    .addField("1️⃣", "Basic Commands", true)
+    .addField("2️⃣", "Info Commands", true)
+    .addField("3️⃣", "Coin Commands", true);
 
-  message.channel.send(embed);
+  message.channel.send(embed).then((helpMessage) => {
+    helpMessage.react("1️⃣");
+    helpMessage.react("2️⃣");
+    helpMessage.react("3️⃣");
+
+    let filter = (reaction, user) => message.author.id == user.id;
+    helpMessage
+      .awaitReactions(filter, { max: 1 })
+      .then((collection) => {
+        collection.each((collected) => {
+          switch (collected.emoji.name) {
+            case "1️⃣":
+              one(helpMessage, message);
+              break;
+            case "2️⃣":
+              two(helpMessage, message);
+              break;
+            case "3️⃣":
+              three(helpMessage, message);
+              break;
+            default:
+              message.reply(
+                "Please use ~help again and react with a valid emoji!"
+              );
+              return;
+          }
+        });
+      })
+      .catch(console.error);
+  });
+
+  let one = (helpEmbed, message) => {
+    helpEmbed.reactions.removeAll();
+
+    let embed = new MessageEmbed()
+      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+      .setTitle("Help")
+      .setDescription("Basic Commands")
+      .setThumbnail(message.guild.iconURL())
+      .addField(
+        "~suggest [message]",
+        `Sends <@340002869912666114> a message with your idea to improve Tilda`,
+        false
+      )
+      .addField(
+        "~8ball [question]",
+        `Ask the all powerful 8ball your questions`,
+        false
+      );
+
+    helpEmbed.edit(embed);
+  };
+
+  let two = (helpEmbed, message) => {
+    helpEmbed.reactions.removeAll();
+
+    let embed = new MessageEmbed()
+      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+      .setTitle("Help")
+      .setDescription("Info Commands")
+      .setThumbnail(message.guild.iconURL())
+      .addField(
+        "~suggest [message]",
+        `Sends <@340002869912666114> a message with your idea to improve Tilda`,
+        false
+      )
+      .addField(
+        "~8ball [question]",
+        `Ask the all powerful 8ball your questions`,
+        false
+      );
+
+    helpEmbed.edit(embed);
+  };
+
+  let three = (helpEmbed, message) => {
+    helpEmbed.reactions.removeAll();
+
+    let embed = new MessageEmbed()
+      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+      .setTitle("Help")
+      .setDescription("Coin Commands")
+      .setThumbnail(message.guild.iconURL())
+      .addField(
+        "~leaderboard",
+        `Get the top coin scores of everyone in the server!`,
+        false
+      )
+      .addField("~balance", `View the amount of coins you have`, false)
+      .addField("~flip [amount of coins]", `50/50`, false)
+      .addField("~daily", `Get 100 coins once every 24 hours`, false)
+      .addField("~beg", `Get 10 coins every 10 minutes`, false)
+      .addField(
+        "~give [amount of coins] <@person>",
+        `Give \`x\` amount of coins to mentioned person`,
+        false
+      );
+
+    helpEmbed.edit(embed);
+  };
 };
 
 module.exports.help = help;
