@@ -1,8 +1,9 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
 let help = (message) => {
+  let color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setColor(color)
     .setTitle(`Help`)
     .setThumbnail(message.guild.iconURL())
     .addField("1️⃣", "Basic Commands", true)
@@ -21,13 +22,13 @@ let help = (message) => {
         collection.each((collected) => {
           switch (collected.emoji.name) {
             case "1️⃣":
-              one(helpMessage, message);
+              editEmbed(helpMessage, message, "one", color);
               break;
             case "2️⃣":
-              two(helpMessage, message);
+              editEmbed(helpMessage, message, "two", color);
               break;
             case "3️⃣":
-              three(helpMessage, message);
+              editEmbed(helpMessage, message, "three", color);
               break;
             default:
               message.reply(
@@ -40,72 +41,62 @@ let help = (message) => {
       .catch(console.error);
   });
 
-  let one = (helpEmbed, message) => {
+  let editEmbed = (helpEmbed, message, num, color) => {
     helpEmbed.reactions.removeAll();
 
     let embed = new MessageEmbed()
-      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+      .setColor(color)
       .setTitle("Help")
-      .setDescription("Basic Commands")
-      .setThumbnail(message.guild.iconURL())
-      .addField(
-        "~suggest [message]",
-        `Sends <@340002869912666114> a message with your idea to improve Tilda`,
-        false
-      )
-      .addField(
-        "~8ball [question]",
-        `Ask the all powerful 8ball your questions`,
-        false
-      );
+      .setThumbnail(message.guild.iconURL());
 
-    helpEmbed.edit(embed);
-  };
-
-  let two = (helpEmbed, message) => {
-    helpEmbed.reactions.removeAll();
-
-    let embed = new MessageEmbed()
-      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-      .setTitle("Help")
-      .setDescription("Info Commands")
-      .setThumbnail(message.guild.iconURL())
-      .addField(
-        "~suggest [message]",
-        `Sends <@340002869912666114> a message with your idea to improve Tilda`,
-        false
-      )
-      .addField(
-        "~8ball [question]",
-        `Ask the all powerful 8ball your questions`,
-        false
-      );
-
-    helpEmbed.edit(embed);
-  };
-
-  let three = (helpEmbed, message) => {
-    helpEmbed.reactions.removeAll();
-
-    let embed = new MessageEmbed()
-      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-      .setTitle("Help")
-      .setDescription("Coin Commands")
-      .setThumbnail(message.guild.iconURL())
-      .addField(
-        "~leaderboard",
-        `Get the top coin scores of everyone in the server!`,
-        false
-      )
-      .addField("~balance", `View the amount of coins you have`, false)
-      .addField("~flip [amount of coins]", `50/50`, false)
-      .addField("~daily", `Get 100 coins once every 24 hours`, false)
-      .addField("~beg", `Get 10 coins every 10 minutes`, false)
-      .addField(
-        "~give [amount of coins] <@person>",
-        `Give \`x\` amount of coins to mentioned person`,
-        false
-      );
+    switch (num) {
+      case "one":
+        embed
+          .setDescription("Basic Commands")
+          .addField(
+            "~suggest [message]",
+            `Sends <@340002869912666114> a message with your idea to improve Tilda`,
+            false
+          )
+          .addField(
+            "~8ball [question]",
+            `Ask the all powerful 8ball your questions`,
+            false
+          );
+        break;
+      case "two":
+        embed
+          .setDescription("Info Commands")
+          .addField(
+            "~suggest [message]",
+            `Sends <@340002869912666114> a message with your idea to improve Tilda`,
+            false
+          )
+          .addField(
+            "~8ball [question]",
+            `Ask the all powerful 8ball your questions`,
+            false
+          );
+        break;
+      case "three":
+        embed
+          .setDescription("Coin Commands")
+          .addField(
+            "~leaderboard",
+            `Get the top coin scores of everyone in the server!`,
+            false
+          )
+          .addField("~balance", `View the amount of coins you have`, false)
+          .addField("~flip [amount of coins]", `50/50`, false)
+          .addField("~daily", `Get 100 coins once every 24 hours`, false)
+          .addField("~beg", `Get 10 coins every 10 minutes`, false)
+          .addField(
+            "~give [amount of coins] <@person>",
+            `Give \`x\` amount of coins to mentioned person`,
+            false
+          );
+        break;
+    }
 
     helpEmbed.edit(embed);
   };
