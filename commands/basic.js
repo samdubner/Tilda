@@ -22,7 +22,7 @@ let eightBall = (message, args) => {
     "It is certain",
     "It is decidedly so",
     "Without a doubt",
-    "Yes definitely",
+    "Yes, definitely",
     "You may rely on it",
     "As I see it, yes",
     "Most likely",
@@ -37,6 +37,8 @@ let eightBall = (message, args) => {
     "My reply is no",
     "My sources say no",
     "Very doubtful",
+    "Absolutely Not",
+    "Probably not",
   ];
 
   var response = responses[Math.floor(Math.random() * responses.length)];
