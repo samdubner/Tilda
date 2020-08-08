@@ -188,7 +188,7 @@ let daily = async (message, user) => {
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle(`Daily`)
       .setDescription(
-        `Daily available in ${hours} hour(s) and ${minutes} minute(s)`
+        `Daily available in ${hours} ${hours > 1 ? "hours": "hour"} and ${minutes} ${minutes > 1 ? "minutes": "minute"}`
       )
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
@@ -222,7 +222,7 @@ let beg = async (message, user) => {
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle(`Beg`)
       .setDescription(
-        `You can beg in ${minutes} minute(s) and ${seconds} second(s)`
+        `You can beg in ${minutes} ${minutes >  1 ? "minutes": "minute"} and ${seconds} ${seconds > 1 ? "seconds": "second"}`
       )
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
     message.reply(embed);
