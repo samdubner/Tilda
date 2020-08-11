@@ -99,14 +99,17 @@ let continueUser = async (message, args, type) => {
       print(message, args, user);
       break;
     case "claim":
-      claim(message, args, user);
+      claim(message, user);
+      break;
+    case "challenge":
+      challenge(message, args, user)
       break;
     default:
       balance(message, user);
   }
 };
 
-let flip = async (message, args, user) => {
+let flip = (message, args, user) => {
   let flipResult = Math.floor(Math.random() * 2);
   let bet = Math.ceil(args.split(" ")[0]);
 
@@ -161,7 +164,7 @@ let flip = async (message, args, user) => {
       .setColor("#ff0000")
       .setTitle(`You lost ${scoreWon} coin(s)`)
       .setDescription(
-        `You now have ${parseInt(user.score) - parseInt(scoreWon)} coins`
+        `You now have ${parseInt(user.score) - parseInt(scoreWon)} coin(s)`
       )
       .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
     message.reply(embed);
@@ -176,7 +179,7 @@ let flip = async (message, args, user) => {
   updateKing(message.client);
 };
 
-let daily = async (message, user) => {
+let daily = (message, user) => {
   let checkDate = user.dailyDate;
   var dailyTimer = new Date().getTime() - 86400000;
 
@@ -189,8 +192,8 @@ let daily = async (message, user) => {
       .setTitle(`Daily`)
       .setDescription(
         `Daily available in ${hours} ${
-          hours > 1 || hours == 0 ? "hours" : "hour"
-        } and ${minutes} ${minutes > 1 || minutes == 0 ? "minutes" : "minute"}`
+          hours == 1 ? "hour" : "hours"
+        } and ${minutes} ${minutes == 1 ? "minute" : "minutes"}`
       )
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
@@ -213,7 +216,7 @@ let daily = async (message, user) => {
   updateKing(message.client);
 };
 
-let beg = async (message, user) => {
+let beg = (message, user) => {
   let checkDate = user.begDate;
   var begTimer = new Date().getTime() - 10 * 60 * 1000;
 
@@ -225,8 +228,8 @@ let beg = async (message, user) => {
       .setTitle(`Beg`)
       .setDescription(
         `You can beg in ${minutes} ${
-          minutes > 1 || minutes == 0 ? "minutes" : "minute"
-        } and ${seconds} ${seconds > 1 || seconds == 0 ? "seconds" : "second"}`
+          minutes == 1 ? "minute" : "minutes"
+        } and ${seconds} ${seconds == 1 ? "second" : "seconds"}`
       )
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
     message.reply(embed);
@@ -307,7 +310,7 @@ let give = async (message, args, sender) => {
   updateKing(message.client);
 };
 
-let print = async (message, args, sender) => {
+let print = async (message, args) => {
   if (message.author.id != "340002869912666114") {
     let embed = new MessageEmbed()
       .setColor(`#ff0000`)
@@ -392,7 +395,7 @@ let balance = async (message, user) => {
   });
 };
 
-let claim = (message, args, user) => {
+let claim = (message, user) => {
   if (!coinEvent.isUp) {
     message.channel.send("There is currently no ongoing coin event to claim!");
     return;
@@ -437,6 +440,10 @@ let randomCoinEvent = (client) => {
     .then((message) => {
       coinEvent = { isUp: true, messageId: message.id, coinAmount };
     });
+};
+
+let challenge = async (message, args, user) => {
+  message.reply("Big Sad")
 };
 
 let updateKing = async (client) => {
@@ -498,14 +505,7 @@ module.exports = {
   leaderboard,
   continueUser,
   getUser,
-  flip,
-  daily,
-  beg,
-  give,
-  print,
-  balance,
-  claim,
   randomCoinEvent,
-  updateKing,
   coinEvent,
+  updateKing,
 };
