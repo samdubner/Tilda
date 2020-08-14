@@ -131,7 +131,7 @@ client.on("message", async (message) => {
       break;
     case "~challenge":
     case "~c":
-      coin.continueUser(message, args, "challenge")
+      coin.continueUser(message, args, "challenge");
       break;
     default:
       message.reply("Please use a valid command");

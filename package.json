@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node tilda.js"
   },
-  "author": "",
+  "author": "IsoVoyd",
+  "repository": "https://github.com/IsoVoyd/Tilda",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.2.0",

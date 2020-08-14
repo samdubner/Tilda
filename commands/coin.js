@@ -102,7 +102,7 @@ let continueUser = async (message, args, type) => {
       claim(message, user);
       break;
     case "challenge":
-      challenge(message, args, user)
+      challenge(message, args, user);
       break;
     default:
       balance(message, user);
@@ -282,6 +282,11 @@ let give = async (message, args, sender) => {
     return;
   }
 
+  if (sender.userId == message.author.id) {
+    message.reply("You cannot give yourself coins")
+    return;
+  }
+
   Users.update(
     { score: parseInt(sender.score) - parseInt(giveAmount) },
     { where: { userId: sender.userId } }
@@ -443,7 +448,7 @@ let randomCoinEvent = (client) => {
 };
 
 let challenge = async (message, args, user) => {
-  message.reply("Big Sad")
+  message.reply("Big Sad");
 };
 
 let updateKing = async (client) => {
@@ -476,6 +481,7 @@ let createUser = async (message) => {
     .setTitle(`${message.author.username} has registered with Tilda!`)
     .setThumbnail(message.author.displayAvatarURL())
     .addField("New Account Balance", `You currently have 100 coins`, false)
+    .addField("Coin Status", "You have just received 100 coins, `~balance` and `~daily`'s cooldowns have been reset")
     .setFooter(
       "Thank you for registering with Tilda",
       message.client.user.displayAvatarURL()
