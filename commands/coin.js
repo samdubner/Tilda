@@ -282,7 +282,7 @@ let give = async (message, args, sender) => {
     return;
   }
 
-  if (sender.userId == message.author.id) {
+  if (receipt.userId == message.author.id) {
     message.reply("You cannot give yourself coins")
     return;
   }
@@ -481,7 +481,7 @@ let createUser = async (message) => {
     .setTitle(`${message.author.username} has registered with Tilda!`)
     .setThumbnail(message.author.displayAvatarURL())
     .addField("New Account Balance", `You currently have 100 coins`, false)
-    .addField("Coin Status", "You have just received 100 coins, `~balance` and `~daily`'s cooldowns have been reset")
+    .addField("Cooldown Status", "You have just received 100 coins, `~balance` and `~daily` are on cooldown")
     .setFooter(
       "Thank you for registering with Tilda",
       message.client.user.displayAvatarURL()

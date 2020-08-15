@@ -134,7 +134,7 @@ client.on("message", async (message) => {
       coin.continueUser(message, args, "challenge");
       break;
     default:
-      message.reply("Please use a valid command");
+      message.reply(`\`${command}\` is not a valid command`);
   }
 });
 
