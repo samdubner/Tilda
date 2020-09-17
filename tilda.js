@@ -114,6 +114,7 @@ client.on("message", async (message) => {
     case "~daily":
       coin.continueUser(message, args, "daily");
       break;
+    case "~balance":
     case "~bal":
       coin.continueUser(message, args, "balance");
       break;

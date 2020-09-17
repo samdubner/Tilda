@@ -77,6 +77,7 @@ let continueUser = async (message, args, type) => {
     console.log(
       `Added <${user.userId}> ${message.author.username} to the database`
     );
+    return;
   }
 
   switch (type) {
