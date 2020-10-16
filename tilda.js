@@ -26,17 +26,7 @@ client.on("ready", async () => {
   );
 
   client.user.setActivity("with the mainframe");
-
-  client.guilds.cache
-    .get("735395621703385099")
-    .roles.cache.get("735395776967999515")
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-
-  client.guilds.cache
-    .get("735395621703385099")
-    .roles.cache.get("737364395776278541")
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-
+  
   coin.sync();
 
   setInterval(() => {
