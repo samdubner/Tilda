@@ -7,32 +7,34 @@ const basic = require("./commands/basic.js");
 const info = require("./commands/info.js");
 const coin = require("./commands/coin.js");
 const help = require("./commands/help.js");
+const voice = require("./commands/voice.js");
 
 client.on("ready", async () => {
+  let currentDate = new Date();
   console.log(
     `[${
-      new Date().getHours().toString().length == 1
-        ? "0" + new Date().getHours().toString()
-        : new Date().getHours()
+      currentDate.getHours().toString().length == 1
+        ? "0" + currentDate.getHours().toString()
+        : currentDate.getHours()
     }:${
-      new Date().getMinutes().toString().length == 1
-        ? "0" + new Date().getMinutes().toString()
-        : new Date().getMinutes()
+      currentDate.getMinutes().toString().length == 1
+        ? "0" + currentDate.getMinutes().toString()
+        : currentDate.getMinutes()
     }:${
-      new Date().getSeconds().toString().length == 1
-        ? "0" + new Date().getSeconds().toString()
-        : new Date().getSeconds()
+      currentDate.getSeconds().toString().length == 1
+        ? "0" + currentDate.getSeconds().toString()
+        : currentDate.getSeconds()
     }] Tilda is online`
   );
 
-  client.user.setActivity("with the mainframe");
-  
+  client.user.setActivity("with time");
+
   coin.sync();
 
-  setInterval(() => {
-    if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
-      coin.randomCoinEvent(client);
-  }, 3600000);
+  // setInterval(() => {
+  //   if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
+  //     coin.randomCoinEvent(client);
+  // }, 3600000);
 });
 
 client.on("guildMemberAdd", (guildMember) => {
@@ -53,6 +55,7 @@ client.on("guildBanAdd", (guild, user) => {
     .catch(console.error);
 });
 
+let connectionSet = false;
 client.on("message", async (message) => {
   if (
     message.channel.id == "735404269426966580" &&
@@ -64,6 +67,10 @@ client.on("message", async (message) => {
     );
     message.delete();
     return;
+  }
+
+  if (connectionSet && message.channel.id == "670875790887354372") {
+    voice.speak(message)
   }
 
   let command = message.content.toLowerCase().split(" ")[0];
@@ -123,6 +130,10 @@ client.on("message", async (message) => {
     case "~challenge":
     case "~c":
       coin.continueUser(message, args, "challenge");
+      break;
+    case "~voice":
+      connectionSet = true;
+      voice.joinChannel(message);
       break;
     default:
       message.reply(`\`${command}\` is not a valid command`);

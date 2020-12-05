@@ -32,8 +32,6 @@ let leaderboard = async (message) => {
 
   userList = userList.slice(0, 5);
 
-  updateKing(message.client);
-
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle("Coin Leaderboard")
@@ -176,8 +174,6 @@ let flip = (message, args, user) => {
     { score: parseInt(user.score) + parseInt(scoreWon) },
     { where: { userId: message.author.id } }
   );
-
-  updateKing(message.client);
 };
 
 let daily = (message, user) => {
@@ -214,7 +210,6 @@ let daily = (message, user) => {
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
   message.reply(embed).catch(console.error);
-  updateKing(message.client);
 };
 
 let beg = (message, user) => {
@@ -249,7 +244,6 @@ let beg = (message, user) => {
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
   message.reply(embed);
-  updateKing(message.client);
 };
 
 let give = async (message, args, sender) => {
@@ -313,7 +307,6 @@ let give = async (message, args, sender) => {
     );
 
   message.channel.send(embed);
-  updateKing(message.client);
 };
 
 let print = async (message, args) => {
@@ -452,23 +445,6 @@ let challenge = async (message, args, user) => {
   message.reply("Big Sad");
 };
 
-let updateKing = async (client) => {
-  let kingRole = client.guilds.cache
-    .get("735395621703385099")
-    .roles.cache.get("737876375456841798");
-
-  let userList = await Users.findAll({ order: [["score", "DESC"]] });
-  userList = userList.slice(0, 1);
-
-  if (kingRole.members.first().id != userList[0].userId) {
-    kingRole.members.first().roles.remove(kingRole.id);
-    client.guilds.cache
-      .get("735395621703385099")
-      .members.cache.get(userList[0].userId)
-      .roles.add(kingRole.id);
-  }
-};
-
 let createUser = async (message) => {
   let user = await Users.create({
     userId: message.author.id,
@@ -513,6 +489,5 @@ module.exports = {
   continueUser,
   getUser,
   randomCoinEvent,
-  coinEvent,
-  updateKing,
+  coinEvent
 };

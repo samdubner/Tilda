@@ -2,3 +2,4 @@ node_modules
 test.js
 database.sqlite
 token.json
+voicelines/*
