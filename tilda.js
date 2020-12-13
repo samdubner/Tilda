@@ -22,7 +22,7 @@ client.on("ready", async () => {
     }:${seconds.length == 1 ? "0" + seconds : seconds}] Tilda is online`
   );
 
-  client.user.setActivity("with time");
+  client.user.setActivity("with ~help");
 
   coin.sync();
   roles.sync();

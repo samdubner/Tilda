@@ -73,7 +73,7 @@ let continueUser = async (message, args, type) => {
   if (!user) {
     user = await createUser(message);
     console.log(
-      `Added <${user.userId}> ${message.author.username} to the database`
+      `Added <${user.userId}> ${message.author.username} to the coin table`
     );
     return;
   }

@@ -8,7 +8,8 @@ let help = (message, helpEmbed) => {
     .setThumbnail(message.guild.iconURL())
     .addField("1️⃣", "Basic Commands", true)
     .addField("2️⃣", "Info Commands", true)
-    .addField("3️⃣", "Coin Commands", true);
+    .addField("3️⃣", "Coin Commands", true)
+    .addField("4️⃣", "Role Commands", true);
 
   if (helpEmbed == undefined) {
     message.channel
@@ -28,6 +29,7 @@ let createReactionHandler = (helpMessage, message, color) => {
   helpMessage.react("1️⃣");
   helpMessage.react("2️⃣");
   helpMessage.react("3️⃣");
+  helpMessage.react("4️⃣");
 
   let filter = (reaction, user) => message.author.id == user.id;
   helpMessage
@@ -43,6 +45,9 @@ let createReactionHandler = (helpMessage, message, color) => {
             break;
           case "3️⃣":
             editEmbed(helpMessage, message, "three", color);
+            break;
+          case "4️⃣":
+            editEmbed(helpMessage, message, "four", color);
             break;
           default:
             message.reply(
@@ -109,6 +114,13 @@ let editEmbed = (helpEmbed, message, num, color) => {
           `Give \`x\` amount of coins to mentioned person`,
           false
         );
+      break;
+    case "four":
+      embed
+        .setDescription("Role Commands")
+        .addField("~role", `displays your custom role`, false)
+        .addField("~role name [custom name]", `change your role's name`, false)
+        .addField("~role color [hex code]", `change your role's color \`EX: ~role color #FF0000\``, false)
       break;
   }
 
