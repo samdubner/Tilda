@@ -1,4 +1,5 @@
 const say = require("say");
+const fs = require("fs");
 
 let connection;
 let joinChannel = async (message) => {
@@ -12,6 +13,7 @@ let speak = async (message) => {
 
   await say.export(message.content, "Microsoft Zira", "1", filepath, () => {
     connection.play(filepath);
+    fs.unlinkSync(filepath);
   });
 };
 

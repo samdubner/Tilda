@@ -8,28 +8,24 @@ const info = require("./commands/info.js");
 const coin = require("./commands/coin.js");
 const help = require("./commands/help.js");
 const voice = require("./commands/voice.js");
+const roles = require("./commands/roles.js");
 
 client.on("ready", async () => {
   let currentDate = new Date();
+  let hours = currentDate.getHours().toString();
+  let minutes = currentDate.getMinutes().toString();
+  let seconds = currentDate.getSeconds().toString();
+
   console.log(
-    `[${
-      currentDate.getHours().toString().length == 1
-        ? "0" + currentDate.getHours().toString()
-        : currentDate.getHours()
-    }:${
-      currentDate.getMinutes().toString().length == 1
-        ? "0" + currentDate.getMinutes().toString()
-        : currentDate.getMinutes()
-    }:${
-      currentDate.getSeconds().toString().length == 1
-        ? "0" + currentDate.getSeconds().toString()
-        : currentDate.getSeconds()
-    }] Tilda is online`
+    `[${hours.length == 1 ? "0" + hours : hours}:${
+      minutes.length == 1 ? "0" + minutes : minutes
+    }:${seconds.length == 1 ? "0" + seconds : seconds}] Tilda is online`
   );
 
   client.user.setActivity("with time");
 
   coin.sync();
+  roles.sync();
 
   // setInterval(() => {
   //   if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
@@ -70,7 +66,7 @@ client.on("message", async (message) => {
   }
 
   if (connectionSet && message.channel.id == "670875790887354372") {
-    voice.speak(message)
+    voice.speak(message);
   }
 
   let command = message.content.toLowerCase().split(" ")[0];
@@ -134,6 +130,9 @@ client.on("message", async (message) => {
     case "~voice":
       connectionSet = true;
       voice.joinChannel(message);
+      break;
+    case "~role":
+      roles.role(message, args);
       break;
     default:
       message.reply(`\`${command}\` is not a valid command`);
