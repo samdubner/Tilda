@@ -7,7 +7,6 @@ const basic = require("./commands/basic.js");
 const info = require("./commands/info.js");
 const coin = require("./commands/coin.js");
 const help = require("./commands/help.js");
-const voice = require("./commands/voice.js");
 const roles = require("./commands/roles.js");
 
 client.on("ready", () => {
