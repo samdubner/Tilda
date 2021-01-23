@@ -36,7 +36,7 @@ let role = async (message, args) => {
   }
 
   let command = args.split(" ")[0].toLowerCase();
-  let data = args.split(" ")[1];
+  let data = args.split(" ").splice(1, args.length).join(" ")
   
   customRole = message.guild.roles.cache.get(user.roleName);
 

@@ -148,7 +148,7 @@ let flip = (message, args, user) => {
 
   let scoreWon = bet;
 
-  if (flipResult == 1) {
+  if (flipResult) {
     let embed = new MessageEmbed()
       .setColor("#00ff00")
       .setTitle(`You won ${scoreWon} coin(s)!`)
@@ -158,7 +158,7 @@ let flip = (message, args, user) => {
       .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
     message.reply(embed);
     scoreWon = bet;
-  } else if (flipResult == 0) {
+  } else {
     let embed = new MessageEmbed()
       .setColor("#ff0000")
       .setTitle(`You lost ${scoreWon} coin(s)`)

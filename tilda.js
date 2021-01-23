@@ -10,7 +10,7 @@ const help = require("./commands/help.js");
 const voice = require("./commands/voice.js");
 const roles = require("./commands/roles.js");
 
-client.on("ready", async () => {
+client.on("ready", () => {
   let currentDate = new Date();
   let hours = currentDate.getHours().toString();
   let minutes = currentDate.getMinutes().toString();
@@ -21,6 +21,11 @@ client.on("ready", async () => {
       minutes.length == 1 ? "0" + minutes : minutes
     }:${seconds.length == 1 ? "0" + seconds : seconds}] Tilda is online`
   );
+
+  client.guilds.cache
+    .get("735395621703385099")
+    .roles.cache.get("735395776967999515")
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
 
   client.user.setActivity("with ~help");
 
@@ -52,7 +57,7 @@ client.on("guildBanAdd", (guild, user) => {
 });
 
 let connectionSet = false;
-client.on("message", async (message) => {
+client.on("message", (message) => {
   if (
     message.channel.id == "735404269426966580" &&
     message.author.id != "340002869912666114" &&
@@ -74,68 +79,33 @@ client.on("message", async (message) => {
 
   if (message.author.bot || !command.startsWith("~")) return;
 
-  switch (command) {
-    case "~suggest":
-      basic.request(message);
-      break;
-    case "~help":
-      help.help(message);
-      break;
-    case "~pfp":
-      info.pfp(message);
-      break;
-    case "~ui":
-      info.ui(message);
-      break;
-    case "~si":
-      info.si(message);
-      break;
-    case "~8ball":
-      basic.eightBall(message, args);
-      break;
-    case "~wiki":
-      info.wikiSearch(message, args);
-      break;
-    case "~leaderboard":
-    case "~l":
-      coin.leaderboard(message);
-      break;
-    case "~flip":
-    case "~f":
-      coin.continueUser(message, args, "flip");
-      break;
-    case "~daily":
-      coin.continueUser(message, args, "daily");
-      break;
-    case "~balance":
-    case "~bal":
-      coin.continueUser(message, args, "balance");
-      break;
-    case "~give":
-      coin.continueUser(message, args, "give");
-      break;
-    case "~print":
-      coin.continueUser(message, args, "print");
-      break;
-    case "~beg":
-      coin.continueUser(message, args, "beg");
-      break;
-    case "~claim":
-      coin.continueUser(message, args, "claim");
-      break;
-    case "~challenge":
-    case "~c":
-      coin.continueUser(message, args, "challenge");
-      break;
-    case "~voice":
-      connectionSet = true;
-      voice.joinChannel(message);
-      break;
-    case "~role":
-      roles.role(message, args);
-      break;
-    default:
-      message.reply(`\`${command}\` is not a valid command`);
+  const COMMANDS = {
+    "~suggest": () => basic.request(message),
+    "~help": () => help.help(message),
+    "~pfp": () => info.pfp(message),
+    "~ui": () => info.ui(message),
+    "~si": () => info.si(message),
+    "~8ball": () => basic.eightBall(message, args),
+    "~roll": () => basic.roll(message, args),
+    "~wiki": () => info.wikiSearch(message, args),
+    "~leaderboard": () => coin.leaderboard(message),
+    "~l": () => COMMANDS["~leaderboard"](),
+    "~flip": () => coin.continueUser(message, args, "flip"),
+    "~f": () => COMMANDS["~flip"](),
+    "~daily": () => coin.continueUser(message, args, "daily"),
+    "~balance": () => coin.continueUser(message, args, "balance"),
+    "~bal": () => COMMANDS["~balance"](),
+    "~give": () => coin.continueUser(message, args, "give"),
+    "~print": () => coin.continueUser(message, args, "print"),
+    "~beg": () => coin.continueUser(message, args, "beg"),
+    "~claim": () => coin.continueUser(message, args, "claim"),
+    "~challenge": () => coin.continueUser(message, args, "challenge"),
+  }
+
+  if (COMMANDS[command] === undefined) {
+    message.reply(`\`${command}\` is not a valid command`)
+  } else {
+    COMMANDS[command]()
   }
 });
 

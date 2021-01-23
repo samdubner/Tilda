@@ -118,9 +118,17 @@ let editEmbed = (helpEmbed, message, num, color) => {
     case "four":
       embed
         .setDescription("Role Commands")
-        .addField("~role", `displays your custom role`, false)
+        .addField(
+          "~role",
+          `creates your custom role and displays info [MUST be used before attempting to change name or color]`,
+          false
+        )
         .addField("~role name [custom name]", `change your role's name`, false)
-        .addField("~role color [hex code]", `change your role's color \`EX: ~role color #FF0000\``, false)
+        .addField(
+          "~role color [hex code]",
+          `change your role's color \`EX: ~role color #FF0000\``,
+          false
+        );
       break;
   }
 
