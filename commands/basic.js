@@ -42,9 +42,9 @@ const Basic = {
       return;
     }
   
-    var response = eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)];
+    let response = eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)];
   
-    var embed = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(`8ball`, message.author.avatarURL())
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setThumbnail("https://i.imgur.com/z7ayPJL.gif")
@@ -56,7 +56,7 @@ const Basic = {
   roll: (message, args) => {
     args = args ? args : "6"
     randomResult = Math.floor(Math.random() * parseInt(args.split(" ")[0])) + 1
-    var embed = new MessageEmbed()
+    let embed = new MessageEmbed()
     .setAuthor(`Roll`, message.author.avatarURL())
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .addField(`You rolled a ${args} sided die`,`You got a ${randomResult}`)

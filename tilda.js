@@ -86,7 +86,7 @@ client.on("message", (message) => {
     "~si": () => info.si(message),
     "~8ball": () => basic.eightBall(message, args),
     "~roll": () => basic.roll(message, args),
-    "~wiki": () => info.wikiSearch(message, args),
+    "~wiki": () => info.wikiSearch(message, args, client),
     "~leaderboard": () => coin.leaderboard(message),
     "~l": () => COMMANDS["~leaderboard"](),
     "~flip": () => coin.continueUser(message, args, "flip"),
@@ -99,6 +99,7 @@ client.on("message", (message) => {
     "~beg": () => coin.continueUser(message, args, "beg"),
     "~claim": () => coin.continueUser(message, args, "claim"),
     "~challenge": () => coin.continueUser(message, args, "challenge"),
+    "~role": () => roles.role(message, args),
   }
 
   if (COMMANDS[command] === undefined) {

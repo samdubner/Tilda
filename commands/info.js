@@ -1,6 +1,6 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-var wiki = require("wikijs").default;
+const wiki = require("wikijs").default;
 
 let ui = (message) => {
   let person = message.mentions.members.first();
@@ -132,7 +132,9 @@ let wikiSearch = async (message, args) => {
   let sections = await page.sections();
   let summary = await page.summary();
   let url = await page.url();
-  let mainImage = await page.mainImage();
+  let mainImage;
+  mainImage = await page.mainImage().catch((err) => console.log(err));
+  console.log(mainImage)
 
   let embed = new MessageEmbed()
     .setAuthor(
@@ -145,7 +147,7 @@ let wikiSearch = async (message, args) => {
     .setFooter(url)
     .setTimestamp();
 
-  for (var i = 0; i < sections.length; i++) {
+  for (let i = 0; i < sections.length; i++) {
     if (sections[i].content == "") continue;
     sections[i].content = sections[i].content.split(".")[0];
     if (sections[i].content.length > 1024) continue;

@@ -178,7 +178,7 @@ let flip = (message, args, user) => {
 
 let daily = (message, user) => {
   let checkDate = user.dailyDate;
-  var dailyTimer = new Date().getTime() - 86400000;
+  let dailyTimer = new Date().getTime() - 86400000;
 
   if (dailyTimer < checkDate) {
     let minutes = Math.trunc(((checkDate - dailyTimer) / 60000) % 60);
@@ -214,7 +214,7 @@ let daily = (message, user) => {
 
 let beg = (message, user) => {
   let checkDate = user.begDate;
-  var begTimer = new Date().getTime() - 10 * 60 * 1000;
+  let begTimer = new Date().getTime() - 10 * 60 * 1000;
 
   if (begTimer < checkDate) {
     let seconds = Math.trunc(((checkDate - begTimer) / 1000) % 60);
