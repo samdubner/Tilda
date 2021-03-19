@@ -10,16 +10,7 @@ const help = require("./commands/help.js");
 const roles = require("./commands/roles.js");
 
 client.on("ready", () => {
-  let currentDate = new Date();
-  let hours = currentDate.getHours().toString();
-  let minutes = currentDate.getMinutes().toString();
-  let seconds = currentDate.getSeconds().toString();
-
-  console.log(
-    `[${hours.length == 1 ? "0" + hours : hours}:${
-      minutes.length == 1 ? "0" + minutes : minutes
-    }:${seconds.length == 1 ? "0" + seconds : seconds}] Tilda is online`
-  );
+  console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
   client.guilds.cache.get("735395621703385099").roles.fetch("735395776967999515")
     .then(role => role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`))
@@ -57,8 +48,9 @@ client.on("message", (message) => {
     voice.speak(message);
   }
 
-  let command = message.content.toLowerCase().split(" ")[0];
-  let args = message.content.split(" ").slice(1).join(" ");
+  let messageContent = message.content.split(" ");
+  let command = messageContent[0].toLowerCase();
+  let args = messageContent.slice(1).join(" ");
 
   if (message.author.bot || !command.startsWith("~")) return;
 
@@ -86,10 +78,10 @@ client.on("message", (message) => {
     "~role": () => roles.role(message, args),
   }
 
-  if (COMMANDS[command] === undefined) {
-    message.reply(`\`${command}\` is not a valid command`)
-  } else {
+  if (COMMANDS[command]) {
     COMMANDS[command]()
+  } else {
+    message.reply(`\`${command}\` is not a valid command`)
   }
 });
 
