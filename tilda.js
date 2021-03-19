@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({ws: { intents: ["GUILD_MEMBERS"] }});
 
 const fs = require("fs");
 
@@ -21,11 +21,9 @@ client.on("ready", () => {
     }:${seconds.length == 1 ? "0" + seconds : seconds}] Tilda is online`
   );
 
-  client.guilds.cache
-    .get("735395621703385099")
-    .roles.cache.get("735395776967999515")
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-
+  client.guilds.cache.get("735395621703385099").roles.fetch("735395776967999515")
+    .then(role => role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`))
+  
   client.user.setActivity("with ~help");
 
   coin.sync();
@@ -37,23 +35,9 @@ client.on("ready", () => {
   // }, 3600000);
 });
 
-client.on("guildMemberAdd", (guildMember) => {
-  guildMember.roles.add("735395776967999515");
-});
-
-client.on("guildBanAdd", (guild, user) => {
-  let embed = new Discord.MessageEmbed()
-    .setAuthor("Ban", guild.iconURL)
-    .setColor(`#ff0000`)
-    .setTitle(
-      `**${user.username}#${user.discriminator}** has been banned from **${guild.name}**`
-    );
-
-  guild.channels.cache
-    .get("735395621703385102")
-    .send(embed)
-    .catch(console.error);
-});
+client.on("guildMemberAdd", (member) => {
+  member.roles.add("735395776967999515")
+})
 
 let connectionSet = false;
 client.on("message", (message) => {

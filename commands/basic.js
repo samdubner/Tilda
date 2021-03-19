@@ -59,7 +59,7 @@ const Basic = {
     let embed = new MessageEmbed()
     .setAuthor(`Roll`, message.author.avatarURL())
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .addField(`You rolled a ${args} sided die`,`You got a ${randomResult}`)
+    .addField(`You rolled a ${parseInt(args.split(" ")[0])} sided die`,`You got a ${randomResult}`)
   
     message.channel.send({ embed }).catch(console.error);
   }

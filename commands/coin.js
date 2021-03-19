@@ -24,7 +24,7 @@ let sync = () => Users.sync();
 
 let leaderboard = async (message) => {
   if (message.channel.id != "735399594917363722") {
-    message.reply("Please only use gambling commands in <#735399594917363722>");
+    message.reply("Please only use coin commands in <#735399594917363722>");
     return;
   }
 
@@ -46,6 +46,10 @@ let leaderboard = async (message) => {
           ` 🎉 ${user.score} 🎉`,
           false
         );
+      } else {
+        Users.destroy({
+          where: {userId: user.userId}
+        })
       }
     } else {
       if (message.guild.members.cache.get(user.userId) != undefined) {

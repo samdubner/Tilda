@@ -134,7 +134,6 @@ let wikiSearch = async (message, args) => {
   let url = await page.url();
   let mainImage;
   mainImage = await page.mainImage().catch((err) => console.log(err));
-  console.log(mainImage)
 
   let embed = new MessageEmbed()
     .setAuthor(
