@@ -30,7 +30,6 @@ client.on("guildMemberAdd", (member) => {
   member.roles.add("735395776967999515")
 })
 
-let connectionSet = false;
 client.on("message", (message) => {
   if (
     message.channel.id == "735404269426966580" &&
@@ -42,10 +41,6 @@ client.on("message", (message) => {
     );
     message.delete();
     return;
-  }
-
-  if (connectionSet && message.channel.id == "670875790887354372") {
-    voice.speak(message);
   }
 
   let messageContent = message.content.split(" ");
