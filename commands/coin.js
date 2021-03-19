@@ -24,7 +24,18 @@ let sync = () => Users.sync();
 
 let dropCoins = (message) => {
   if (message.author.id != "340002869912666114") return;
-  Users.drop().catch(console.error())
+  Users.drop().catch(() => {
+    Users = sequelize.define("userList", {
+      userId: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false,
+      },
+      score: Sequelize.INTEGER,
+      dailyDate: Sequelize.INTEGER,
+      begDate: Sequelize.INTEGER,
+    });
+  })
 };
 
 let leaderboard = async (message) => {
