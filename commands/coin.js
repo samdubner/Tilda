@@ -22,6 +22,11 @@ const Users = sequelize.define("userList", {
 
 let sync = () => Users.sync();
 
+let dropCoins = (message) => {
+  if (message.author.id != "340002869912666114") return;
+  Users.drop().catch(console.error())
+};
+
 let leaderboard = async (message) => {
   if (message.channel.id != "735399594917363722") {
     message.reply("Please only use coin commands in <#735399594917363722>");
@@ -46,10 +51,6 @@ let leaderboard = async (message) => {
           ` 🎉 ${user.score} 🎉`,
           false
         );
-      } else {
-        Users.destroy({
-          where: {userId: user.userId}
-        })
       }
     } else {
       if (message.guild.members.cache.get(user.userId) != undefined) {
@@ -282,7 +283,7 @@ let give = async (message, args, sender) => {
   }
 
   if (receipt.userId == message.author.id) {
-    message.reply("You cannot give yourself coins")
+    message.reply("You cannot give yourself coins");
     return;
   }
 
@@ -462,7 +463,10 @@ let createUser = async (message) => {
     .setTitle(`${message.author.username} has registered with Tilda!`)
     .setThumbnail(message.author.displayAvatarURL())
     .addField("New Account Balance", `You currently have 100 coins`, false)
-    .addField("Cooldown Status", "You have just received 100 coins, `~daily` and `~beg` are on cooldown")
+    .addField(
+      "Cooldown Status",
+      "You have just received 100 coins, `~daily` and `~beg` are on cooldown"
+    )
     .setFooter(
       "Thank you for registering with Tilda",
       message.client.user.displayAvatarURL()
@@ -489,6 +493,7 @@ let getUser = async (userId) => {
 
 module.exports = {
   sync,
+  dropCoins,
   leaderboard,
   continueUser,
   getUser,

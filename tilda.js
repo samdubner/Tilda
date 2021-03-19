@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const client = new Discord.Client({ws: { intents: ["GUILD_MEMBERS"] }});
+const client = new Discord.Client();
 
 const fs = require("fs");
 
@@ -20,10 +20,10 @@ client.on("ready", () => {
   coin.sync();
   roles.sync();
 
-  // setInterval(() => {
-  //   if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
-  //     coin.randomCoinEvent(client);
-  // }, 3600000);
+  setInterval(() => {
+    if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
+      coin.randomCoinEvent(client);
+  }, 3600000);
 });
 
 client.on("guildMemberAdd", (member) => {
@@ -71,6 +71,7 @@ client.on("message", (message) => {
     "~claim": () => coin.continueUser(message, args, "claim"),
     "~challenge": () => coin.continueUser(message, args, "challenge"),
     "~role": () => roles.role(message, args),
+    "~drop": () => coin.dropCoins(message)
   }
 
   if (COMMANDS[command]) {
