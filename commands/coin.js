@@ -53,6 +53,7 @@ let leaderboard = async (message) => {
     .setTitle("Coin Leaderboard")
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
 
+  message.guild.members.fetch()
   let i = 1;
   for (let user of userList) {
     if (user.score == userList[0].score) {
