@@ -45,6 +45,7 @@ let leaderboard = async (message) => {
   }
 
   let userList = await Users.findAll({ order: [["score", "DESC"]] });
+  await message.guild.members.fetch()
 
   userList = userList.slice(0, 5);
 
@@ -53,7 +54,6 @@ let leaderboard = async (message) => {
     .setTitle("Coin Leaderboard")
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
 
-  message.guild.members.fetch()
   let i = 1;
   for (let user of userList) {
     if (user.score == userList[0].score) {
