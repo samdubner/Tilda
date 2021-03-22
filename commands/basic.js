@@ -81,7 +81,7 @@ const Basic = {
         .then((collected) => {
           if (collected.get("✅") != undefined) {
             client.destroy();
-            console.log("Client has been destroyed, exiting node process...")
+            console.log(`${message.member.displayName} has destroyed the client, exiting node process...`)
             process.exit(0);
           }
         });
