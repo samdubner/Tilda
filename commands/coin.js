@@ -379,11 +379,13 @@ let print = async (message, args) => {
 };
 
 let balance = async (message, user) => {
+  let coinVariation;
   if (message.mentions.users.first() == null) {
+    coinVariation = user.score === 1 ? "coin" : "coins"
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle(`${message.author.username}'s Balance`)
-      .setDescription(`${message.author.username} has ${user.score} coins`);
+      .setDescription(`${message.author.username} has ${user.score} ${coinVariation}`);
 
     message.channel.send(embed);
     return;
@@ -399,11 +401,12 @@ let balance = async (message, user) => {
         `You cannot see \`${messageUser.username}'s\` balance as they have not use any gambling command before`
       );
     } else {
+      coinVariation = mentionedUser.score === 1 ? "coin" : "coins";
       let embed = new MessageEmbed()
         .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
         .setTitle(`${messageUser.username}'s Balance`)
         .setDescription(
-          `${messageUser.username} has ${mentionedUser.score} coins`
+          `${messageUser.username} has ${mentionedUser.score} ${coinVariation}`
         );
 
       message.channel.send(embed);
