@@ -444,7 +444,10 @@ let claim = (message, user) => {
       false
     );
 
-  message.channel.messages.cache.get(coinEvent.messageId).edit(embed);
+  message.channel.messages.cache
+    .get(coinEvent.messageId)
+    .edit(embed)
+    .catch(console.error);
   coinEvent.isUp = false;
 };
 
