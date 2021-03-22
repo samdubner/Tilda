@@ -132,8 +132,7 @@ let wikiSearch = async (message, args) => {
   let sections = await page.sections();
   let summary = await page.summary();
   let url = await page.url();
-  let mainImage;
-  mainImage = await page.mainImage().catch((err) => console.log(err));
+  let mainImage = await page.mainImage().catch((err) => console.log(err));
 
   let embed = new MessageEmbed()
     .setAuthor(
