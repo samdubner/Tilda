@@ -35,7 +35,7 @@ let dropCoins = (message) => {
       dailyDate: Sequelize.INTEGER,
       begDate: Sequelize.INTEGER,
     });
-  })
+  });
 };
 
 let leaderboard = async (message) => {
@@ -45,7 +45,7 @@ let leaderboard = async (message) => {
   }
 
   let userList = await Users.findAll({ order: [["score", "DESC"]] });
-  await message.guild.members.fetch()
+  await message.guild.members.fetch();
 
   userList = userList.slice(0, 5);
 
@@ -165,23 +165,30 @@ let flip = (message, args, user) => {
 
   let scoreWon = bet;
 
+  let totalCoins;
+  let totalCoinsVariation;
+
+  let coinVariation;
+
   if (flipResult) {
+    totalCoins = parseInt(user.score) + parseInt(scoreWon);
+    coinVariation = scoreWon == 1 ? "coin" : "coins";
+    totalCoinsVariation = totalCoins == 1 ? "coin" : "coins";
     let embed = new MessageEmbed()
       .setColor("#00ff00")
-      .setTitle(`You won ${scoreWon} coin(s)!`)
-      .setDescription(
-        `You now have ${parseInt(user.score) + parseInt(scoreWon)} coins`
-      )
+      .setTitle(`You won ${scoreWon} ${coinVariation}!`)
+      .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
       .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
     message.reply(embed);
     scoreWon = bet;
   } else {
+    totalCoins = parseInt(user.score) - parseInt(scoreWon);
+    coinVariation = scoreWon == 1 ? "coin" : "coins";
+    totalCoinsVariation = totalCoins == 1 ? "coin" : "coins";
     let embed = new MessageEmbed()
       .setColor("#ff0000")
-      .setTitle(`You lost ${scoreWon} coin(s)`)
-      .setDescription(
-        `You now have ${parseInt(user.score) - parseInt(scoreWon)} coin(s)`
-      )
+      .setTitle(`You lost ${scoreWon} ${coinVariation}`)
+      .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
       .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
     message.reply(embed);
     scoreWon = bet * -1;
@@ -381,11 +388,13 @@ let print = async (message, args) => {
 let balance = async (message, user) => {
   let coinVariation;
   if (message.mentions.users.first() == null) {
-    coinVariation = user.score === 1 ? "coin" : "coins"
+    coinVariation = user.score == 1 ? "coin" : "coins";
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle(`${message.author.username}'s Balance`)
-      .setDescription(`${message.author.username} has ${user.score} ${coinVariation}`);
+      .setDescription(
+        `${message.author.username} has ${user.score} ${coinVariation}`
+      );
 
     message.channel.send(embed);
     return;
@@ -401,7 +410,7 @@ let balance = async (message, user) => {
         `You cannot see \`${messageUser.username}'s\` balance as they have not use any gambling command before`
       );
     } else {
-      coinVariation = mentionedUser.score === 1 ? "coin" : "coins";
+      coinVariation = mentionedUser.score == 1 ? "coin" : "coins";
       let embed = new MessageEmbed()
         .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
         .setTitle(`${messageUser.username}'s Balance`)
@@ -513,5 +522,5 @@ module.exports = {
   continueUser,
   getUser,
   randomCoinEvent,
-  coinEvent
+  coinEvent,
 };
