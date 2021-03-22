@@ -44,10 +44,11 @@ client.on("message", (message) => {
     return;
   }
 
-  if (message.author.bot || !command.startsWith("~")) return;
-
   let messageContent = message.content.split(" ");
   let command = messageContent[0].toLowerCase();
+
+  if (message.author.bot || !command.startsWith("~")) return;
+
   let args = messageContent.slice(1).join(" ");
 
   const COMMANDS = {
