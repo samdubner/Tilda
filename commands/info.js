@@ -148,7 +148,6 @@ let wikiSearch = async (message, args) => {
     .setThumbnail(mainImage);
 
   for (let i = 0; i < sections.length; i++) {
-    console.log(sections[i]);
     if (sections[i].content == "") continue;
     if (["Further reading", "External links"].includes(sections[i].title))
       continue;
