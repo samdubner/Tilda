@@ -28,6 +28,7 @@ client.on("ready", () => {
 
 client.on("guildMemberAdd", (member) => {
   member.roles.add("735395776967999515")
+  console.log(`[${new Date().toLocaleTimeString("en-US")}] ${member.displayName} has joined the server`)
 })
 
 client.on("message", (message) => {

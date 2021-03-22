@@ -129,6 +129,8 @@ let wikiSearch = async (message, args) => {
       return;
     });
 
+  console.log(page);
+
   let sections = await page.sections();
   let summary = await page.summary();
   let url = await page.url();
@@ -137,17 +139,19 @@ let wikiSearch = async (message, args) => {
 
   let embed = new MessageEmbed()
     .setAuthor(
-      `Wikipedia`,
-      "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
+      `${page.raw.title}`,
+      "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png",
+      url
     )
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setDescription(summary.split(".")[0])
-    .setThumbnail(mainImage)
-    .setFooter(url)
-    .setTimestamp();
+    .setThumbnail(mainImage);
 
   for (let i = 0; i < sections.length; i++) {
+    console.log(sections[i]);
     if (sections[i].content == "") continue;
+    if (["Further reading", "External links"].includes(sections[i].title))
+      continue;
     sections[i].content = sections[i].content.split(".")[0];
     if (sections[i].content.length > 1024) continue;
 

@@ -273,7 +273,7 @@ let beg = (message, user) => {
 let give = async (message, args, sender) => {
   let receipt = await Users.findOne({
     where: { userId: message.mentions.users.first().id },
-  });
+  }).catch(console.error);
 
   if (!receipt) {
     message.reply(
@@ -470,6 +470,11 @@ let randomCoinEvent = (client) => {
     .send(embed)
     .then((message) => {
       coinEvent = { isUp: true, messageId: message.id, coinAmount };
+      console.log(
+        `[${new Date().toLocaleTimeString(
+          "en-US"
+        )}] Generated new coin event for ${coinAmount} coins`
+      );
     });
 };
 
