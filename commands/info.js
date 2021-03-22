@@ -129,8 +129,6 @@ let wikiSearch = async (message, args) => {
       return;
     });
 
-  console.log(page);
-
   let sections = await page.sections();
   let summary = await page.summary();
   let url = await page.url();
