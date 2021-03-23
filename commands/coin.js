@@ -59,7 +59,7 @@ let leaderboard = async (message) => {
     if (user.score == userList[0].score) {
       if (members.get(user.userId) != undefined) {
         embed.addField(
-          `${i}) ${members.get(user.userId).user.username}`,
+          `${1}) ${members.get(user.userId).user.username}`,
           ` 🎉 ${user.score} 🎉`,
           false
         );
