@@ -15,12 +15,11 @@ client.on("ready", () => {
   client.guilds.cache.get("735395621703385099").roles.fetch("735395776967999515")
     .then(role => {
       setInterval(() => {
-        role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+        role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)      
+        client.user.setActivity("with ~help");
       }, 43200000);
     })
     .catch(console.error)
-  
-  client.user.setActivity("with ~help");
 
   coin.sync();
   roles.sync();
