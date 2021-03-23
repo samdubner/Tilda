@@ -24,15 +24,18 @@ const eightBallResponses = [
 ];
 
 const Basic = {
-  request: (message) => {
+  suggest: (message) => {
+    let suggestion = mesage.content.split(" ").slice(1).join(" ")
+    console.log(
+      `[SUGGESTION] ${message.author.username}#${message.author.discriminator} => ${suggestion}`
+    );
+
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-      .setTitle("Bot Request Sent")
-      .setDescription("It will be taken very seriously");
-
-    console.log(
-      `[REQUEST] ${message.author.username}#${message.author.discriminator} => ${message.content}`
-    );
+      .setTitle("Bot Feature Suggestion Sent")
+      .addField("Request", suggestion, false)
+      .setThumbnail(message.author.displayAvatarURL())
+      .setFooter("It will be taken very seriously");
 
     message.reply(embed);
   },

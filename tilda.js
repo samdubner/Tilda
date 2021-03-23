@@ -57,11 +57,11 @@ client.on("message", (message) => {
   let args = messageContent.slice(1).join(" ");
 
   const COMMANDS = {
-    "~suggest": () => basic.request(message),
     "~help": () => help.help(message),
     "~pfp": () => info.pfp(message),
     "~ui": () => info.ui(message),
     "~si": () => info.si(message),
+    "~suggest": () => basic.suggest(message),
     "~8ball": () => basic.eightBall(message, args),
     "~roll": () => basic.roll(message, args),
     "~wiki": () => info.wikiSearch(message, args, client),
