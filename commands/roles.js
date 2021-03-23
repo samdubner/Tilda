@@ -30,9 +30,8 @@ let role = async (message, args) => {
   if (!user) {
     user = await createRole(message);
     console.log(
-      `Added <${user.userId}> ${message.author.username} to the role table`
+      `[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${message.author.username} to the role table`
     );
-    return;
   }
 
   let command = args.split(" ")[0].toLowerCase();
@@ -42,10 +41,10 @@ let role = async (message, args) => {
 
   switch (command) {
     case "name":
-      updateRole("Name", data, customRole, message)
+      updateRole("name", data, customRole, message)
       break;
     case "color":
-      updateRole("Color", data, customRole, message)
+      updateRole("color", data, customRole, message)
       break;
     default:
 
@@ -105,13 +104,13 @@ let createRole = async (message) => {
 };
 
 let updateRole = (type, data, role, message) => {
-
+  console.log(`[${new Date().toLocaleTimeString("en-US")}] Changing ${message.member.displayName}'s custom role ${type} to '${data}'`)
   switch(type) {
-    case "Color":
+    case "color":
       role.setColor(data).catch(console.error)
       message.reply(`Successfully changed role color to \`${data}\``)
       break;
-    case "Name":
+    case "name":
       role.setName(data).catch(console.error)
       message.reply(`Successfully changed role name to \`${data}\``)
       break;

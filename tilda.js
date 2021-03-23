@@ -12,9 +12,9 @@ const roles = require("./commands/roles.js");
 client.on("ready", () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  client.guilds.cache.get("735395621703385099").roles.fetch("735395776967999515")
-    .then(role => role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`))
-    .catch(console.error)
+  // client.guilds.cache.get("735395621703385099").roles.fetch("735395776967999515")
+  //   .then(role => role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`))
+  //   .catch(console.error)
   
   client.user.setActivity("with ~help");
 

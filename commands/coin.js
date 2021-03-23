@@ -90,7 +90,7 @@ let continueUser = async (message, args, type) => {
   if (!user) {
     user = await createUser(message);
     console.log(
-      `Added <${user.userId}> ${message.author.username} to the coin table`
+      `[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${message.author.username} to the coin table`
     );
     return;
   }
@@ -165,8 +165,7 @@ let flip = (message, args, user) => {
 
   let scoreWon = bet;
 
-  let totalCoins;
-  let totalCoinsVariation;
+  let totalCoins;  let totalCoinsVariation;
 
   let coinVariation;
 
@@ -176,8 +175,8 @@ let flip = (message, args, user) => {
     totalCoinsVariation = totalCoins == 1 ? "coin" : "coins";
     let embed = new MessageEmbed()
       .setColor("#00ff00")
-      .setTitle(`You won ${scoreWon} ${coinVariation}!`)
-      .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
+      .setTitle(`${message.author.username} won ${scoreWon} ${coinVariation}!`)
+      .setDescription(`They now have ${totalCoins} ${totalCoinsVariation}`)
       .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
     message.reply(embed);
     scoreWon = bet;
@@ -187,8 +186,8 @@ let flip = (message, args, user) => {
     totalCoinsVariation = totalCoins == 1 ? "coin" : "coins";
     let embed = new MessageEmbed()
       .setColor("#ff0000")
-      .setTitle(`You lost ${scoreWon} ${coinVariation}`)
-      .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
+      .setTitle(`${message.author.username} lost ${scoreWon} ${coinVariation}`)
+      .setDescription(`They now have ${totalCoins} ${totalCoinsVariation}`)
       .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
     message.reply(embed);
     scoreWon = bet * -1;
@@ -229,7 +228,7 @@ let daily = (message, user) => {
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`You got 100 coins!`)
+    .setTitle(`${message.author.username} got 100 coins!`)
     .setDescription(`You now have ${user.score + 100} coins`)
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
@@ -263,7 +262,7 @@ let beg = (message, user) => {
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`You got 10 coins!`)
+    .setTitle(`${message.author.username} got 10 coins!`)
     .setDescription(`You now have ${user.score + 10} coins`)
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
@@ -517,7 +516,7 @@ let getUser = async (userId) => {
 
   if (!user) {
     user = await createUser(message);
-    console.log(`Added <${user.userId}> ${username} to the database`);
+    console.log(`[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${username} to the database`);
   }
 
   return user;
