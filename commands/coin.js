@@ -39,13 +39,13 @@ let dropCoins = (message) => {
 };
 
 let leaderboard = async (message) => {
-  if (message.channel.id != "735399594917363722") {
+  if (message.channel.id != "735399594917363722" && message.author.id != "340002869912666114") {
     message.reply("Please only use coin commands in <#735399594917363722>");
     return;
   }
 
   let userList = await Users.findAll({ order: [["score", "DESC"]] });
-  await message.guild.members.fetch();
+  let members = await message.guild.members.fetch();
 
   userList = userList.slice(0, 5);
 
@@ -57,17 +57,17 @@ let leaderboard = async (message) => {
   let i = 1;
   for (let user of userList) {
     if (user.score == userList[0].score) {
-      if (message.guild.members.cache.get(user.userId) != undefined) {
+      if (members.get(user.userId) != undefined) {
         embed.addField(
-          `${i}) ${message.guild.members.cache.get(user.userId).user.username}`,
+          `${i}) ${members.get(user.userId).user.username}`,
           ` 🎉 ${user.score} 🎉`,
           false
         );
       }
     } else {
-      if (message.guild.members.cache.get(user.userId) != undefined) {
+      if (members.get(user.userId) != undefined) {
         embed.addField(
-          `${i}) ${message.guild.members.cache.get(user.userId).user.username}`,
+          `${i}) ${members.get(user.userId).user.username}`,
           user.score,
           false
         );
@@ -80,7 +80,7 @@ let leaderboard = async (message) => {
 };
 
 let continueUser = async (message, args, type) => {
-  if (message.channel.id != "735399594917363722") {
+  if (message.channel.id != "735399594917363722" && message.author.id != "340002869912666114") {
     message.reply("Please only use gambling commands in <#735399594917363722>");
     return;
   }
