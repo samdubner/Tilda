@@ -229,7 +229,7 @@ let daily = (message, user) => {
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle(`${message.author.username} got 100 coins!`)
-    .setDescription(`You now have ${user.score + 100} coins`)
+    .setDescription(`They now have ${user.score + 100} coins`)
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
   message.reply(embed).catch(console.error);
@@ -263,7 +263,7 @@ let beg = (message, user) => {
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle(`${message.author.username} got 10 coins!`)
-    .setDescription(`You now have ${user.score + 10} coins`)
+    .setDescription(`They now have ${user.score + 10} coins`)
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
   message.reply(embed);
