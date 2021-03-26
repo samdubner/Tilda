@@ -39,7 +39,10 @@ let dropCoins = (message) => {
 };
 
 let leaderboard = async (message) => {
-  if (message.channel.id != "735399594917363722" && message.author.id != "340002869912666114") {
+  if (
+    message.channel.id != "735399594917363722" &&
+    message.author.id != "340002869912666114"
+  ) {
     message.reply("Please only use coin commands in <#735399594917363722>");
     return;
   }
@@ -80,7 +83,11 @@ let leaderboard = async (message) => {
 };
 
 let continueUser = async (message, args, type) => {
-  if (message.channel.id != "735399594917363722" && message.author.id != "340002869912666114") {
+  if (
+    message.channel.id != "735399594917363722" &&
+    message.author.id != "340002869912666114" &&
+    message.author.id != "171330866189041665"
+  ) {
     message.reply("Please only use gambling commands in <#735399594917363722>");
     return;
   }
@@ -90,9 +97,22 @@ let continueUser = async (message, args, type) => {
   if (!user) {
     user = await createUser(message);
     console.log(
-      `[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${message.author.username} to the coin table`
+      `[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${
+        message.author.username
+      } to the coin table`
     );
     return;
+  }
+
+  for (let mentionedUser of message.mentions.users) {
+    let dbUser = await Users.findOne({ where: { userId: mentionedUser[0] } });
+
+    if (!dbUser) {
+      message.reply(
+        `${mentionedUser[1].username} is not yet registered with tilda, they cannot use any coin commands!`
+      );
+      return;
+    }
   }
 
   switch (type) {
@@ -165,7 +185,8 @@ let flip = (message, args, user) => {
 
   let scoreWon = bet;
 
-  let totalCoins;  let totalCoinsVariation;
+  let totalCoins;
+  let totalCoinsVariation;
 
   let coinVariation;
 
@@ -478,7 +499,113 @@ let randomCoinEvent = (client) => {
 };
 
 let challenge = async (message, args, user) => {
-  message.reply("Big Sad");
+  let entryPrice = args.split(" ")[0];
+  let unconfirmed = 0;
+  let users = [user];
+
+  message.mentions.users.forEach(async (mentionedUser) => {
+    if (mentionedUser.id != message.author.id && !message.author.bot) {
+      let dbUser = await Users.findOne({
+        where: { userId: mentionedUser.id },
+      });
+
+      if (dbUser.score < entryPrice) {
+        message.channel.send(
+          `${mentionedUser.username} has less than ${entryPrice} coins, they cannot accept this challenge!` +
+            `\nMaybe try creating a new challenge with a lower entry price?`
+        );
+        return;
+      }
+
+      unconfirmed++;
+      message.channel.send(
+        `${mentionedUser.username}, respond \`yes\` to accept ${message.author.username}'s challenge for \`${entryPrice}\` coins!`
+      );
+      const filter = (m) => m.author.id == mentionedUser.id;
+      message.channel
+        .awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] })
+        .then(async (messages) => {
+          let response = messages.first();
+          if (response.content.toLowerCase() != "yes") {
+            message.channel.send(
+              `${mentionedUser.username} has rejected ${message.author.username}'s challenge!`
+            );
+            return;
+          }
+
+          unconfirmed--;
+
+          users.push(dbUser);
+
+          if (unconfirmed == 0) {
+            challengeCountdown(message, users, entryPrice);
+          }
+        })
+        .catch(() => {
+          message.channel.send(
+            `${mentionedUser.username} did not accept the challenge in time!`
+          );
+        });
+    }
+  });
+};
+
+let challengeCountdown = (message, users, entryPrice) => {
+  let pool = 0;
+
+  for(let user of users) {
+    Users.update(
+      { score: parseInt(user.score) - parseInt(entryPrice) },
+      { where: { userId: user.userId } }
+    );
+    pool += parseInt(entryPrice);
+  }
+
+  message.channel.send(`Everyone has accepted, challenge is starting now!`);
+  message.channel.send(
+    `I will ask a basic math question and the first person to get it right wins all the coins!`
+  );
+
+  let num1 = Math.floor(Math.random() * 100) + 1;
+  let num2 = Math.floor(Math.random() * 100) + 1;
+  let ans = num1 + num2;
+
+  let i = 3;
+  let interval = setInterval(() => {
+    if (i != 0) {
+      message.channel.send(`${i}...`);
+      i--;
+    } else {
+      message.channel.send(`\`${num1}\` + \`${num2}\` is equal to what?`);
+      catchResponse(message, pool, users, ans);
+      clearInterval(interval);
+    }
+  }, 1000);
+};
+
+let catchResponse = (message, prizePool, users, ans) => {
+  let ids = users.map(user => user.userId)
+  const filter = (m) => m.content == ans && ids.includes(m.author.id);
+
+  message.channel
+    .awaitMessages(filter, { max: 1, time: 60000, errors: ["time"] })
+    .then((collected) => {
+      let res = collected.first();
+      res.react("🌟");
+      message.channel.send(
+        `${res.author.username} got the correct answer with ${ans}, they win ${prizePool} coins!`
+      );
+
+      let winner = users.filter(user => user.userId == res.author.id)[0]
+
+      Users.update(
+        { score: parseInt(winner.score) + parseInt(prizePool) },
+        { where: { userId: res.author.id } }
+      );
+    })
+    .catch(() => {
+      message.channel.send("Nobody got the problem correct in time :(");
+    });
 };
 
 let createUser = async (message) => {
@@ -516,7 +643,11 @@ let getUser = async (userId) => {
 
   if (!user) {
     user = await createUser(message);
-    console.log(`[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${username} to the database`);
+    console.log(
+      `[${new Date().toLocaleTimeString("en-US")}] Added <${
+        user.userId
+      }> ${username} to the database`
+    );
   }
 
   return user;
