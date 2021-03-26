@@ -389,7 +389,7 @@ let print = async (message, args) => {
   }
 
   Users.update(
-    { score: parseInt(receipt.score) + parseInt(giveAmount) },
+    { score: parseInt(giveAmount) },
     { where: { userId: receipt.userId } }
   ).catch(console.error);
 
