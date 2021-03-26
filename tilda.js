@@ -79,7 +79,8 @@ client.on("message", (message) => {
     "~c": () => COMMANDS["~challenge"](),
     "~role": () => roles.role(message, args),
     "~drop": () => coin.dropCoins(message),
-    "~kill": () => basic.kill(client, message)
+    "~kill": () => basic.kill(client, message),
+    "~update": () => basic.update(client, message)
   }
 
   if (COMMANDS[command]) {
