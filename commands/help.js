@@ -123,6 +123,11 @@ let editEmbed = (helpEmbed, message, num, color) => {
           "~give [amount of coins] <@person>",
           `Give \`x\` amount of coins to mentioned person`,
           false
+        )
+        .addField(
+          "~challenge [entry price] <@people>",
+          `Challenge mentioned users to a quick challenge!`,
+          false
         );
       break;
     case "four":
