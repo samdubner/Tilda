@@ -503,6 +503,25 @@ let challenge = async (message, args, user) => {
   let unconfirmed = 0;
   let users = [user];
 
+  if (entryPrice <= 0) {
+    message.reply(
+      "You cannot set an entry of less than or equal to zero"
+    );
+    return;
+  }
+
+  if (entryPrice > user.score) {
+    message.reply("That entry price is too large, please try again with a smaller amonut of coins");
+    return;
+  }
+
+  if (args == null || args == undefined || isNaN(args) || args == "") {
+    message.reply(
+      "You have to bet a valid amount, please try again with a valid number"
+    );
+    return;
+  }
+
   message.mentions.users.forEach(async (mentionedUser) => {
     if (mentionedUser.id != message.author.id && !message.author.bot) {
       let dbUser = await Users.findOne({
