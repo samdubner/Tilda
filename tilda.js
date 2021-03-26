@@ -76,6 +76,7 @@ client.on("message", (message) => {
     "~beg": () => coin.continueUser(message, args, "beg"),
     "~claim": () => coin.continueUser(message, args, "claim"),
     "~challenge": () => coin.continueUser(message, args, "challenge"),
+    "~c": () => COMMANDS["~challenge"](),
     "~role": () => roles.role(message, args),
     "~drop": () => coin.dropCoins(message),
     "~kill": () => basic.kill(client, message)
