@@ -515,9 +515,9 @@ let challenge = async (message, args, user) => {
     return;
   }
 
-  if (args == null || args == undefined || isNaN(args) || args == "") {
+  if (entryPrice == null || entryPrice == undefined || isNaN(entryPrice) || entryPrice == "") {
     message.reply(
-      "You have to bet a valid amount, please try again with a valid number"
+      "You must set an entry price with a valid amount, please try again with a valid number"
     );
     return;
   }
