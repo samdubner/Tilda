@@ -398,7 +398,7 @@ let print = async (message, args) => {
     .setTitle("Coins Printed")
     .addField(
       `${message.mentions.users.first().username}'s Balance (+)`,
-      `${parseInt(receipt.score) + parseInt(giveAmount)}`,
+      `${parseInt(giveAmount)}`,
       false
     );
 
