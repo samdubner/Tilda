@@ -11,7 +11,8 @@ const roles = require("./commands/roles.js");
 
 client.on("ready", () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
-
+ 
+  client.user.setActivity("with ~help");
   client.guilds.cache
     .get("735395621703385099")
     .roles.fetch("735395776967999515")
