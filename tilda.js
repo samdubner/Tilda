@@ -12,14 +12,16 @@ const roles = require("./commands/roles.js");
 client.on("ready", () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  client.guilds.cache.get("735395621703385099").roles.fetch("735395776967999515")
-    .then(role => {
+  client.guilds.cache
+    .get("735395621703385099")
+    .roles.fetch("735395776967999515")
+    .then((role) => {
       setInterval(() => {
-        role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)      
+        role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
         client.user.setActivity("with ~help");
-      }, 43200000);
+      }, 1000 * 60 * 60 * 12);
     })
-    .catch(console.error)
+    .catch(console.error);
 
   coin.sync();
   roles.sync();
@@ -27,13 +29,17 @@ client.on("ready", () => {
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
       coin.randomCoinEvent(client);
-  }, 3600000);
+  }, 1000 * 60 * 60);
 });
 
 client.on("guildMemberAdd", (member) => {
-  member.roles.add("735395776967999515")
-  console.log(`[${new Date().toLocaleTimeString("en-US")}] ${member.displayName} has joined the server`)
-})
+  member.roles.add("735395776967999515");
+  console.log(
+    `[${new Date().toLocaleTimeString("en-US")}] ${
+      member.displayName
+    } has joined the server`
+  );
+});
 
 client.on("message", (message) => {
   if (
@@ -80,13 +86,13 @@ client.on("message", (message) => {
     "~role": () => roles.role(message, args),
     "~drop": () => coin.dropCoins(message),
     "~kill": () => basic.kill(client, message),
-    "~update": () => basic.update(client, message)
-  }
+    "~update": () => basic.update(client, message),
+  };
 
   if (COMMANDS[command]) {
-    COMMANDS[command]()
+    COMMANDS[command]();
   } else {
-    message.reply(`\`${command}\` is not a valid command`)
+    message.reply(`\`${command}\` is not a valid command`);
   }
 });
 

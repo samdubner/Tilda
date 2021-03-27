@@ -110,7 +110,7 @@ const Basic = {
             console.log(
               `${message.member.displayName} has destroyed the client, updating local repository...`
             );
-            let stdout = execSync("git pull")
+            execSync("git pull --ff-only")
             console.log("Exiting node process...")
             process.exit(0);
           }
