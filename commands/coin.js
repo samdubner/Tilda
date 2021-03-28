@@ -20,9 +20,9 @@ const Users = sequelize.define("userList", {
   begDate: Sequelize.INTEGER,
 });
 
-let sync = () => Users.sync();
+const sync = () => Users.sync();
 
-let dropCoins = (message) => {
+const dropCoins = (message) => {
   if (message.author.id != "340002869912666114") return;
   Users.drop().catch(() => {
     Users = sequelize.define("userList", {
@@ -38,7 +38,7 @@ let dropCoins = (message) => {
   });
 };
 
-let leaderboard = async (message) => {
+const leaderboard = async (message) => {
   if (
     message.channel.id != "735399594917363722" &&
     message.author.id != "340002869912666114"
@@ -82,7 +82,7 @@ let leaderboard = async (message) => {
   message.channel.send(embed).catch(console.error);
 };
 
-let continueUser = async (message, args, type) => {
+const continueUser = async (message, args, type) => {
   if (
     message.channel.id != "735399594917363722" &&
     message.author.id != "340002869912666114" &&
@@ -145,7 +145,7 @@ let continueUser = async (message, args, type) => {
   }
 };
 
-let flip = (message, args, user) => {
+const flip = (message, args, user) => {
   let flipResult = Math.floor(Math.random() * 2);
   let bet = Math.ceil(args.split(" ")[0]);
 
@@ -220,7 +220,7 @@ let flip = (message, args, user) => {
   );
 };
 
-let daily = (message, user) => {
+const daily = (message, user) => {
   let checkDate = user.dailyDate;
   let dailyTimer = new Date().getTime() - 86400000;
 
@@ -256,7 +256,7 @@ let daily = (message, user) => {
   message.reply(embed).catch(console.error);
 };
 
-let beg = (message, user) => {
+const beg = (message, user) => {
   let checkDate = user.begDate;
   let begTimer = new Date().getTime() - 10 * 60 * 1000;
 
@@ -290,7 +290,7 @@ let beg = (message, user) => {
   message.reply(embed);
 };
 
-let give = async (message, args, sender) => {
+const give = async (message, args, sender) => {
   let receipt = await Users.findOne({
     where: { userId: message.mentions.users.first().id },
   }).catch(console.error);
@@ -353,7 +353,7 @@ let give = async (message, args, sender) => {
   message.channel.send(embed);
 };
 
-let print = async (message, args) => {
+const print = async (message, args) => {
   if (message.author.id != "340002869912666114") {
     let embed = new MessageEmbed()
       .setColor(`#ff0000`)
@@ -405,7 +405,7 @@ let print = async (message, args) => {
   message.channel.send(embed);
 };
 
-let balance = async (message, user) => {
+const balance = async (message, user) => {
   let coinVariation;
   if (message.mentions.users.first() == null) {
     coinVariation = user.score == 1 ? "coin" : "coins";
@@ -443,7 +443,7 @@ let balance = async (message, user) => {
   });
 };
 
-let claim = (message, user) => {
+const claim = (message, user) => {
   if (!coinEvent.isUp) {
     message.channel.send("There is currently no ongoing coin event to claim!");
     return;
@@ -476,7 +476,7 @@ let coinEvent = {
   messageId: 0,
 };
 
-let randomCoinEvent = (client) => {
+const randomCoinEvent = (client) => {
   let coinAmount = Math.floor(Math.random() * 50) + 26;
 
   let embed = new MessageEmbed()
@@ -498,24 +498,29 @@ let randomCoinEvent = (client) => {
     });
 };
 
-let challenge = async (message, args, user) => {
+const challenge = async (message, args, user) => {
   let entryPrice = args.split(" ")[0];
   let unconfirmed = 0;
   let users = [user];
 
   if (entryPrice <= 0) {
-    message.reply(
-      "You cannot set an entry of less than or equal to zero"
-    );
+    message.reply("You cannot set an entry of less than or equal to zero");
     return;
   }
 
   if (entryPrice > user.score) {
-    message.reply("That entry price is too large, please try again with a smaller amonut of coins");
+    message.reply(
+      "That entry price is too large, please try again with a smaller amonut of coins"
+    );
     return;
   }
 
-  if (entryPrice == null || entryPrice == undefined || isNaN(entryPrice) || entryPrice == "") {
+  if (
+    entryPrice == null ||
+    entryPrice == undefined ||
+    isNaN(entryPrice) ||
+    entryPrice == ""
+  ) {
     message.reply(
       "You must set an entry price with a valid amount, please try again with a valid number"
     );
@@ -569,10 +574,10 @@ let challenge = async (message, args, user) => {
   });
 };
 
-let challengeCountdown = (message, users, entryPrice) => {
+const challengeCountdown = (message, users, entryPrice) => {
   let pool = 0;
 
-  for(let user of users) {
+  for (let user of users) {
     Users.update(
       { score: parseInt(user.score) - parseInt(entryPrice) },
       { where: { userId: user.userId } }
@@ -602,8 +607,8 @@ let challengeCountdown = (message, users, entryPrice) => {
   }, 1000);
 };
 
-let catchResponse = (message, prizePool, users, ans) => {
-  let ids = users.map(user => user.userId)
+const catchResponse = (message, prizePool, users, ans) => {
+  let ids = users.map((user) => user.userId);
   const filter = (m) => m.content == ans && ids.includes(m.author.id);
 
   message.channel
@@ -615,7 +620,7 @@ let catchResponse = (message, prizePool, users, ans) => {
         `${res.author.username} got the correct answer with ${ans}, they win ${prizePool} coins!`
       );
 
-      let winner = users.filter(user => user.userId == res.author.id)[0]
+      let winner = users.filter((user) => user.userId == res.author.id)[0];
 
       Users.update(
         { score: parseInt(winner.score) + parseInt(prizePool) },
@@ -627,7 +632,7 @@ let catchResponse = (message, prizePool, users, ans) => {
     });
 };
 
-let createUser = async (message) => {
+const createUser = async (message) => {
   let user = await Users.create({
     userId: message.author.id,
     score: 100,
@@ -654,7 +659,7 @@ let createUser = async (message) => {
   return user;
 };
 
-let getUser = async (userId) => {
+const getUser = async (userId) => {
   let user = await Users.findOne({ where: { userId } });
   let username = client.guilds.cache
     .get("735395621703385099")

@@ -11,7 +11,7 @@ const roles = require("./commands/roles.js");
 
 client.on("ready", () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
- 
+
   client.user.setActivity("with ~help");
   client.guilds.cache
     .get("735395621703385099")
@@ -70,7 +70,6 @@ client.on("message", (message) => {
     "~suggest": () => basic.suggest(message),
     "~8ball": () => basic.eightBall(message, args),
     "~roll": () => basic.roll(message, args),
-    "~wiki": () => info.wikiSearch(message, args, client),
     "~leaderboard": () => coin.leaderboard(message),
     "~l": () => COMMANDS["~leaderboard"](),
     "~flip": () => coin.continueUser(message, args, "flip"),

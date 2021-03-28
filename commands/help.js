@@ -1,6 +1,6 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-let help = (message, helpEmbed) => {
+const help = (message, helpEmbed) => {
   let color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   let embed = new MessageEmbed()
     .setColor(color)
@@ -91,19 +91,10 @@ let editEmbed = (helpEmbed, message, num, color) => {
           `Sends some basic info about the mentioned peopple or yourself if nobody is mentioned`,
           false
         )
-        .addField(
-          "~si",
-          `Sends basic server information`,
-          false
-        )
+        .addField("~si", `Sends basic server information`, false)
         .addField(
           "~pfp <@people>",
           `Sends the profile pictures of the mentioned people or yourself if nobody is mentioned`,
-          false
-        )
-        .addField(
-          "~wiki [wikipedia article]",
-          `Sends information on a given wikipedia article`,
           false
         );
       break;

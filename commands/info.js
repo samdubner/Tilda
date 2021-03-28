@@ -1,8 +1,6 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-const wiki = require("wikijs").default;
-
-let ui = (message) => {
+const ui = (message) => {
   let person = message.mentions.members.first();
 
   if (person == undefined) {
@@ -70,7 +68,7 @@ let ui = (message) => {
   }
 };
 
-let si = (message) => {
+const si = (message) => {
   let embed = new MessageEmbed()
     .setAuthor("Server Info", message.author.avatarURL())
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -94,7 +92,7 @@ let si = (message) => {
   message.channel.send(embed).catch(console.error);
 };
 
-let pfp = (message) => {
+const pfp = (message) => {
   if (message.mentions.users.first() == undefined) {
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -114,47 +112,4 @@ let pfp = (message) => {
   }
 };
 
-let wikiSearch = async (message, args) => {
-  let page = await wiki()
-    .page(args)
-    .catch((err) => {
-      let embed = new MessageEmbed()
-        .setAuthor(
-          `Wikipedia`,
-          "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png"
-        )
-        .setTitle(`Could not find a Wikipedia article on ${args}`);
-
-      message.channel.send(embed).catch(console.error);
-      return;
-    });
-
-  let sections = await page.sections();
-  let summary = await page.summary();
-  let url = await page.url();
-  let mainImage = await page.mainImage().catch((err) => console.log(err));
-
-  let embed = new MessageEmbed()
-    .setAuthor(
-      `${page.raw.title}`,
-      "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png",
-      url
-    )
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setDescription(summary.split(".")[0])
-    .setThumbnail(mainImage);
-
-  for (let i = 0; i < sections.length; i++) {
-    if (sections[i].content == "") continue;
-    if (["Further reading", "External links"].includes(sections[i].title))
-      continue;
-    sections[i].content = sections[i].content.split(".")[0];
-    if (sections[i].content.length > 1024) continue;
-
-    embed.addField(sections[i].title, sections[i].content);
-  }
-
-  message.channel.send(embed).catch(console.error);
-};
-
-module.exports = { ui, si, pfp, wikiSearch };
+module.exports = { ui, si, pfp };
