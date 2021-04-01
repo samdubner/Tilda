@@ -45,8 +45,7 @@ client.on("guildMemberAdd", (member) => {
 client.on("message", (message) => {
   if (
     message.channel.id == "735404269426966580" &&
-    message.author.id != "340002869912666114" &&
-    message.author.id != "670849450599645218"
+    !["340002869912666114", "670849450599645218"].includes(message.author.id)
   ) {
     console.log(
       `[DELETED] ${message.author.username}#${message.author.discriminator} => ${message.content}`
