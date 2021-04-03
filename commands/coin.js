@@ -1,5 +1,16 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
+const fs = require("fs")
+const mongoose = require("mongoose");
+const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI
+
+mongoose
+  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Connected to Tilda's DB"))
+  .catch((err) => console.log(err))
+
+const User = require("../models/User")
+
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize("database", "user", "password", {
@@ -21,6 +32,22 @@ const Users = sequelize.define("userList", {
 });
 
 const sync = () => Users.sync();
+
+const sendDb = (message) => {
+  if(message.author.id != "340002869912666114") return;
+  message.author.send({
+    files: [{
+      attachment: 'database.sqlite',
+      name: "database.sqlite"
+    }]
+  }).catch(console.error)
+}
+
+const transfer = () => {
+  Users.findAll().then(result => {
+    result.forEach(user => console.log(user.userId))
+  })
+}
 
 const dropCoins = (message) => {
   if (message.author.id != "340002869912666114") return;
@@ -685,4 +712,6 @@ module.exports = {
   getUser,
   randomCoinEvent,
   coinEvent,
+  transfer,
+  sendDb
 };
