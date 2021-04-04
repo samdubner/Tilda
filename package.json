@@ -1,13 +1,13 @@
 {
   "name": "tilda",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node tilda.js"
   },
-  "author": "IsoVoyd",
-  "repository": "https://github.com/IsoVoyd/Tilda",
+  "author": "Samuel Dubner",
+  "repository": "https://github.com/samdubner/Tilda",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
