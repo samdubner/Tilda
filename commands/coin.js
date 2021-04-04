@@ -1,53 +1,46 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-const fs = require("fs")
+const fs = require("fs");
 const mongoose = require("mongoose");
-const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI
+const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to Tilda's DB"))
-  .catch((err) => console.log(err))
+  .catch((err) => console.log(err));
 
-const User = require("../models/User")
-
-const Sequelize = require("sequelize");
-
-const sequelize = new Sequelize("database", "user", "password", {
-  host: "localhost",
-  dialect: "sqlite",
-  logging: false,
-  storage: "database.sqlite",
-});
-
-const Users = sequelize.define("userList", {
-  userId: {
-    type: Sequelize.STRING,
-    unique: true,
-    allowNull: false,
-  },
-  score: Sequelize.INTEGER,
-  dailyDate: Sequelize.INTEGER,
-  begDate: Sequelize.INTEGER,
-});
-
-const sync = () => Users.sync();
+const User = require("../models/User");
 
 const sendDb = (message) => {
-  if(message.author.id != "340002869912666114") return;
-  message.author.send({
-    files: [{
-      attachment: 'database.sqlite',
-      name: "database.sqlite"
-    }]
-  }).catch(console.error)
-}
+  if (message.author.id != "340002869912666114") return;
+  message.author
+    .send({
+      files: [
+        {
+          attachment: "database.sqlite",
+          name: "database.sqlite",
+        },
+      ],
+    })
+    .catch(console.error);
+};
 
 const transfer = () => {
-  Users.findAll().then(result => {
-    result.forEach(user => console.log(user.userId))
-  })
-}
+  Users.findAll().then((result) => {
+    result.forEach((user) => {
+      const newUser = new User({
+        userId: user.userId,
+        score: user.score,
+        dailyDate: user.dailyDate,
+        begDate: user.begDate,
+      });
+      newUser
+        .save()
+        .then((user) => console.log(user))
+        .catch(console.error());
+    });
+  });
+};
 
 const dropCoins = (message) => {
   if (message.author.id != "340002869912666114") return;
@@ -74,10 +67,10 @@ const leaderboard = async (message) => {
     return;
   }
 
-  let userList = await Users.findAll({ order: [["score", "DESC"]] });
+  let userList = await User.find()
+    .sort([["score", -1]])
+    .limit(5);
   let members = await message.guild.members.fetch();
-
-  userList = userList.slice(0, 5);
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -113,26 +106,27 @@ const continueUser = async (message, args, type) => {
   if (
     message.channel.id != "735399594917363722" &&
     message.author.id != "340002869912666114" &&
-    message.author.id != "171330866189041665"
+    message.author.id != "171330866189041665" &&
+    message.author.id != "385991322693009421"
   ) {
     message.reply("Please only use gambling commands in <#735399594917363722>");
     return;
   }
 
-  let user = await Users.findOne({ where: { userId: message.author.id } });
+  let user = await User.findOne({ userId: message.author.id });
 
   if (!user) {
     user = await createUser(message);
     console.log(
       `[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${
         message.author.username
-      } to the coin table`
+      } to the coin collection`
     );
     return;
   }
 
   for (let mentionedUser of message.mentions.users) {
-    let dbUser = await Users.findOne({ where: { userId: mentionedUser[0] } });
+    let dbUser = await User.findOne({ userId: mentionedUser[0] });
 
     if (!dbUser) {
       message.reply(
@@ -241,10 +235,11 @@ const flip = (message, args, user) => {
     scoreWon = bet * -1;
   }
 
-  Users.update(
-    { score: parseInt(user.score) + parseInt(scoreWon) },
-    { where: { userId: message.author.id } }
-  );
+  User.updateOne(
+    { userId: message.author.id },
+    { score: parseInt(user.score) + parseInt(scoreWon) }
+  )
+    .catch(console.error());
 };
 
 const daily = (message, user) => {
@@ -269,10 +264,11 @@ const daily = (message, user) => {
     return;
   }
 
-  Users.update(
-    { score: parseInt(user.score) + 100, dailyDate: new Date().getTime() },
-    { where: { userId: message.author.id } }
-  );
+  User.updateOne(
+    { userId: message.author.id },
+    { score: parseInt(user.score) + 100, dailyDate: new Date().getTime() }
+  )
+    .catch(console.error());
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -303,10 +299,11 @@ const beg = (message, user) => {
     return;
   }
 
-  Users.update(
-    { score: parseInt(user.score) + 10, begDate: new Date().getTime() },
-    { where: { userId: message.author.id } }
-  );
+  User.updateOne(
+    { userId: message.author.id },
+    { score: parseInt(user.score) + 10, dailyDate: new Date().getTime() }
+  )
+    .catch(console.error());
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -353,15 +350,17 @@ const give = async (message, args, sender) => {
     return;
   }
 
-  Users.update(
-    { score: parseInt(sender.score) - parseInt(giveAmount) },
-    { where: { userId: sender.userId } }
-  ).catch(console.error);
+  User.updateOne(
+    { userId: sender.userId },
+    { score: parseInt(user.score) - parseInt(giveAmount) }
+  )
+    .catch(console.error());
 
-  Users.update(
-    { score: parseInt(receipt.score) + parseInt(giveAmount) },
-    { where: { userId: receipt.userId } }
-  ).catch(console.error);
+  User.updateOne(
+    { userId: receipt.userId },
+    { score: parseInt(user.score) + parseInt(giveAmount) }
+  )
+    .catch(console.error());
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -390,8 +389,8 @@ const print = async (message, args) => {
     return;
   }
 
-  let receipt = await Users.findOne({
-    where: { userId: message.mentions.users.first().id },
+  let receipt = await User.findOne({
+    userId: message.mentions.users.first().id,
   });
 
   if (!receipt) {
@@ -415,10 +414,8 @@ const print = async (message, args) => {
     return;
   }
 
-  Users.update(
-    { score: parseInt(giveAmount) },
-    { where: { userId: receipt.userId } }
-  ).catch(console.error);
+  User.updateOne({ userId: receipt.userId }, { score: parseInt(giveAmount) })
+    .catch(console.error());
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -448,9 +445,7 @@ const balance = async (message, user) => {
   }
 
   message.mentions.users.forEach(async (messageUser) => {
-    let mentionedUser = await Users.findOne({
-      where: { userId: messageUser.id },
-    });
+    let mentionedUser = await User.findOne({ userId: messageUser.id });
 
     if (mentionedUser == null) {
       message.reply(
@@ -476,10 +471,11 @@ const claim = (message, user) => {
     return;
   }
 
-  Users.update(
-    { score: parseInt(user.score) + coinEvent.coinAmount },
-    { where: { userId: message.author.id } }
-  );
+  User.updateOne(
+    { userId: message.author.id },
+    { score: parseInt(user.score) + coinEvent.coinAmount }
+  )
+    .catch(console.error());
 
   let embed = new MessageEmbed()
     .setColor(`#00ff00`)
@@ -556,8 +552,8 @@ const challenge = async (message, args, user) => {
 
   message.mentions.users.forEach(async (mentionedUser) => {
     if (mentionedUser.id != message.author.id && !message.author.bot) {
-      let dbUser = await Users.findOne({
-        where: { userId: mentionedUser.id },
+      let dbUser = await User.findOne({
+        userId: mentionedUser.id,
       });
 
       if (dbUser.score < entryPrice) {
@@ -605,10 +601,11 @@ const challengeCountdown = (message, users, entryPrice) => {
   let pool = 0;
 
   for (let user of users) {
-    Users.update(
-      { score: parseInt(user.score) - parseInt(entryPrice) },
-      { where: { userId: user.userId } }
-    );
+    User.updateOne(
+      { userId: user.userId },
+      { score: parseInt(user.score) - parseInt(entryPrice) }
+    )
+      .catch(console.error());
     pool += parseInt(entryPrice);
   }
 
@@ -649,10 +646,11 @@ const catchResponse = (message, prizePool, users, ans) => {
 
       let winner = users.filter((user) => user.userId == res.author.id)[0];
 
-      Users.update(
-        { score: parseInt(winner.score) + parseInt(prizePool) },
-        { where: { userId: res.author.id } }
-      );
+      User.updateOne(
+        { userId: res.author.id },
+        { score: parseInt(winner.score) + parseInt(prizePool) }
+      )
+        .catch(console.error());
     })
     .catch(() => {
       message.channel.send("Nobody got the problem correct in time :(");
@@ -660,12 +658,17 @@ const catchResponse = (message, prizePool, users, ans) => {
 };
 
 const createUser = async (message) => {
-  let user = await Users.create({
+  const newUser = new User({
     userId: message.author.id,
     score: 100,
     dailyDate: new Date().getTime(),
     begDate: new Date().getTime(),
   });
+
+  newUser
+    .save()
+    .then((user) => console.log(user))
+    .catch(console.error());
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -683,11 +686,11 @@ const createUser = async (message) => {
 
   message.channel.send(embed);
 
-  return user;
+  return newUser;
 };
 
 const getUser = async (userId) => {
-  let user = await Users.findOne({ where: { userId } });
+  let user = await Users.findOne({ userId });
   let username = client.guilds.cache
     .get("735395621703385099")
     .members.cache.get(userId).user.username;
@@ -705,7 +708,6 @@ const getUser = async (userId) => {
 };
 
 module.exports = {
-  sync,
   dropCoins,
   leaderboard,
   continueUser,
@@ -713,5 +715,5 @@ module.exports = {
   randomCoinEvent,
   coinEvent,
   transfer,
-  sendDb
+  sendDb,
 };

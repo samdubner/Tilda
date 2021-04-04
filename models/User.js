@@ -10,10 +10,10 @@ const UserSchema = new Schema({
         type: Number
     },
     dailyDate: {
-        type: Date
+        type: Number
     },
     begDate: {
-        type: Date
+        type: Number
     }
 })
 

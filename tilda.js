@@ -24,7 +24,6 @@ client.on("ready", () => {
     })
     .catch(console.error);
 
-  coin.sync();
   roles.sync();
 
   setInterval(() => {
