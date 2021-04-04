@@ -263,7 +263,7 @@ const beg = (message, user) => {
 
   User.updateOne(
     { userId: message.author.id },
-    { score: parseInt(user.score) + 10, dailyDate: new Date().getTime() }
+    { score: parseInt(user.score) + 10, begDate: new Date().getTime() }
   ).catch(console.error());
 
   let embed = new MessageEmbed()

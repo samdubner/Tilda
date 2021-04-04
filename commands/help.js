@@ -126,7 +126,7 @@ let editEmbed = (helpEmbed, message, num, color) => {
         .setDescription("Role Commands")
         .addField(
           "~role",
-          `creates your custom role and displays info [will run automatically if role doesn't exist]`,
+          `creates your custom role and displays info`,
           false
         )
         .addField("~role name [custom name]", `change your role's name`, false)
