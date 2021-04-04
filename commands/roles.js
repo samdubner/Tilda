@@ -2,10 +2,6 @@ const { MessageEmbed } = require("discord.js");
 
 const coin = require("./coin.js");
 
-const fs = require("fs");
-const mongoose = require("mongoose");
-const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
-
 const User = require("../models/User");
 const Role = require("../models/Role");
 
