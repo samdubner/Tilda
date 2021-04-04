@@ -24,8 +24,6 @@ client.on("ready", () => {
     })
     .catch(console.error);
 
-  roles.sync();
-
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
       coin.randomCoinEvent(client);
@@ -84,9 +82,7 @@ client.on("message", (message) => {
     "~role": () => roles.role(message, args),
     "~drop": () => coin.dropCoins(message),
     "~kill": () => basic.kill(client, message),
-    "~update": () => basic.update(client, message),
-    "~transfer": ()  => coin.transfer(),
-    "~send": () => coin.sendDb(message)
+    "~update": () => basic.update(client, message)
   };
 
   if (COMMANDS[command]) {

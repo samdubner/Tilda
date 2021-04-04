@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Role = require('./Role')
 
 const UserSchema = new Schema({
     userId: {
@@ -14,6 +15,9 @@ const UserSchema = new Schema({
     },
     begDate: {
         type: Number
+    },
+    role: {
+        type: Role.schema
     }
 })
 

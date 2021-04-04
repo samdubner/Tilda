@@ -11,37 +11,6 @@ mongoose
 
 const User = require("../models/User");
 
-const sendDb = (message) => {
-  if (message.author.id != "340002869912666114") return;
-  message.author
-    .send({
-      files: [
-        {
-          attachment: "database.sqlite",
-          name: "database.sqlite",
-        },
-      ],
-    })
-    .catch(console.error);
-};
-
-const transfer = () => {
-  Users.findAll().then((result) => {
-    result.forEach((user) => {
-      const newUser = new User({
-        userId: user.userId,
-        score: user.score,
-        dailyDate: user.dailyDate,
-        begDate: user.begDate,
-      });
-      newUser
-        .save()
-        .then((user) => console.log(user))
-        .catch(console.error());
-    });
-  });
-};
-
 const dropCoins = (message) => {
   if (message.author.id != "340002869912666114") return;
   Users.drop().catch(() => {
@@ -117,11 +86,6 @@ const continueUser = async (message, args, type) => {
 
   if (!user) {
     user = await createUser(message);
-    console.log(
-      `[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${
-        message.author.username
-      } to the coin collection`
-    );
     return;
   }
 
@@ -659,10 +623,13 @@ const createUser = async (message) => {
     begDate: new Date().getTime(),
   });
 
-  newUser
-    .save()
-    .then((user) => console.log(user))
-    .catch(console.error());
+  newUser.save().catch(console.error());
+
+  console.log(
+    `[${new Date().toLocaleTimeString("en-US")}] Added <${newUser.userId}> ${
+      message.author.username
+    } to the coin collection`
+  );
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -708,6 +675,5 @@ module.exports = {
   getUser,
   randomCoinEvent,
   coinEvent,
-  transfer,
-  sendDb,
+  createUser,
 };

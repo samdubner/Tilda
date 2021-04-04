@@ -1,44 +1,28 @@
 const { MessageEmbed } = require("discord.js");
-const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("database", "user", "password", {
-  host: "localhost",
-  dialect: "sqlite",
-  logging: false,
-  storage: "database.sqlite",
-});
+const coin = require("./coin.js");
 
-const UserRoles = sequelize.define("userRoles", {
-  userId: {
-    type: Sequelize.STRING,
-    unique: true,
-    allowNull: false,
-  },
-  roleName: {
-    type: Sequelize.STRING,
-    unique: false,
-    allowNull: false,
-  },
-});
+const fs = require("fs");
+const mongoose = require("mongoose");
+const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
 
-const sync = () => UserRoles.sync();
+const User = require("../models/User");
+const Role = require("../models/Role");
 
 const role = async (message, args) => {
-  let user = await UserRoles.findOne({ where: { userId: message.author.id } });
+  let user = await User.findOne({ userId: message.author.id });
 
   if (!user) {
-    user = await createRole(message);
-    console.log(
-      `[${new Date().toLocaleTimeString("en-US")}] Added <${user.userId}> ${
-        message.author.username
-      } to the role table`
-    );
+    user = await coin.createUser(message);
+    user = await createRole(message, user);
+  } else if (!user.role) {
+    user = await createRole(message, user);
   }
 
   let command = args.split(" ")[0].toLowerCase();
   let data = args.split(" ").splice(1, args.length).join(" ");
 
-  customRole = message.guild.roles.cache.get(user.roleName);
+  customRole = await message.guild.roles.fetch(user.role.roleId);
 
   switch (command) {
     case "name":
@@ -66,39 +50,33 @@ const role = async (message, args) => {
   }
 };
 
-const createRole = async (message) => {
-  let role = await message.guild.roles.create({
-    data: {
-      name: message.author.username,
-      color: "00d5ff",
-      position: 6,
-      permissions: 0,
-      mentionable: false,
-    },
-  });
+const createRole = async (message, user) => {
+  let role = await message.guild.roles
+    .create({
+      data: {
+        name: message.author.username,
+        color: "00d5ff",
+        position: 6,
+        permissions: 0,
+        mentionable: false,
+      },
+    })
+    .catch(console.error);
 
   message.member.roles.add(role);
 
-  let user = await UserRoles.create({
-    userId: message.author.id,
-    roleName: role.id,
+  let dbRole = new Role({
+    roleId: role.id,
   });
 
-  let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`${message.author.username} has created their own custom role!`)
-    .setThumbnail(message.author.displayAvatarURL())
-    .addField(
-      "Role Details",
-      `Your role currently has the default color and username`,
-      false
-    )
-    .setFooter(
-      "Don't forget to check out ~help",
-      message.client.user.displayAvatarURL()
-    );
+  user.role = dbRole;
+  user.save();
 
-  message.channel.send(embed);
+  console.log(
+    `[${new Date().toLocaleTimeString("en-US")}] Gave <${user.userId}> ${
+      message.author.username
+    } a custom role`
+  );
 
   return user;
 };
@@ -123,5 +101,4 @@ const updateRole = (type, data, role, message) => {
 
 module.exports = {
   role,
-  sync,
 };
