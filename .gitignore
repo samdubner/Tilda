@@ -3,3 +3,6 @@ node_modules
 # token and mongoURI for dev/prod respectively
 token.json
 token.old.json
+
+#python restart script
+tildarestart.py
