@@ -1,5 +1,5 @@
 node_modules
-test.js
-database.sqlite
+
+# token and mongoURI for dev/prod respectively
 token.json
-voicelines/*
+token.old.json
