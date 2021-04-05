@@ -11,22 +11,6 @@ mongoose
 
 const User = require("../models/User");
 
-const dropCoins = (message) => {
-  if (message.author.id != "340002869912666114") return;
-  Users.drop().catch(() => {
-    Users = sequelize.define("userList", {
-      userId: {
-        type: Sequelize.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      score: Sequelize.INTEGER,
-      dailyDate: Sequelize.INTEGER,
-      begDate: Sequelize.INTEGER,
-    });
-  });
-};
-
 const leaderboard = async (message) => {
   if (
     message.channel.id != "735399594917363722" &&
@@ -669,7 +653,6 @@ const getUser = async (userId) => {
 };
 
 module.exports = {
-  dropCoins,
   leaderboard,
   continueUser,
   getUser,

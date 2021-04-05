@@ -3,26 +3,33 @@ const client = new Discord.Client();
 
 const fs = require("fs");
 
-const basic = require("./commands/basic.js");
-const info = require("./commands/info.js");
-const coin = require("./commands/coin.js");
-const help = require("./commands/help.js");
-const roles = require("./commands/roles.js");
+const basic = require("./commands/basic");
+const info = require("./commands/info");
+const coin = require("./commands/coin");
+const help = require("./commands/help");
+const roles = require("./commands/roles");
+const shop = require("./commands/shop");
 
 client.on("ready", () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  client.user.setActivity("with ~help");
-  client.guilds.cache
-    .get("735395621703385099")
-    .roles.fetch("735395776967999515")
-    .then((role) => {
-      setInterval(() => {
-        role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-        client.user.setActivity("with ~help");
-      }, 1000 * 60 * 60 * 12);
+  client.user.setActivity("with ~help").catch(console.error);
+
+  client.guilds
+    .fetch("735395621703385099")
+    .then((guild) => {
+      guild.roles.fetch("735395776967999515").then((role) => {
+        setInterval(() => {
+          role
+            .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+            .catch(console.error);
+          client.user.setActivity("with ~help").catch(console.error);
+        }, 1000 * 60 * 60 * 12);
+      });
     })
-    .catch(console.error);
+    .catch(() =>
+      console.log("Main server not found... unable to change role colors")
+    );
 
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
@@ -44,10 +51,14 @@ client.on("message", (message) => {
     message.channel.id == "735404269426966580" &&
     !["340002869912666114", "670849450599645218"].includes(message.author.id)
   ) {
-    console.log(
-      `[DELETED] ${message.author.username}#${message.author.discriminator} => ${message.content}`
-    );
-    message.delete();
+    message
+      .delete()
+      .then((message) => {
+        console.log(
+          `[DELETED] ${message.author.username}#${message.author.discriminator} => ${message.content}`
+        );
+      })
+      .catch(console.error);
     return;
   }
 
@@ -78,11 +89,10 @@ client.on("message", (message) => {
     "~beg": () => coin.continueUser(message, args, "beg"),
     "~claim": () => coin.continueUser(message, args, "claim"),
     "~challenge": () => coin.continueUser(message, args, "challenge"),
-    "~c": () => COMMANDS["~challenge"](),
+    "~shop": () => shop.shopManager(message, args),
     "~role": () => roles.role(message, args),
-    "~drop": () => coin.dropCoins(message),
     "~kill": () => basic.kill(client, message),
-    "~update": () => basic.update(client, message)
+    "~update": () => basic.update(client, message),
   };
 
   if (COMMANDS[command]) {
