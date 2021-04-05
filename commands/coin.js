@@ -6,7 +6,7 @@ const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Connected to Tilda's DB"))
+  .then(() => console.log(`[${new Date().toLocaleTimeString("en-US")}] Connected to Tilda's DB`))
   .catch((err) => console.log(err));
 
 const User = require("../models/User");

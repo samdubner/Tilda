@@ -9,6 +9,7 @@ const coin = require("./commands/coin");
 const help = require("./commands/help");
 const roles = require("./commands/roles");
 const shop = require("./commands/shop");
+const fish = require("./commands/fish");
 
 client.on("ready", () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
@@ -90,6 +91,8 @@ client.on("message", (message) => {
     "~claim": () => coin.continueUser(message, args, "claim"),
     "~challenge": () => coin.continueUser(message, args, "challenge"),
     "~shop": () => shop.shopManager(message, args),
+    "~c": () => COMMANDS["~catch"](),
+    "~catch": () => fish.catchFish(message, args),  
     "~role": () => roles.role(message, args),
     "~kill": () => basic.kill(client, message),
     "~update": () => basic.update(client, message),

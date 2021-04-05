@@ -18,7 +18,7 @@ const Item = require("../models/Item");
 
 const shopManager = async (message, args) => {
   if (message.author.id != "340002869912666114") return;
-  primaryArg = args.split(" ")[0];
+  let primaryArg = args.split(" ")[0];
   switch (primaryArg) {
     case "":
     case "list":
@@ -115,6 +115,7 @@ const handlePurchase = (message, user, collected) => {
     }
 
     user.items.push(selectedItem._id);
+    // user.score -= selectedItem.price;
     user
       .save()
       .then(() => successfulPurchase(reaction.message, user, selectedItem))
