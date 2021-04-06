@@ -268,7 +268,7 @@ const generateFish = (message, user) => {
     )
     .addField("Size", `${fish.size}cm`, true)
     .addField("Price", `${fish.price} coins`, true)
-    .setFooter(`Fishing Cost: 25 coins`);
+    .setFooter(`Fishing Cost: 20 coins`);
 
   message.reply(FishEmbed);
 
@@ -345,7 +345,7 @@ const insufficientCoins = (message) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription("You don't have enough coins to go fishing...")
-    .setTitle("You need at least 25 coins to go fishing in the Plain Pond!");
+    .setTitle("You need at least 20 coins to go fishing in the Plain Pond!");
 
   message.reply(embed);
 };
