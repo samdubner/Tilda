@@ -17,7 +17,6 @@ const Item = require("../models/Item");
 // }
 
 const shopManager = async (message, args) => {
-  if (message.author.id != "340002869912666114") return;
   let primaryArg = args.split(" ")[0];
   switch (primaryArg) {
     case "":
@@ -114,13 +113,27 @@ const handlePurchase = (message, user, collected) => {
       return;
     }
 
-    user.items.push(selectedItem._id);
-    // user.score -= selectedItem.price;
+    if (user.score >= selectedItem.price) {
+      user.items.push(selectedItem._id);
+      user.score -= selectedItem.price;
+    } else {
+      insufficientCoins(reaction.message);
+      return;
+    }
+
     user
       .save()
       .then(() => successfulPurchase(reaction.message, user, selectedItem))
       .catch(console.error);
   });
+};
+
+const insufficientCoins = (message) => {
+  const embed = new MessageEmbed()
+    .setColor("#ff0000")
+    .setTitle("You don't have enough coins to buy that item!")
+
+  message.edit(embed);
 };
 
 const successfulPurchase = async (message, user, selectedItem) => {

@@ -6,14 +6,14 @@ const Fish = require("../models/Fish");
 
 const PONDS = {
   Plain: [
-    "Trout",
-    "Sardine",
-    "Salmon",
-    "Tuna",
-    "Catfish",
-    "Bass",
-    "Goldfish",
-    "Guppy",
+    "bass",
+    "catfish",
+    "goldfish",
+    "guppy",
+    "salmon",
+    "sardine",
+    "trout",
+    "tuna",
   ],
   Underground: [],
   Underworld: [],
@@ -22,9 +22,122 @@ const PONDS = {
   Void: [],
 };
 
-const catchFish = async (message, args) => {
-  if (message.author.id != "340002869912666114") return;
+const fishManager = (message, args) => {
+  let primaryArg = args.split(" ")[0];
+  switch (primaryArg) {
+    case "":
+      catchFish(message, args);
+      break;
+    case "list":
+    case "inventory":
+    case "inv":
+      displayFish(message);
+      break;
+    default:
+      checkForFish(message, args);
+  }
+};
 
+const checkForFish = async (message, args) => {
+  let user = await User.findOne({ userId: message.author.id });
+  fishName = args.split(" ")[0];
+
+  if (!user) {
+    user = coin.createUser();
+    noFish(message);
+    return;
+  } else if (!user.fish) {
+    noFish(message);
+    return;
+  }
+
+  let fishList = user.fish.filter((fish) => fish.name == args.toLowerCase());
+
+  if (fishList.length == 0) {
+    invalidFish(message);
+    return;
+  }
+
+  displaySingleFish(message, fishList);
+};
+
+const displaySingleFish = (message, fishList) => {
+  const fishEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle(`${message.member.displayName}'s ${fName(fishList[0].name)}`)
+    .setThumbnail(message.author.displayAvatarURL())
+    .setTimestamp();
+
+  for (fish of fishList) {
+    fishEmbed.addField(
+      `${fName(fish.rarity)} ${fish.size}cm`,
+      `${fish.price} coins`,
+      true
+    );
+  }
+
+  message.reply(fishEmbed);
+};
+
+const displayFish = async (message) => {
+  let user = await User.findOne({ userId: message.author.id });
+
+  if (!user) {
+    user = coin.createUser();
+
+    noFish(message);
+    return;
+  } else if (!user.fish || user.fish.length == 0) {
+    noFish(message);
+    return;
+  }
+
+  let fishCount = {};
+
+  for (let fish of PONDS["Plain"]) {
+    fishCount[fish] = 0;
+  }
+
+  for (let fish of user.fish) {
+    fishCount[fish.name]++;
+  }
+
+  const fishEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle(`${message.member.displayName}'s Fish Inventory`)
+    .setDescription(`Plain Fish`)
+    .setThumbnail(message.author.displayAvatarURL())
+    .setTimestamp();
+
+  for (fish in fishCount) {
+    if (fishCount[fish] == 0) continue;
+    fishEmbed.addField(fName(fish), fishCount[fish], true);
+  }
+
+  message.reply(fishEmbed);
+};
+
+const noFish = (message) => {
+  const embed = new MessageEmbed()
+    .setColor("#ff0000")
+    .setTitle("You don't have any fish!")
+    .setDescription("Try catching some fish first...");
+
+  message.reply(embed);
+};
+
+const invalidFish = (message) => {
+  const embed = new MessageEmbed()
+    .setColor("#ff0000")
+    .setTitle("You don't have any fish with that name!")
+    .setDescription("Make sure you spelled the name correctly...");
+
+  message.reply(embed);
+};
+
+// CATCHING FISH #########################################################
+
+const catchFish = async (message, args) => {
   let user = await User.findOne({ userId: message.author.id });
 
   if (!user) {
@@ -41,9 +154,11 @@ const catchFish = async (message, args) => {
 
   if (!user.items.includes("606a5c0169756d515427c86e")) {
     noRod(message);
-    return; }
+    return;
+  }
 
   if (user.score >= 25) {
+    user.score -= 25;
     generateFish(message, user);
   } else {
     insufficientCoins(message);
@@ -70,15 +185,23 @@ const generateFish = (message, user) => {
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle("You caught a fish!")
     .setThumbnail(message.author.displayAvatarURL())
-    .setDescription(`${message.member.displayName} caught a ${fish.rarity} ${fish.name}`)
-    .addField('Size', `${fish.size}cm`, true)
-    .addField('Price', `${fish.price} coins`, true)
-    .setTimestamp();
+    .setDescription(
+      `${message.member.displayName} caught a ${fish.rarity} ${fName(
+        fish.name
+      )}`
+    )
+    .addField("Size", `${fish.size}cm`, true)
+    .addField("Price", `${fish.price} coins`, true)
+    .setFooter(`Fishing Cost: 25 coins`)
 
-  message.reply(FishEmbed)
+  message.reply(FishEmbed);
 
   user.fish.push(fish);
-  user.save();
+  user.save().catch(console.error);
+};
+
+const fName = (name) => {
+  return name.charAt(0).toUpperCase() + name.slice(1);
 };
 
 const generatePrice = (size, pondLevel) => {
@@ -146,11 +269,12 @@ const insufficientCoins = (message) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription("You don't have enough coins to go fishing...")
-    .setTitle("You need at least 10 coins to go fishing in the Plain Pond!");
+    .setTitle("You need at least 25 coins to go fishing in the Plain Pond!");
 
   message.reply(embed);
 };
 
 module.exports = {
+  fishManager,
   catchFish,
 };
