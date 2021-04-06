@@ -33,9 +33,85 @@ const fishManager = (message, args) => {
     case "inv":
       displayFish(message);
       break;
+    case "sell":
+    case "s":
+      sellFishCheck(message, args);
+      break;
     default:
       checkForFish(message, args);
   }
+};
+
+const sellFishCheck = async (message, args) => {
+  let user = await User.findOne({ userId: message.author.id });
+
+  if (!user) {
+    coin.createUser(message);
+    noFish(message);
+    return;
+  } else if (!user.fish.length) {
+    noFish(message);
+    return;
+  }
+
+  args = args.toLowerCase().split(" ");
+
+  if ((!args[1] || !args[2]) && !(args[1] == "all" || args[1] == "a")) {
+    const embed = new MessageEmbed()
+      .setColor("#ff0000")
+      .setTitle("It doesn't look like that command was structured properly")
+      .setDescription(
+        `Make sure you do \`${
+          message.content.split(" ")[0]
+        } sell [fish name] [fish size]\``
+      );
+
+    message.reply(embed);
+    return;
+  }
+
+  let result;
+
+  if (args[1] == "all" || args[1] == "a") {
+    result = user.fish;
+  } else if (args[2] == "all" || args[2] == "a") {
+    result = user.fish.filter((fish) => fish.name == args[1]);
+  } else {
+    result = user.fish.filter(
+      (fish) => fish.name == args[1] && fish.size == parseInt(args[2])
+    );
+  }
+
+  if (!result.length) {
+    invalidFish(message);
+    return;
+  }
+
+  sellFish(message, user, [...result]);
+};
+
+sellFish = (message, user, fish) => {
+  let totalSale = 0;
+  let fishIndex;
+
+  fish.forEach((single) => {
+    totalSale += single.price;
+    fishIndex = user.fish.findIndex((i) => i._id == single._id);
+    user.fish.splice(fishIndex, 1);
+  });
+
+  user.score += totalSale;
+
+  const fishEmbed = new MessageEmbed()
+    .setColor(`#00ff00`)
+    .setTitle(`${message.member.displayName} sold ${fish.length} fish`)
+    .setThumbnail(message.author.displayAvatarURL())
+    .addField(
+      `Sold ${fish.length} fish for ${totalSale} coins!`,
+      `They now have ${user.score} coins!`
+    );
+
+  user.save().then(message.reply(fishEmbed).catch(console.error)).catch(console.error);
 };
 
 const checkForFish = async (message, args) => {
@@ -129,7 +205,7 @@ const noFish = (message) => {
 const invalidFish = (message) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
-    .setTitle("You don't have any fish with that name!")
+    .setTitle("You don't have any fish like that!")
     .setDescription("Make sure you spelled the name correctly...");
 
   message.reply(embed);
@@ -157,8 +233,8 @@ const catchFish = async (message, args) => {
     return;
   }
 
-  if (user.score >= 25) {
-    user.score -= 25;
+  if (user.score >= 20) {
+    user.score -= 20;
     generateFish(message, user);
   } else {
     insufficientCoins(message);
@@ -192,7 +268,7 @@ const generateFish = (message, user) => {
     )
     .addField("Size", `${fish.size}cm`, true)
     .addField("Price", `${fish.price} coins`, true)
-    .setFooter(`Fishing Cost: 25 coins`)
+    .setFooter(`Fishing Cost: 25 coins`);
 
   message.reply(FishEmbed);
 
