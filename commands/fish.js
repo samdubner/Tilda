@@ -233,8 +233,8 @@ const catchFish = async (message, args) => {
     return;
   }
 
-  if (user.score >= 20) {
-    user.score -= 20;
+  if (user.score >= 25) {
+    user.score -= 25;
     generateFish(message, user);
   } else {
     insufficientCoins(message);
@@ -249,6 +249,7 @@ const generateFish = (message, user) => {
   let size = generateSize(rarity);
   let pond = 1;
   let price = generatePrice(size, pond);
+  let embedColor = getColor(rarity)
   let fish = new Fish({
     name,
     rarity,
@@ -258,7 +259,7 @@ const generateFish = (message, user) => {
   });
 
   const FishEmbed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setColor(embedColor)
     .setTitle("You caught a fish!")
     .setThumbnail(message.author.displayAvatarURL())
     .setDescription(
@@ -268,7 +269,7 @@ const generateFish = (message, user) => {
     )
     .addField("Size", `${fish.size}cm`, true)
     .addField("Price", `${fish.price} coins`, true)
-    .setFooter(`Fishing Cost: 20 coins`);
+    .setFooter(`Fishing Cost: 25 coins`);
 
   message.reply(FishEmbed);
 
@@ -279,6 +280,19 @@ const generateFish = (message, user) => {
 const fName = (name) => {
   return name.charAt(0).toUpperCase() + name.slice(1);
 };
+
+const getColor = (rarity) => {
+  switch(rarity) {
+    case "common":
+      return "#bec2bf";
+    case "uncommon":
+      return "#39ff36";
+    case "rare":
+      return "#3647ff";
+    case "legendary":
+      return "#cea3ff"
+  }
+}
 
 const generatePrice = (size, pondLevel) => {
   return Math.floor(size / 3) * pondLevel;
@@ -345,7 +359,7 @@ const insufficientCoins = (message) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription("You don't have enough coins to go fishing...")
-    .setTitle("You need at least 20 coins to go fishing in the Plain Pond!");
+    .setTitle("You need at least 25 coins to go fishing in the Plain Pond!");
 
   message.reply(embed);
 };
