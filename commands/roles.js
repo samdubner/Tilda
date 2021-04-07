@@ -24,6 +24,7 @@ const role = async (message, args) => {
       updateRole("name", data, customRole, message);
       break;
     case "color":
+    case "colour":
       updateRole("color", data, customRole, message);
       break;
     default:
