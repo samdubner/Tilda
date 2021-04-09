@@ -290,7 +290,7 @@ const getColor = (rarity) => {
     case "rare":
       return "#3647ff";
     case "legendary":
-      return "#cea3ff"
+      return "#b300ff"
   }
 }
 
