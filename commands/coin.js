@@ -1,15 +1,37 @@
+const client = require('../tilda').client;
 const MessageEmbed = require("discord.js").MessageEmbed;
 
 const fs = require("fs");
 const mongoose = require("mongoose");
 const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
 
+const schedule = require("node-schedule");
+const rule = new schedule.RecurrenceRule();
+rule.hour = 0;
+
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log(`[${new Date().toLocaleTimeString("en-US")}] Connected to Tilda's DB`))
+  .then(() =>
+    console.log(
+      `[${new Date().toLocaleTimeString("en-US")}] Connected to Tilda's DB`
+    )
+  )
   .catch((err) => console.log(err));
 
 const User = require("../models/User");
+
+const job = schedule.scheduleJob(rule, async () => {
+  let currentTopUser = await User.findOne()
+    .sort([["score", -1]]);
+
+  // console.log(currentTopUser)
+
+  if (currentTopUser.score > 5) {
+    currentTopUser.score = Math.floor(currentTopUser.score - currentTopUser.score * 0.05);
+    console.log(`current top user now has ${currentTopUser.score} coins`);
+    currentTopUser.save();
+  }
+});
 
 const leaderboard = async (message) => {
   if (
