@@ -1,18 +1,8 @@
-const client = require("../tilda").client;
 const MessageEmbed = require("discord.js").MessageEmbed;
 
 const fs = require("fs");
 const mongoose = require("mongoose");
 const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
-
-const schedule = require("node-schedule");
-const rule = new schedule.RecurrenceRule();
-rule.hour = 0;
-
-const job = schedule.scheduleJob(rule, async () => {
-  bleedTopUser();
-  resetDailies();
-});
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -42,7 +32,23 @@ const bleedTopUser = async () => {
 };
 
 const resetDailies = async () => {
-  await User.updateMany({}, {dailyDone: false});
+  await User.updateMany({}, { dailyDone: false });
+};
+
+const notifyDailyReset = (client) => {
+  client.channels
+    .fetch("735399594917363722")
+    .then((channel) => {
+      let embed = new MessageEmbed()
+        .setColor("#00ff00")
+        .setTitle(`Dailies have been reset!`)
+        .setDescription(
+          `The user at the top of the leaderboard has also misplaced some coins...`
+        )
+        .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
+
+      channel.send(embed).catch(console.error);
+    })
 };
 
 const leaderboard = async (message) => {
@@ -225,7 +231,6 @@ const flip = (message, args, user) => {
 
 const daily = (message, user) => {
   let dailyDone = user.dailyDone;
-  let dailyTimer = new Date().getTime() - 86400000;
 
   if (dailyDone) {
     let embed = new MessageEmbed()
@@ -686,4 +691,7 @@ module.exports = {
   randomCoinEvent,
   coinEvent,
   createUser,
+  bleedTopUser,
+  resetDailies,
+  notifyDailyReset
 };

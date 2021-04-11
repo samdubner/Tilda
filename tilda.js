@@ -1,8 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-module.exports = { client }
-
 const fs = require("fs");
 
 const basic = require("./commands/basic");
@@ -12,6 +10,17 @@ const help = require("./commands/help");
 const roles = require("./commands/roles");
 const shop = require("./commands/shop");
 const fish = require("./commands/fish");
+
+const schedule = require("node-schedule");
+const rule = new schedule.RecurrenceRule();
+rule.hour = 0;
+
+schedule.scheduleJob(rule, async () => {
+  coin.bleedTopUser();
+  coin.resetDailies();
+
+  coin.notifyDailyReset(client);
+});
 
 client.on("ready", () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
@@ -94,7 +103,7 @@ client.on("message", (message) => {
     "~challenge": () => coin.continueUser(message, args, "challenge"),
     "~shop": () => shop.shopManager(message, args),
     "~c": () => COMMANDS["~fish"](),
-    "~catch": () => COMMANDS["~fish"](),  
+    "~catch": () => COMMANDS["~fish"](),
     "~fish": () => fish.fishManager(message, args),
     "~role": () => roles.role(message, args),
     "~kill": () => basic.kill(client, message),
