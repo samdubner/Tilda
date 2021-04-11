@@ -12,11 +12,8 @@ const shop = require("./commands/shop");
 const fish = require("./commands/fish");
 
 const schedule = require("node-schedule");
-let rule = new schedule.RecurrenceRule();
-rule.tz = "Etc/UTC"
-rule.hour = 0;
 
-schedule.scheduleJob(rule, async () => {
+schedule.scheduleJob('0 0 * * *', async () => {
   let topUser = await coin.bleedTopUser();
   coin.resetDailies();
 

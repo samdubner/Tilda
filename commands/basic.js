@@ -81,7 +81,7 @@ const kill = (client, message) => {
       reaction.emoji.name === "✅" &&
       ["340002869912666114", "171330866189041665"].includes(user.id);
     messageReaction.message
-      .awaitReactions(filter, { time: 2000 })
+      .awaitReactions(filter, { time: 5000 })
       .then((collected) => {
         if (collected.get("✅") != undefined) {
           client.destroy();
@@ -102,7 +102,7 @@ const update = (client, message) => {
       reaction.emoji.name === "✅" &&
       ["340002869912666114", "171330866189041665"].includes(user.id);
     messageReaction.message
-      .awaitReactions(filter, { time: 2000 })
+      .awaitReactions(filter, { time: 5000 })
       .then((collected) => {
         if (collected.get("✅") != undefined) {
           client.destroy();
