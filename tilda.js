@@ -13,7 +13,7 @@ const fish = require("./commands/fish");
 
 const schedule = require("node-schedule");
 const rule = new schedule.RecurrenceRule();
-rule.hour = 0;
+rule.hour = 2;
 
 schedule.scheduleJob(rule, async () => {
   coin.bleedTopUser();
