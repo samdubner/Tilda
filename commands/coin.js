@@ -29,21 +29,25 @@ const bleedTopUser = async () => {
     );
     currentTopUser.save();
   }
+
+  return currentTopUser;
 };
 
 const resetDailies = async () => {
   await User.updateMany({}, { dailyDone: false });
 };
 
-const notifyDailyReset = (client) => {
+const notifyDailyReset = async (client, topUser) => {
+  let member = await client.users.fetch(topUser.userId)
+
   client.channels
-    .fetch("735399594917363722")
+    .fetch("469659852109643788")
     .then((channel) => {
       let embed = new MessageEmbed()
         .setColor("#00ff00")
         .setTitle(`Dailies have been reset!`)
         .setDescription(
-          `The user at the top of the leaderboard has also misplaced some coins...`
+          `${member.username} has also misplaced some coins...`
         )
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
 

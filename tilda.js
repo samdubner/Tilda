@@ -12,14 +12,12 @@ const shop = require("./commands/shop");
 const fish = require("./commands/fish");
 
 const schedule = require("node-schedule");
-const rule = new schedule.RecurrenceRule();
-rule.hour = 2;
 
-schedule.scheduleJob(rule, async () => {
-  coin.bleedTopUser();
+schedule.scheduleJob('0 0 * * *', async () => {
+  let topUser = await coin.bleedTopUser();
   coin.resetDailies();
 
-  coin.notifyDailyReset(client);
+  coin.notifyDailyReset(client, topUser);
 });
 
 client.on("ready", () => {
