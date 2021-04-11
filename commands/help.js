@@ -9,7 +9,9 @@ const help = (message, helpEmbed) => {
     .addField("1️⃣", "Basic Commands", true)
     .addField("2️⃣", "Info Commands", true)
     .addField("3️⃣", "Coin Commands", true)
-    .addField("4️⃣", "Role Commands", true);
+    .addField("4️⃣", "Role Commands", true)
+    .addField("5️⃣", "Shop Commands", true)
+    .addField("6️⃣", "Fish Commands", true);
 
   if (helpEmbed == undefined) {
     message.channel
@@ -30,31 +32,22 @@ let createReactionHandler = (helpMessage, message, color) => {
   helpMessage.react("2️⃣");
   helpMessage.react("3️⃣");
   helpMessage.react("4️⃣");
+  helpMessage.react("5️⃣");
+  helpMessage.react("6️⃣");
 
   let filter = (reaction, user) => message.author.id == user.id;
   helpMessage
     .awaitReactions(filter, { max: 1 })
     .then((collection) => {
       collection.each((collected) => {
-        switch (collected.emoji.name) {
-          case "1️⃣":
-            editEmbed(helpMessage, message, "one", color);
-            break;
-          case "2️⃣":
-            editEmbed(helpMessage, message, "two", color);
-            break;
-          case "3️⃣":
-            editEmbed(helpMessage, message, "three", color);
-            break;
-          case "4️⃣":
-            editEmbed(helpMessage, message, "four", color);
-            break;
-          default:
-            message.reply(
-              "Please use ~help again and react with a valid emoji!"
-            );
-            return;
+        if (
+          !["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"].includes(collected.emoji.name)
+        ) {
+          message.reply("Please use ~help again and react with a valid emoji!");
+          return;
         }
+
+        editEmbed(helpMessage, message, collected.emoji.name, color);
       });
     })
     .catch(console.error);
@@ -69,72 +62,102 @@ let editEmbed = (helpEmbed, message, num, color) => {
     .setThumbnail(message.guild.iconURL());
 
   switch (num) {
-    case "one":
-      embed
-        .setDescription("Basic Commands")
-        .addField(
-          "~request [message]",
-          `Sends <@340002869912666114> a message with your idea to improve Tilda`,
-          false
-        )
-        .addField(
-          "~8ball [question]",
-          `Ask the all powerful 8ball your questions`,
-          false
-        );
+    case "1️⃣":
+      embed.setDescription("Basic Commands").addFields(
+        {
+          name: "~request [message]",
+          value:
+            "Sends <@340002869912666114> a message with your idea to improve Tilda",
+        },
+        {
+          name: "~8ball [question]",
+          value: "Ask the all powerful 8ball your questions",
+        }
+      );
       break;
-    case "two":
-      embed
-        .setDescription("Info Commands")
-        .addField(
-          "~ui <@people>",
-          `Sends some basic info about the mentioned peopple or yourself if nobody is mentioned`,
-          false
-        )
-        .addField("~si", `Sends basic server information`, false)
-        .addField(
-          "~pfp <@people>",
-          `Sends the profile pictures of the mentioned people or yourself if nobody is mentioned`,
-          false
-        );
+    case "2️⃣":
+      embed.setDescription("Info Commands").addFields(
+        {
+          name: "~ui <@people>",
+          value:
+            "Sends some basic info about the mentioned peopple or yourself if nobody is mentioned",
+        },
+        { name: "~si", value: "Sends basic server information" },
+        {
+          name: "~pfp <@people>",
+          value:
+            "Sends the profile pictures of the mentioned people or yourself if nobody is mentioned",
+        }
+      );
       break;
-    case "three":
-      embed
-        .setDescription("Coin Commands")
-        .addField(
-          "~leaderboard",
-          `Get the top coin scores of everyone in the server!`,
-          false
-        )
-        .addField("~balance", `View the amount of coins you have`, false)
-        .addField("~flip [amount of coins]", `50/50`, false)
-        .addField("~daily", `Get 100 coins once every 24 hours`, false)
-        .addField("~beg", `Get 10 coins every 10 minutes`, false)
-        .addField(
-          "~give [amount of coins] <@person>",
-          `Give \`x\` amount of coins to mentioned person`,
-          false
-        )
-        .addField(
-          "~challenge [entry price] <@people>",
-          `Challenge mentioned users to a quick challenge!`,
-          false
-        );
+    case "3️⃣":
+      embed.setDescription("Coin Commands").addFields(
+        {
+          name: "~leaderboard",
+          value: "Get the top coin scores of everyone in the server!",
+        },
+        { name: "~balance", value: "View the amount of coins you have" },
+        { name: "~flip [amount of coins]", value: "50/50" },
+        { name: "~daily", value: "Get 100 coins once every 24 hours" },
+        { name: "~beg", value: "Get 10 coins every 10 minutes" },
+        {
+          name: "~leaderboard",
+          value: "Get the top coin scores of everyone in the server!",
+        },
+        {
+          name: "~give [amount of coins] <@person>",
+          value: "Give `x` amount of coins to mentioned person",
+        },
+        {
+          name: "~challenge [entry price] <@people>",
+          value: "Challenge mentioned users to a quick math game!",
+        }
+      );
       break;
-    case "four":
-      embed
-        .setDescription("Role Commands")
-        .addField(
-          "~role",
-          `creates your custom role and displays info`,
-          false
-        )
-        .addField("~role name [custom name]", `change your role's name`, false)
-        .addField(
-          "~role color [hex code]",
-          `change your role's color \`EX: ~role color #FF0000\``,
-          false
-        );
+    case "4️⃣":
+      embed.setDescription("Role Commands").addFields(
+        {
+          name: "~role",
+          value: "creates your custom role and displays info",
+        },
+        {
+          name: "~role name [custom name]",
+          value: "change your role's name",
+        },
+        {
+          name: "~role color [hex code]",
+          value: "change your role's color `EX: ~role color #FF0000`",
+        }
+      );
+      break;
+    case "5️⃣":
+      embed.setDescription("Shop Commands").addFields(
+        {
+          name: "~shop",
+          value: "View all items available for you to purchase in the shop!",
+        },
+        {
+          name: "~shop buy",
+          value: "open menu to purchase an item from the shop",
+        }
+      );
+      break;
+    case "6️⃣":
+      embed.setDescription("Fish Commands").addFields(
+        {
+          name: "~fish",
+          value: "Catch a fish!",
+        },
+        { name: "~fish inv", value: "See all the fish you've caught" },
+        {
+          name: "~fish sell [type of fish] [size of fish]",
+          value: "sells the specific fish of that type and size",
+        },
+        {
+          name: "~fish sell [rarity]",
+          value: "sells all the fish of that rarity",
+        }
+      );
       break;
   }
 

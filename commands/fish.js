@@ -56,7 +56,7 @@ const sellFishCheck = async (message, args) => {
 
   args = args.toLowerCase().split(" ");
 
-  if ((!args[1] || !args[2]) && !(args[1] == "all" || args[1] == "a")) {
+  if (!args[1] && !(args[1] == "all" || args[1] == "a")) {
     const embed = new MessageEmbed()
       .setColor("#ff0000")
       .setTitle("It doesn't look like that command was structured properly")
@@ -74,7 +74,9 @@ const sellFishCheck = async (message, args) => {
 
   if (args[1] == "all" || args[1] == "a") {
     result = user.fish;
-  } else if (args[2] == "all" || args[2] == "a") {
+  } else if (["common", "uncommon", "rare", "legendary"].includes(args[1])) {
+    result = user.fish.filter((fish) => fish.rarity == args[1]);
+  } else if (args[2] == "all" || args[2] == "a" || (args[1] && !args[2])) {
     result = user.fish.filter((fish) => fish.name == args[1]);
   } else {
     result = user.fish.filter(
@@ -111,7 +113,10 @@ sellFish = (message, user, fish) => {
       `They now have ${user.score} coins!`
     );
 
-  user.save().then(message.reply(fishEmbed).catch(console.error)).catch(console.error);
+  user
+    .save()
+    .then(message.reply(fishEmbed).catch(console.error))
+    .catch(console.error);
 };
 
 const checkForFish = async (message, args) => {
@@ -249,7 +254,7 @@ const generateFish = (message, user) => {
   let size = generateSize(rarity);
   let pond = 1;
   let price = generatePrice(size, pond);
-  let embedColor = getColor(rarity)
+  let embedColor = getColor(rarity);
   let fish = new Fish({
     name,
     rarity,
@@ -282,7 +287,7 @@ const fName = (name) => {
 };
 
 const getColor = (rarity) => {
-  switch(rarity) {
+  switch (rarity) {
     case "common":
       return "#bec2bf";
     case "uncommon":
@@ -290,9 +295,9 @@ const getColor = (rarity) => {
     case "rare":
       return "#3647ff";
     case "legendary":
-      return "#b300ff"
+      return "#b300ff";
   }
-}
+};
 
 const generatePrice = (size, pondLevel) => {
   return Math.floor(size / 3) * pondLevel;

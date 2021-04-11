@@ -1,4 +1,4 @@
-const client = require('../tilda').client;
+const client = require("../tilda").client;
 const MessageEmbed = require("discord.js").MessageEmbed;
 
 const fs = require("fs");
@@ -8,6 +8,11 @@ const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
 const schedule = require("node-schedule");
 const rule = new schedule.RecurrenceRule();
 rule.hour = 0;
+
+const job = schedule.scheduleJob(rule, async () => {
+  bleedTopUser();
+  resetDailies();
+});
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -20,18 +25,25 @@ mongoose
 
 const User = require("../models/User");
 
-const job = schedule.scheduleJob(rule, async () => {
-  let currentTopUser = await User.findOne()
-    .sort([["score", -1]]);
-
-  // console.log(currentTopUser)
+const bleedTopUser = async () => {
+  let currentTopUser = await User.findOne().sort([["score", -1]]);
 
   if (currentTopUser.score > 5) {
-    currentTopUser.score = Math.floor(currentTopUser.score - currentTopUser.score * 0.05);
-    console.log(`current top user now has ${currentTopUser.score} coins`);
+    currentTopUser.score = Math.floor(
+      currentTopUser.score - currentTopUser.score * 0.05
+    );
+    console.log(
+      `[${new Date().toLocaleTimeString("en-US")}] current top user now has ${
+        currentTopUser.score
+      } coins`
+    );
     currentTopUser.save();
   }
-});
+};
+
+const resetDailies = async () => {
+  await User.updateMany({}, {dailyDone: false});
+};
 
 const leaderboard = async (message) => {
   if (
@@ -212,21 +224,14 @@ const flip = (message, args, user) => {
 };
 
 const daily = (message, user) => {
-  let checkDate = user.dailyDate;
+  let dailyDone = user.dailyDone;
   let dailyTimer = new Date().getTime() - 86400000;
 
-  if (dailyTimer < checkDate) {
-    let minutes = Math.trunc(((checkDate - dailyTimer) / 60000) % 60);
-    let hours = Math.trunc(((checkDate - dailyTimer) / 3600000) % 24);
-
+  if (dailyDone) {
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-      .setTitle(`Daily`)
-      .setDescription(
-        `Daily available in ${hours} ${
-          hours == 1 ? "hour" : "hours"
-        } and ${minutes} ${minutes == 1 ? "minute" : "minutes"}`
-      )
+      .setTitle(`You already got your daily today!`)
+      .setDescription(`Daily resets at 12am PST!`)
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
     message.reply(embed).catch(console.error);
@@ -235,7 +240,7 @@ const daily = (message, user) => {
 
   User.updateOne(
     { userId: message.author.id },
-    { score: parseInt(user.score) + 100, dailyDate: new Date().getTime() }
+    { score: parseInt(user.score) + 100, dailyDone: true }
   ).catch(console.error());
 
   let embed = new MessageEmbed()
@@ -625,7 +630,7 @@ const createUser = async (message) => {
   const newUser = new User({
     userId: message.author.id,
     score: 100,
-    dailyDate: new Date().getTime(),
+    dailyDone: true,
     begDate: new Date().getTime(),
   });
 

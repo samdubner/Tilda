@@ -11,8 +11,8 @@ const UserSchema = new Schema({
   score: {
     type: Number,
   },
-  dailyDate: {
-    type: Number,
+  dailyDone: {
+    type: Boolean,
   },
   begDate: {
     type: Number,
