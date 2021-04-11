@@ -230,17 +230,23 @@ const flip = (message, args, user) => {
   User.updateOne(
     { userId: message.author.id },
     { score: parseInt(user.score) + parseInt(scoreWon) }
-  ).catch(console.error());
+  ).catch(console.error);
 };
 
 const daily = (message, user) => {
   let dailyDone = user.dailyDone;
 
   if (dailyDone) {
+    let currentDate = new Date();
+    let hours = 23 - currentDate.getHours();
+    let hourText = hours == 1 ? "hour" : "hours";
+    let minutes = 60 - currentDate.getMinutes();
+    let minuteText = minutes == 1 ? "minute" : "minutes";
+
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle(`You already got your daily today!`)
-      .setDescription(`Yes I am aware this is broken, I will fix it tomorrow`)
+      .setDescription(`Daily will reset in ${hours} ${hourText} and ${minutes} ${minuteText}`)
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
     message.reply(embed).catch(console.error);
@@ -250,7 +256,7 @@ const daily = (message, user) => {
   User.updateOne(
     { userId: message.author.id },
     { score: parseInt(user.score) + 100, dailyDone: true }
-  ).catch(console.error());
+  ).catch(console.error);
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -284,7 +290,7 @@ const beg = (message, user) => {
   User.updateOne(
     { userId: message.author.id },
     { score: parseInt(user.score) + 10, begDate: new Date().getTime() }
-  ).catch(console.error());
+  ).catch(console.error);
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -334,12 +340,12 @@ const give = async (message, args, sender) => {
   User.updateOne(
     { userId: sender.userId },
     { score: parseInt(sender.score) - parseInt(giveAmount) }
-  ).catch(console.error());
+  ).catch(console.error);
 
   User.updateOne(
     { userId: receipt.userId },
     { score: parseInt(receipt.score) + parseInt(giveAmount) }
-  ).catch(console.error());
+  ).catch(console.error);
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -396,7 +402,7 @@ const print = async (message, args) => {
   User.updateOne(
     { userId: receipt.userId },
     { score: parseInt(giveAmount) }
-  ).catch(console.error());
+  ).catch(console.error);
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -455,7 +461,7 @@ const claim = (message, user) => {
   User.updateOne(
     { userId: message.author.id },
     { score: parseInt(user.score) + coinEvent.coinAmount }
-  ).catch(console.error());
+  ).catch(console.error);
 
   let embed = new MessageEmbed()
     .setColor(`#00ff00`)
@@ -584,7 +590,7 @@ const challengeCountdown = (message, users, entryPrice) => {
     User.updateOne(
       { userId: user.userId },
       { score: parseInt(user.score) - parseInt(entryPrice) }
-    ).catch(console.error());
+    ).catch(console.error);
     pool += parseInt(entryPrice);
   }
 
@@ -628,7 +634,7 @@ const catchResponse = (message, prizePool, users, ans) => {
       User.updateOne(
         { userId: res.author.id },
         { score: parseInt(winner.score) + parseInt(prizePool) }
-      ).catch(console.error());
+      ).catch(console.error);
     })
     .catch(() => {
       message.channel.send("Nobody got the problem correct in time :(");
@@ -643,7 +649,7 @@ const createUser = async (message) => {
     begDate: new Date().getTime(),
   });
 
-  newUser.save().catch(console.error());
+  newUser.save().catch(console.error);
 
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] Added <${newUser.userId}> ${
