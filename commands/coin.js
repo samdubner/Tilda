@@ -240,7 +240,7 @@ const daily = (message, user) => {
     let currentDate = new Date();
     let hours = 23 - currentDate.getHours();
     let hourText = hours == 1 ? "hour" : "hours";
-    let minutes = 60 - currentDate.getMinutes();
+    let minutes = 59 - currentDate.getMinutes();
     let minuteText = minutes == 1 ? "minute" : "minutes";
 
     let embed = new MessageEmbed()
