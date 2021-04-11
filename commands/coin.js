@@ -236,7 +236,7 @@ const daily = (message, user) => {
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle(`You already got your daily today!`)
-      .setDescription(`Daily resets at 12am PST!`)
+      .setDescription(`Yes I am aware this is broken, I will fix it tomorrow`)
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
     message.reply(embed).catch(console.error);
