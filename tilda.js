@@ -13,10 +13,10 @@ const fish = require("./commands/fish");
 
 const schedule = require("node-schedule");
 let rule = new schedule.RecurrenceRule();
+rule.tz = "Etc/UTC"
+rule.hour = 0;
 
-rule.tz = 
-
-schedule.scheduleJob('0 0 * * *', async () => {
+schedule.scheduleJob(rule, async () => {
   let topUser = await coin.bleedTopUser();
   coin.resetDailies();
 
