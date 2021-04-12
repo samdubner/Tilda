@@ -27,6 +27,9 @@ const UserSchema = new Schema({
   fish: {
     type: [Fish.schema],
   },
+  caughtFish: {
+    type: [String]
+  }
 });
 
 module.exports = User = mongoose.model("User", UserSchema);

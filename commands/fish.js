@@ -390,6 +390,10 @@ const generateFish = (message, user, pond) => {
     price,
   });
 
+  if (!user.caughtFish.includes(name)) {
+    user.caughtFish.push(name)
+  }
+
   const FishEmbed = new MessageEmbed()
     .setColor(embedColor)
     .setTitle("You caught a fish!")
