@@ -145,8 +145,8 @@ let editEmbed = (helpEmbed, message, num, color) => {
     case "6️⃣":
       embed.setDescription("Fish Commands").addFields(
         {
-          name: "~fish",
-          value: "Catch a fish!",
+          name: "~catch [pond name]",
+          value: "Catch a fish! (will default to plain pond)",
         },
         { name: "~fish inv", value: "See all the fish you've caught" },
         {

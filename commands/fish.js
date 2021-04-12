@@ -27,88 +27,77 @@ const PONDS = {
     names: [
       "mudfish",
       "eel",
-      "dogfish"
-    ]
+      "dogfish",
+      "jellyfish",
+      "piranha",
+      "crayfish",
+      "anglerfish",
+    ],
   },
   underworld: {
     name: "underworld",
     level: 3,
     cost: 75,
-    names: [
-      "underworld"
-    ]
+    names: ["magmaworm", ""],
   },
   sky: {
     name: "sky",
     level: 4,
     cost: 100,
-    names: [
-      "sky"
-    ]
+    names: ["pigeon", "gullifish"],
   },
   ancient: {
     name: "ancient",
     level: 5,
     cost: 125,
-    names: [
-      "ancient"
-    ]
+    names: ["megalodon", "kraken", "leviathan"],
   },
   void: {
     name: "void",
     level: 6,
     cost: 150,
-    names: [
-      "void"
-    ]
+    names: ["dreameater", "𝚙̛͝𝚛̵̡͘𝚎̵̀͞҉𝚜̧̡̕͡𝚎̶̢͘͢𝚗̴́͢𝚌҉̧𝚎͢"],
   },
 };
 
 const catchManager = (message, args) => {
-  if (message.author.id != "340002869912666114") {
-    message.reply("fishing commands have been disabled temporarily")
-    return;
-  }
-
-  let primaryArg = args.split(" ")[0]
+  let primaryArg = args.split(" ")[0];
   if (primaryArg == "") primaryArg = "plain";
 
   if (!PONDS[primaryArg]) {
     alertInvalidPond(message);
     return;
   }
-  
+
   catchFish(message, args, PONDS[primaryArg]);
-}
+};
 
 const fishManager = (message, args) => {
-  if (message.author.id != "340002869912666114") {
-    message.reply("fishing commands have been disabled temporarily")
-    return;
-  }
   let primaryArg = args.split(" ")[0];
   if (primaryArg)
-  switch (primaryArg) {
-    case "":
-      informCatchFish();
-      break;
-    case "list":
-    case "inventory":
-    case "inv":
-      displayFish(message);
-      break;
-    case "sell":
-    case "s":
-      sellFishCheck(message, args);
-      break;
-    default:
-      checkForFish(message, args);
-  }
+    switch (primaryArg) {
+      case "":
+        informCatchFish();
+        break;
+      case "list":
+      case "inventory":
+      case "inv":
+        displayFish(message, "plain");
+        break;
+      case "sell":
+      case "s":
+        sellFishCheck(message, args);
+        break;
+      default:
+        checkForFish(message, args);
+    }
 };
 
 const informCatchFish = (message) => {
-  message.reply("If you are trying to catch a fish, use the \`~catch\` command or \`~c\` for short")
-}
+  message.reply(
+    "If you are trying to catch a fish, use the `~catch` command or `~c` for short"
+  );
+};
 
 const sellFishCheck = async (message, args) => {
   let user = await User.findOne({ userId: message.author.id });
@@ -217,7 +206,8 @@ const displaySingleFish = (message, fishList) => {
     .setThumbnail(message.author.displayAvatarURL())
     .setTimestamp();
 
-  for (fish of fishList) {    fishEmbed.addField(
+  for (fish of fishList) {
+    fishEmbed.addField(
       `${fName(fish.rarity)} ${fish.size}cm`,
       `${fish.price} coins`,
       true
@@ -227,8 +217,11 @@ const displaySingleFish = (message, fishList) => {
   message.reply(fishEmbed);
 };
 
-const displayFish = async (message) => {
+const displayFish = async (message, pondName, embed = false) => {
   let user = await User.findOne({ userId: message.author.id });
+
+  let pond = PONDS[pondName];
+  let pondFish = user.fish.filter((fish) => fish.pond == pondName);
 
   if (!user) {
     user = coin.createUser();
@@ -242,18 +235,18 @@ const displayFish = async (message) => {
 
   let fishCount = {};
 
-  for (let fish of PONDS["Plain"]) {
+  for (let fish of pond.names) {
     fishCount[fish] = 0;
   }
 
-  for (let fish of user.fish) {
+  for (let fish of pondFish) {
     fishCount[fish.name]++;
   }
 
   const fishEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle(`${message.member.displayName}'s Fish Inventory`)
-    .setDescription(`Plain Fish`)
+    .setDescription(`${fName(pond.name)} Fish`)
     .setThumbnail(message.author.displayAvatarURL())
     .setTimestamp();
 
@@ -262,7 +255,73 @@ const displayFish = async (message) => {
     fishEmbed.addField(fName(fish), fishCount[fish], true);
   }
 
-  message.reply(fishEmbed);
+  if (!fishEmbed.fields.length) {
+    fishEmbed.addField(
+      "You don't have any fish from this pond!",
+      "Try catching some and come back here later..."
+    );
+  }
+
+  if (embed) {
+    embed
+      .edit(fishEmbed)
+      .then((msg) => reactAndWait(message, msg))
+      .catch(console.error);
+  } else {
+    message
+      .reply(fishEmbed)
+      .then((msg) => reactAndWait(message, msg))
+      .catch(console.error);
+  }
+};
+
+const reactAndWait = (message, embed) => {
+  validReactions = ["💦", "🐍", "🔥", "☁️", "🕸️", "⚫"];
+
+  for (let reaction of validReactions) {
+    embed.react(reaction);
+  }
+
+  const filter = (reaction, user) =>
+    user.id == message.author.id &&
+    validReactions.includes(reaction.emoji.name);
+  embed
+    .awaitReactions(filter, { max: 1, time: 30000 })
+    .then((collected) => handleSelection(message, collected, embed))
+    .catch(console.error);
+};
+
+const handleSelection = (message, collected, embed) => {
+  let pondName;
+
+  collected.each((reaction) => {
+    reaction.message.reactions.removeAll().catch(console.error);
+
+    switch (reaction.emoji.name) {
+      case "💦":
+        pondName = "plain";
+        break;
+      case "🐍":
+        pondName = "underground";
+        break;
+      case "🔥":
+        pondName = "underworld";
+        break;
+      case "☁️":
+        pondName = "sky";
+        break;
+      case "🕸️":
+        pondName = "ancient";
+        break;
+      case "⚫":
+        pondName = "void";
+        break;
+    }
+  });
+
+  if (!pondName) return;
+
+  displayFish(message, pondName, embed);
 };
 
 const alertInvalidPond = (message) => {
@@ -310,7 +369,7 @@ const catchFish = async (message, args, pond) => {
     user.score -= pond.cost;
     generateFish(message, user, pond);
   } else {
-    insufficientCoins(message);
+    insufficientCoins(message, pond);
     return;
   }
 };
@@ -322,7 +381,7 @@ const generateFish = (message, user, pond) => {
   let size = generateSize(rarity);
   let price = generatePrice(size, pond.level);
   let embedColor = getColor(rarity);
-  
+
   let fish = new Fish({
     name,
     rarity,
@@ -421,9 +480,9 @@ const noRod = (message) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription(
-      "You must purchase a fishing rod in the shop in order to go fishing..."
+      "You must purchase the correlating fishing rod in the shop in order to fish here..."
     )
-    .setTitle("You don't have a fishing rod!");
+    .setTitle("You don't have the proper fishing rod!");
 
   message.reply(embed);
 };
@@ -432,7 +491,11 @@ const insufficientCoins = (message) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription("You don't have enough coins to go fishing...")
-    .setTitle("You need at least 25 coins to go fishing in the Plain Pond!");
+    .setTitle(
+      `You need at least ${pond.cost} coins to go fishing in the ${fName(
+        pond.name
+      )} Pond!`
+    );
 
   message.reply(embed);
 };

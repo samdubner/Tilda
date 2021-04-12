@@ -4,18 +4,6 @@ const coin = require("./coin");
 const User = require("../models/User");
 const Item = require("../models/Item");
 
-// const ITEMS = {
-//   "Plain Fishing Rod": new Item({
-//     name: "Plain Fishing Rod",
-//     price: "1000",
-//     icon: "💦"
-//   }),
-// };
-
-// const seedItems = async () => {
-//     ITEMS['Plain Fishing Rod'].save()
-// }
-
 const shopManager = async (message, args) => {
   let primaryArg = args.split(" ")[0];
   switch (primaryArg) {
@@ -77,9 +65,8 @@ const purchaseShop = async (message) => {
       );
       ShopEmbed.addField(
         `${item.icon}  ${item.name}`,
-        `${item.price} coins`,
-        true
-      );
+        `${item.price} coins`
+        );
     }
   }
 
