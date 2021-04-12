@@ -106,7 +106,7 @@ const continueUser = async (message, args, type) => {
     message.author.id != "171330866189041665" &&
     message.author.id != "385991322693009421"
   ) {
-    message.reply("Please only use gambling commands in <#735399594917363722>");
+    message.reply("Please only use coin commands in <#735399594917363722>");
     return;
   }
 
@@ -436,7 +436,7 @@ const balance = async (message, user) => {
 
     if (mentionedUser == null) {
       message.reply(
-        `You cannot see \`${messageUser.username}'s\` balance as they have not use any gambling command before`
+        `You cannot see \`${messageUser.username}'s\` balance as they have not use any coin command before`
       );
     } else {
       coinVariation = mentionedUser.score == 1 ? "coin" : "coins";

@@ -5,28 +5,67 @@ const User = require("../models/User");
 const Fish = require("../models/Fish");
 
 const PONDS = {
-  Plain: [
-    "bass",
-    "catfish",
-    "goldfish",
-    "guppy",
-    "salmon",
-    "sardine",
-    "trout",
-    "tuna",
-  ],
-  Underground: [],
-  Underworld: [],
-  Sky: [],
-  Ancient: [],
-  Void: [],
+  plain: {
+    cost: 25,
+    names: [
+      "bass",
+      "catfish",
+      "goldfish",
+      "guppy",
+      "salmon",
+      "sardine",
+      "trout",
+      "tuna",
+    ],
+  },
+  underground: {
+    cost: 50,
+    names: [
+
+    ]
+  },
+  underworld: {
+    cost: 75,
+    names: [
+
+    ]
+  },
+  sky: {
+    cost: 100,
+    names: []
+  },
+  ancient: {
+    cost: 125,
+    names: []
+  },
+  void: {
+    cost: 150,
+    names: []
+  },
 };
 
+const catchManager = (message, args) => {
+  if (message.author.id != "340002869912666114") {
+    message.reply("fishing commands have been disabled temporarily")
+    return;
+  }
+  console.log(args)
+  let primaryArg = args.split(" ")[0]
+  if (primaryArg == "") primaryArg = "plain";
+  if (!PONDS[primaryArg]) alertInvalidPond();
+}
+
 const fishManager = (message, args) => {
+  if (message.author.id != "340002869912666114") {
+    message.reply("fishing commands have been disabled temporarily")
+    return;
+  }
   let primaryArg = args.split(" ")[0];
+  if (primaryArg)
   switch (primaryArg) {
     case "":
       catchFish(message, args);
+      informCatchFish();
       break;
     case "list":
     case "inventory":
@@ -41,6 +80,10 @@ const fishManager = (message, args) => {
       checkForFish(message, args);
   }
 };
+
+const informCatchFish = (message) => {
+  message.reply("If you are trying to catch a fish, use the \`~catch\` command or \`~c\` for short")
+}
 
 const sellFishCheck = async (message, args) => {
   let user = await User.findOne({ userId: message.author.id });
@@ -149,8 +192,7 @@ const displaySingleFish = (message, fishList) => {
     .setThumbnail(message.author.displayAvatarURL())
     .setTimestamp();
 
-  for (fish of fishList) {
-    fishEmbed.addField(
+  for (fish of fishList) {    fishEmbed.addField(
       `${fName(fish.rarity)} ${fish.size}cm`,
       `${fish.price} coins`,
       true
@@ -198,6 +240,15 @@ const displayFish = async (message) => {
   message.reply(fishEmbed);
 };
 
+const alertInvalidPond = (message) => {
+  const embed = new MessageEmbed()
+    .setColor("#ff0000")
+    .setTitle("That is not a valid pond!")
+    .setDescription("Try checking the log to see valid pond names...");
+
+  message.reply(embed);
+};
+
 const noFish = (message) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
@@ -232,6 +283,7 @@ const catchFish = async (message, args) => {
   //   default:
   //     return;
   // }
+  console.log(args)
 
   if (!user.items.includes("606a5c0169756d515427c86e")) {
     noRod(message);
@@ -371,5 +423,6 @@ const insufficientCoins = (message) => {
 
 module.exports = {
   fishManager,
+  catchManager,
   catchFish,
 };
