@@ -6,6 +6,8 @@ const Fish = require("../models/Fish");
 
 const PONDS = {
   plain: {
+    name: "plain",
+    level: 1,
     cost: 25,
     names: [
       "bass",
@@ -19,28 +21,46 @@ const PONDS = {
     ],
   },
   underground: {
+    name: "underground",
+    level: 2,
     cost: 50,
     names: [
-
+      "mudfish",
+      "eel",
+      "dogfish"
     ]
   },
   underworld: {
+    name: "underworld",
+    level: 3,
     cost: 75,
     names: [
-
+      "underworld"
     ]
   },
   sky: {
+    name: "sky",
+    level: 4,
     cost: 100,
-    names: []
+    names: [
+      "sky"
+    ]
   },
   ancient: {
+    name: "ancient",
+    level: 5,
     cost: 125,
-    names: []
+    names: [
+      "ancient"
+    ]
   },
   void: {
+    name: "void",
+    level: 6,
     cost: 150,
-    names: []
+    names: [
+      "void"
+    ]
   },
 };
 
@@ -49,10 +69,16 @@ const catchManager = (message, args) => {
     message.reply("fishing commands have been disabled temporarily")
     return;
   }
-  console.log(args)
+
   let primaryArg = args.split(" ")[0]
   if (primaryArg == "") primaryArg = "plain";
-  if (!PONDS[primaryArg]) alertInvalidPond();
+
+  if (!PONDS[primaryArg]) {
+    alertInvalidPond(message);
+    return;
+  }
+  
+  catchFish(message, args, PONDS[primaryArg]);
 }
 
 const fishManager = (message, args) => {
@@ -64,7 +90,6 @@ const fishManager = (message, args) => {
   if (primaryArg)
   switch (primaryArg) {
     case "":
-      catchFish(message, args);
       informCatchFish();
       break;
     case "list":
@@ -269,49 +294,40 @@ const invalidFish = (message) => {
 
 // CATCHING FISH #########################################################
 
-const catchFish = async (message, args) => {
+const catchFish = async (message, args, pond) => {
   let user = await User.findOne({ userId: message.author.id });
 
   if (!user) {
     user = await coin.createUser(message);
   }
 
-  // let primaryArg = args.split(" ")[0]
-  // switch (primaryArg) {
-  //   case "":
-  //     break;
-  //   default:
-  //     return;
-  // }
-  console.log(args)
-
   if (!user.items.includes("606a5c0169756d515427c86e")) {
     noRod(message);
     return;
   }
 
-  if (user.score >= 25) {
-    user.score -= 25;
-    generateFish(message, user);
+  if (user.score >= pond.cost) {
+    user.score -= pond.cost;
+    generateFish(message, user, pond);
   } else {
     insufficientCoins(message);
     return;
   }
 };
 
-const generateFish = (message, user) => {
-  let pondSize = PONDS["Plain"].length;
-  let name = PONDS["Plain"][Math.floor(Math.random() * pondSize)];
+const generateFish = (message, user, pond) => {
+  let pondSize = pond.names.length;
+  let name = pond.names[Math.floor(Math.random() * pondSize)];
   let rarity = generateRarity();
   let size = generateSize(rarity);
-  let pond = 1;
-  let price = generatePrice(size, pond);
+  let price = generatePrice(size, pond.level);
   let embedColor = getColor(rarity);
+  
   let fish = new Fish({
     name,
     rarity,
     size,
-    pond,
+    pond: pond.name,
     price,
   });
 
@@ -326,7 +342,7 @@ const generateFish = (message, user) => {
     )
     .addField("Size", `${fish.size}cm`, true)
     .addField("Price", `${fish.price} coins`, true)
-    .setFooter(`Fishing Cost: 25 coins`);
+    .setFooter(`Fishing Cost: ${pond.cost} coins`);
 
   message.reply(FishEmbed);
 

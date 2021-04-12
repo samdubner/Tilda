@@ -19,7 +19,7 @@ const FishSchema = new Schema({
     required: true,
   },
   pond: {
-    type: Number,
+    type: String,
     required: true
   }
 });
