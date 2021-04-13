@@ -41,7 +41,7 @@ const notifyDailyReset = async (client, topUser) => {
   let member = await client.users.fetch(topUser.userId)
 
   client.channels
-    .fetch("469659852109643788")
+    .fetch("735399594917363722")
     .then((channel) => {
       let embed = new MessageEmbed()
         .setColor("#00ff00")
