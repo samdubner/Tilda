@@ -34,6 +34,7 @@ const PONDS = {
       "piranha",
       "crayfish",
       "anglerfish",
+      "slime"
     ],
   },
   underworld: {
@@ -41,28 +42,28 @@ const PONDS = {
     rodId: "6074c8ca563e2b56fd529f08",
     level: 3,
     cost: 75,
-    names: ["magmaworm", ""],
+    names: ["magmaworm", "devilfish", "reaverfish", "direfish"],
   },
   sky: {
     name: "sky",
     rodId: "6074c8e8563e2b56fd529f09",
     level: 4,
     cost: 100,
-    names: ["pigeon", "gullifish"],
+    names: ["pigeon", "gullifish", "flying fish", "aerogill"],
   },
   ancient: {
     name: "ancient",
     rodId: "6074c905563e2b56fd529f0a",
     level: 5,
     cost: 125,
-    names: ["megalodon", "kraken", "leviathan"],
+    names: ["megalodon", "kraken", "leviathan" ],
   },
   void: {
     name: "void",
     rodId: "6074c92c563e2b56fd529f0b",
     level: 6,
     cost: 150,
-    names: ["dreameater", "𝚙̛͝𝚛̵̡͘𝚎̵̀͞҉𝚜̧̡̕͡𝚎̶̢͘͢𝚗̴́͢𝚌҉̧𝚎͢"],
+    names: ["dreameater", "entity", "[redacted]", "truth", "steve"],
   },
 };
 
@@ -397,7 +398,7 @@ const generateFish = (message, user, pond) => {
   });
 
   if (!user.caughtFish.includes(name)) {
-    user.caughtFish.push(name)
+    user.caughtFish.push(name);
   }
 
   const FishEmbed = new MessageEmbed()
