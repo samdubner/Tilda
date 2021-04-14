@@ -19,6 +19,7 @@ const PONDS = {
       "sardine",
       "trout",
       "tuna",
+      "cod",
     ],
   },
   underground: {
@@ -29,12 +30,12 @@ const PONDS = {
     names: [
       "mudfish",
       "eel",
-      "dogfish",
+      "dirtfish",
       "jellyfish",
       "piranha",
       "crayfish",
       "anglerfish",
-      "slime"
+      "slime",
     ],
   },
   underworld: {
@@ -42,28 +43,56 @@ const PONDS = {
     rodId: "6074c8ca563e2b56fd529f08",
     level: 3,
     cost: 75,
-    names: ["magmaworm", "devilfish", "reaverfish", "direfish"],
+    names: [
+      "magmaworm",
+      "devilfish",
+      "reaverfish",
+      "direfish",
+      "sand dollar",
+      "soulfish",
+    ],
   },
   sky: {
     name: "sky",
     rodId: "6074c8e8563e2b56fd529f09",
     level: 4,
     cost: 100,
-    names: ["pigeon", "gullifish", "flying fish", "aerogill"],
+    names: [
+      "pigeon",
+      "gullifish",
+      "parrotfish",
+      "aerogill",
+      "eagle ray",
+      "pelican eel",
+    ],
   },
   ancient: {
     name: "ancient",
     rodId: "6074c905563e2b56fd529f0a",
     level: 5,
     cost: 125,
-    names: ["megalodon", "kraken", "leviathan" ],
+    names: [
+      "megalodon",
+      "kraken",
+      "leviathan",
+      "mossfish",
+      "ruinfish",
+      "guardian",
+    ],
   },
   void: {
     name: "void",
     rodId: "6074c92c563e2b56fd529f0b",
     level: 6,
     cost: 150,
-    names: ["dreameater", "entity", "[redacted]", "truth", "steve"],
+    names: [
+      "dreameater",
+      "starfish",
+      "astrofish",
+      "truth",
+      "steve",
+      "vacuumfish",
+    ],
   },
 };
 
@@ -421,7 +450,10 @@ const generateFish = (message, user, pond) => {
 };
 
 const fName = (name) => {
-  return name.charAt(0).toUpperCase() + name.slice(1);
+  arr = name.split(" ");
+  arr = arr.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+  name = arr.join(" ");
+  return name;
 };
 
 const getColor = (rarity) => {
