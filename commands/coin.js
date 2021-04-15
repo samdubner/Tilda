@@ -81,9 +81,9 @@ const leaderboard = async (message) => {
   let userList = await User.find()
     .sort([["score", -1]])
     .limit(10);
+  let members = await message.guild.members.fetch();
   userList = userList.filter(user => message.guild.member(user.userId) != undefined)
   userList = userList.slice(0, 5)
-  let members = await message.guild.members.fetch();
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
