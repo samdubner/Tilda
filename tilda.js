@@ -13,7 +13,7 @@ const fish = require("./commands/fish");
 
 const schedule = require("node-schedule");
 
-schedule.scheduleJob('0 0 * * *', async () => {
+schedule.scheduleJob('0 2 * * *', async () => {
   let topUser = await coin.bleedTopUser();
   coin.resetDailies();
 
