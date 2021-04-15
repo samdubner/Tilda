@@ -61,7 +61,7 @@ const checkChampion = async (client, topUser) => {
   let role = await guild.roles.fetch("832069903703998505")
   let currentChampion = role.members.first()
 
-  if (currentChampion.id != topUser.userId) {
+  if (!currentChampion || currentChampion.id != topUser.userId) {
     currentChampion.roles.remove(role.id)
 
     let newChampion = await guild.members.fetch(topUser.userId)
