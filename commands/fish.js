@@ -286,6 +286,12 @@ const displayFish = async (message, pondName, embed = false) => {
     .setThumbnail(message.author.displayAvatarURL())
     .setTimestamp();
 
+    if (user.fish.length) {
+      let totalFishPrice = 0;
+      user.fish.forEach((fish) => totalFishPrice += fish.price);
+      fishEmbed.setFooter(`FW: ${totalFishPrice} coins`)
+    }
+
   for (fish in fishCount) {
     if (fishCount[fish] == 0) continue;
     fishEmbed.addField(fName(fish), fishCount[fish], true);
