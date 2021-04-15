@@ -55,6 +55,20 @@ const notifyDailyReset = async (client, topUser) => {
     })
 };
 
+const checkChampion = async (client, topUser) => {
+  let guild = await client.guilds.fetch("735395621703385099")
+  await guild.members.fetch();
+  let role = await guild.roles.fetch("832069903703998505")
+  let currentChampion = role.members.first()
+
+  if (currentChampion.id != topUser.userId) {
+    currentChampion.roles.remove(role.id)
+
+    let newChampion = await guild.members.fetch(topUser.userId)
+    newChampion.roles.add(role.id)
+  }
+}
+
 const leaderboard = async (message) => {
   if (
     message.channel.id != "735399594917363722" &&
@@ -703,5 +717,6 @@ module.exports = {
   createUser,
   bleedTopUser,
   resetDailies,
-  notifyDailyReset
+  notifyDailyReset,
+  checkChampion
 };

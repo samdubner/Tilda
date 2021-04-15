@@ -18,6 +18,7 @@ schedule.scheduleJob('0 0 * * *', async () => {
   coin.resetDailies();
 
   coin.notifyDailyReset(client, topUser);
+  coin.checkChampion(client, topUser);
 });
 
 client.on("ready", () => {
@@ -57,6 +58,7 @@ client.on("guildMemberAdd", (member) => {
 });
 
 client.on("message", (message) => {
+
   if (
     message.channel.id == "735404269426966580" &&
     !["340002869912666114", "670849450599645218"].includes(message.author.id)
