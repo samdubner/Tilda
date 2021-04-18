@@ -13,7 +13,7 @@ const fish = require("./commands/fish");
 
 const schedule = require("node-schedule");
 
-schedule.scheduleJob('0 0 * * *', async () => {
+schedule.scheduleJob("0 0 * * *", async () => {
   let topUser = await coin.bleedTopUser();
   coin.resetDailies();
 
@@ -21,26 +21,11 @@ schedule.scheduleJob('0 0 * * *', async () => {
   coin.checkChampion(client, topUser);
 });
 
+schedule.scheduleJob("0 12 * * *", randomizeRoleColor);
+
 client.on("ready", () => {
+  randomizeRoleColor()
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
-
-  client.user.setActivity("with ~help").catch(console.error);
-
-  client.guilds
-    .fetch("735395621703385099")
-    .then((guild) => {
-      guild.roles.fetch("735395776967999515").then((role) => {
-        setInterval(() => {
-          role
-            .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-            .catch(console.error);
-          client.user.setActivity("with ~help").catch(console.error);
-        }, 1000 * 60 * 60 * 12);
-      });
-    })
-    .catch(() =>
-      console.log("Main server not found... unable to change role colors")
-    );
 
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
@@ -57,8 +42,19 @@ client.on("guildMemberAdd", (member) => {
   );
 });
 
-client.on("message", (message) => {
+const randomizeRoleColor = async () => {
+  let guild;
+  try {
+    guild = await client.guilds.fetch("735395621703385099");
+  } catch (e) {
+    console.log("Main server not found... unable to change role colors");
+    return;
+  }
+  const role = await guild.roles.fetch("735395776967999515");
+  role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+};
 
+client.on("message", (message) => {
   if (
     message.channel.id == "735404269426966580" &&
     !["340002869912666114", "670849450599645218"].includes(message.author.id)
