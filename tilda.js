@@ -21,6 +21,18 @@ schedule.scheduleJob("0 0 * * *", async () => {
   coin.checkChampion(client, topUser);
 });
 
+const randomizeRoleColor = async () => {
+  let guild;
+  try {
+    guild = await client.guilds.fetch("735395621703385099");
+  } catch (e) {
+    console.log("Main server not found... unable to change role colors");
+    return;
+  }
+  const role = await guild.roles.fetch("735395776967999515");
+  role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+};
+
 schedule.scheduleJob("0 12 * * *", randomizeRoleColor);
 
 client.on("ready", () => {
@@ -41,18 +53,6 @@ client.on("guildMemberAdd", (member) => {
     } has joined the server`
   );
 });
-
-const randomizeRoleColor = async () => {
-  let guild;
-  try {
-    guild = await client.guilds.fetch("735395621703385099");
-  } catch (e) {
-    console.log("Main server not found... unable to change role colors");
-    return;
-  }
-  const role = await guild.roles.fetch("735395776967999515");
-  role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-};
 
 client.on("message", (message) => {
   if (
