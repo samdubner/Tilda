@@ -367,12 +367,12 @@ const give = async (message, args, sender) => {
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle("Coin Transfer")
     .addField(
-      `${message.author.username}'s Balance (-)`,
+      `${message.author.username}'s Balance (-${giveAmount})`,
       `${parseInt(sender.score) - parseInt(giveAmount)}`,
       false
     )
     .addField(
-      `${message.mentions.users.first().username}'s Balance (+)`,
+      `${message.mentions.users.first().username}'s Balance (+${giveAmount})`,
       `${parseInt(receipt.score) + parseInt(giveAmount)}`,
       false
     );
