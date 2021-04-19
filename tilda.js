@@ -36,7 +36,6 @@ const randomizeRoleColor = async () => {
 schedule.scheduleJob("0 12 * * *", randomizeRoleColor);
 
 client.on("ready", () => {
-  randomizeRoleColor()
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
   setInterval(() => {
