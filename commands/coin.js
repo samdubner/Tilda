@@ -292,7 +292,7 @@ const beg = (message, user) => {
     let minutes = Math.trunc(((checkDate - begTimer) / 60000) % 60);
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-      .setTitle(`Beg`)
+      .setTitle(`You've already begged too recently!`)
       .setDescription(
         `You can beg in ${minutes} ${
           minutes == 1 ? "minute" : "minutes"
