@@ -13,8 +13,9 @@ const fish = require("./commands/fish");
 
 const schedule = require("node-schedule");
 
-schedule.scheduleJob("0 0 * * *", async () => {
+schedule.scheduleJob("33 * * * *", async () => {
   let topUser = await coin.bleedTopUser();
+  await coin.checkStreaks();
   coin.resetDailies();
 
   coin.notifyDailyReset(client, topUser);
@@ -103,6 +104,7 @@ client.on("message", (message) => {
     "~role": () => roles.role(message, args),
     "~kill": () => basic.kill(client, message),
     "~update": () => basic.update(client, message),
+    "~streaks": () => coin.checkStreaks()
   };
 
   if (COMMANDS[command]) {

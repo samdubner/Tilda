@@ -11,6 +11,9 @@ const UserSchema = new Schema({
   score: {
     type: Number,
   },
+  streak: {
+    type: Number,
+  },
   dailyDone: {
     type: Boolean,
   },

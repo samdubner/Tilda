@@ -37,37 +37,43 @@ const resetDailies = async () => {
   await User.updateMany({}, { dailyDone: false });
 };
 
+const checkStreaks = async () => {
+  await User.updateMany({dailyDone: false}, { streak: 0 });
+};
+
 const notifyDailyReset = async (client, topUser) => {
-  let member = await client.users.fetch(topUser.userId)
+  let member = await client.users.fetch(topUser.userId);
 
-  client.channels
-    .fetch("735399594917363722")
-    .then((channel) => {
-      let embed = new MessageEmbed()
-        .setColor("#00ff00")
-        .setTitle(`Dailies have been reset!`)
-        .setDescription(
-          `${member.username} has also misplaced some coins...`
-        )
-        .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
+  client.channels.fetch("735399594917363722").then((channel) => {
+    let embed = new MessageEmbed()
+      .setColor("#00ff00")
+      .setTitle(`Dailies have been reset!`)
+      .setDescription(`${member.username} has also misplaced some coins...`)
+      .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
 
-      channel.send(embed).catch(console.error);
-    })
+    channel.send(embed).catch(console.error);
+  }).catch(() => console.log("Channel wasn't able to be found, daily reset notification not sent"));
 };
 
 const checkChampion = async (client, topUser) => {
-  let guild = await client.guilds.fetch("735395621703385099")
-  await guild.members.fetch();
-  let role = await guild.roles.fetch("832069903703998505")
-  let currentChampion = role.members.first()
+  try {
+    let guild = await client.guilds.fetch("735395621703385099");
 
-  if (!currentChampion || currentChampion.id != topUser.userId) {
-    currentChampion.roles.remove(role.id)
-
-    let newChampion = await guild.members.fetch(topUser.userId)
-    newChampion.roles.add(role.id)
+    await guild.members.fetch();
+    let role = await guild.roles.fetch("832069903703998505");
+    let currentChampion = role.members.first();
+  
+    if (!currentChampion || currentChampion.id != topUser.userId) {
+      currentChampion.roles.remove(role.id);
+  
+      let newChampion = await guild.members.fetch(topUser.userId);
+      newChampion.roles.add(role.id);
+    }
+  } catch (e) {
+    console.log("Main server not found... unable to change coin champion");
   }
-}
+
+};
 
 const leaderboard = async (message) => {
   if (
@@ -82,8 +88,10 @@ const leaderboard = async (message) => {
     .sort([["score", -1]])
     .limit(10);
   let members = await message.guild.members.fetch();
-  userList = userList.filter(user => message.guild.member(user.userId) != undefined)
-  userList = userList.slice(0, 5)
+  userList = userList.filter(
+    (user) => message.guild.member(user.userId) != undefined
+  );
+  userList = userList.slice(0, 5);
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -262,17 +270,27 @@ const daily = (message, user) => {
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle(`You already got your daily today!`)
-      .setDescription(`Daily will reset in ${hours} ${hourText} and ${minutes} ${minuteText}`)
+      .setDescription(
+        `Daily will reset in ${hours} ${hourText} and ${minutes} ${minuteText}`
+      )
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
     message.reply(embed).catch(console.error);
     return;
   }
 
+  // if (!user.streak) user.streak = 0;
+
   User.updateOne(
     { userId: message.author.id },
-    { score: parseInt(user.score) + 100, dailyDone: true }
+    {
+      score: parseInt(user.score) + 100,
+      dailyDone: true,
+      // streak: user.streak + 1,
+    }
   ).catch(console.error);
+
+  // console.log(user.streak);
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -510,8 +528,8 @@ const randomCoinEvent = (client) => {
     .setTitle("Random Coin Event")
     .setDescription(`Use \`~claim\` to win ${coinAmount} coins!`);
 
-  client.channels.cache
-    .get("735399594917363722")
+  client.channels
+    .fetch("735399594917363722")
     .send(embed)
     .then((message) => {
       coinEvent = { isUp: true, messageId: message.id, coinAmount };
@@ -520,7 +538,8 @@ const randomCoinEvent = (client) => {
           "en-US"
         )}] Generated new coin event for ${coinAmount} coins`
       );
-    });
+    })
+    .catch(console.error);
 };
 
 const challenge = async (message, args, user) => {
@@ -661,6 +680,7 @@ const createUser = async (message) => {
   const newUser = new User({
     userId: message.author.id,
     score: 100,
+    streak: 0,
     dailyDone: true,
     begDate: new Date().getTime(),
   });
@@ -720,5 +740,6 @@ module.exports = {
   bleedTopUser,
   resetDailies,
   notifyDailyReset,
-  checkChampion
+  checkChampion,
+  checkStreaks,
 };
