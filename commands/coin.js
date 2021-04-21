@@ -38,7 +38,7 @@ const resetDailies = async () => {
 };
 
 const checkStreaks = async () => {
-  await User.updateMany({dailyDone: false}, { streak: 0 });
+  await User.updateMany({}, { streak: 0 });
 };
 
 const notifyDailyReset = async (client, topUser) => {
