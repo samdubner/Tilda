@@ -38,21 +38,28 @@ const resetDailies = async () => {
 };
 
 const checkStreaks = async () => {
-  await User.updateMany({}, { streak: 0 });
+  await User.updateMany({ dailyDone: false }, { streak: 0 });
 };
 
 const notifyDailyReset = async (client, topUser) => {
   let member = await client.users.fetch(topUser.userId);
 
-  client.channels.fetch("735399594917363722").then((channel) => {
-    let embed = new MessageEmbed()
-      .setColor("#00ff00")
-      .setTitle(`Dailies have been reset!`)
-      .setDescription(`${member.username} has also misplaced some coins...`)
-      .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
+  client.channels
+    .fetch("735399594917363722")
+    .then((channel) => {
+      let embed = new MessageEmbed()
+        .setColor("#00ff00")
+        .setTitle(`Dailies have been reset!`)
+        .setDescription(`${member.username} has also misplaced some coins...`)
+        .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
 
-    channel.send(embed).catch(console.error);
-  }).catch(() => console.log("Channel wasn't able to be found, daily reset notification not sent"));
+      channel.send(embed).catch(console.error);
+    })
+    .catch(() =>
+      console.log(
+        "Channel wasn't able to be found, daily reset notification not sent"
+      )
+    );
 };
 
 const checkChampion = async (client, topUser) => {
@@ -62,17 +69,16 @@ const checkChampion = async (client, topUser) => {
     await guild.members.fetch();
     let role = await guild.roles.fetch("832069903703998505");
     let currentChampion = role.members.first();
-  
+
     if (!currentChampion || currentChampion.id != topUser.userId) {
       currentChampion.roles.remove(role.id);
-  
+
       let newChampion = await guild.members.fetch(topUser.userId);
       newChampion.roles.add(role.id);
     }
   } catch (e) {
     console.log("Main server not found... unable to change coin champion");
   }
-
 };
 
 const leaderboard = async (message) => {
@@ -279,23 +285,23 @@ const daily = (message, user) => {
     return;
   }
 
-  // if (!user.streak) user.streak = 0;
+  if (user.streak < 20) user.streak++;
+  let totalDaily = 100 + 10 * user.streak;
 
   User.updateOne(
     { userId: message.author.id },
     {
-      score: parseInt(user.score) + 100,
+      score: parseInt(user.score) + totalDaily,
       dailyDone: true,
-      // streak: user.streak + 1,
+      streak: user.streak,
     }
   ).catch(console.error);
 
-  // console.log(user.streak);
-
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`${message.author.username} got 100 coins!`)
-    .setDescription(`They now have ${user.score + 100} coins`)
+    .setTitle(`${message.author.username} got ${totalDaily} coins!`)
+    .setDescription(`They now have ${user.score + totalDaily} coins`)
+    .setFooter(`You are on a ${user.streak} day long streak`)
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
   message.reply(embed).catch(console.error);
