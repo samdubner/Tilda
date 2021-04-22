@@ -16,7 +16,8 @@ mongoose
 const User = require("../models/User");
 
 const bleedTopUser = async () => {
-  let currentTopUser = await User.findOne().sort([["score", -1]]);
+  let topUsers = await User.find().sort([["score", -1]]).limit(3)
+  let currentTopUser = topUsers[0];
 
   if (currentTopUser.score > 5) {
     currentTopUser.score = Math.floor(
@@ -30,7 +31,7 @@ const bleedTopUser = async () => {
     currentTopUser.save();
   }
 
-  return currentTopUser;
+  return topUsers;
 };
 
 const resetDailies = async () => {
@@ -41,8 +42,8 @@ const checkStreaks = async () => {
   await User.updateMany({ dailyDone: false }, { streak: 0 });
 };
 
-const notifyDailyReset = async (client, topUser) => {
-  let member = await client.users.fetch(topUser.userId);
+const notifyDailyReset = async (client, topUsers) => {
+  let member = await client.users.fetch(topUsers[0].userId);
 
   client.channels
     .fetch("735399594917363722")
@@ -62,22 +63,36 @@ const notifyDailyReset = async (client, topUser) => {
     );
 };
 
-const checkChampion = async (client, topUser) => {
+const checkChampion = async (client, topUsers) => {
   try {
     let guild = await client.guilds.fetch("735395621703385099");
 
     await guild.members.fetch();
-    let role = await guild.roles.fetch("832069903703998505");
-    let currentChampion = role.members.first();
+    let championRole = await guild.roles.fetch("832069903703998505");
+    let podiumRole = await guild.roles.fetch("834173402016645130")
+    let currentChampion = championRole.members.first();
 
-    if (!currentChampion || currentChampion.id != topUser.userId) {
-      currentChampion.roles.remove(role.id);
+    let leadUser = topUsers[0];
+    let podiumUsers = topUsers.slice(1).map(user => user.userId)
 
-      let newChampion = await guild.members.fetch(topUser.userId);
-      newChampion.roles.add(role.id);
+    if (!currentChampion || currentChampion.id != leadUser.userId) {
+      currentChampion.roles.remove(championRole.id);
+
+      let newChampion = await guild.members.fetch(leadUser.userId);
+      newChampion.roles.add(championRole.id);
     }
+
+    podiumRole.members.each((member) => {
+      if (!podiumUsers.includes(member)) member.roles.remove(podiumRole.id)
+    })
+
+    for (let podiumWinner of podiumUsers) {
+      let podiumMember = guild.members.fetch(podiumWinner)
+      podiumMember.roles.add(podiumRole.id)
+    }
+
   } catch (e) {
-    console.log("Main server not found... unable to change coin champion");
+    console.log("Main server not found... unable to change coin roles");
   }
 };
 

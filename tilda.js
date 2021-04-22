@@ -13,13 +13,13 @@ const fish = require("./commands/fish");
 
 const schedule = require("node-schedule");
 
-schedule.scheduleJob("0 0 * * *", async () => {
-  let topUser = await coin.bleedTopUser();
+schedule.scheduleJob("0 9 * * *", async () => {
+  let topUsers = await coin.bleedTopUser();
   await coin.checkStreaks();
   coin.resetDailies();
 
-  coin.notifyDailyReset(client, topUser);
-  coin.checkChampion(client, topUser);
+  coin.notifyDailyReset(client, topUsers);
+  coin.checkChampion(client, topUsers);
 });
 
 const randomizeRoleColor = async () => {
@@ -34,7 +34,7 @@ const randomizeRoleColor = async () => {
   role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
 };
 
-schedule.scheduleJob("0 12 * * *", randomizeRoleColor);
+schedule.scheduleJob("0 0 * * *", randomizeRoleColor);
 
 client.on("ready", () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
