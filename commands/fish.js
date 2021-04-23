@@ -536,7 +536,7 @@ const noRod = (message) => {
   message.reply(embed);
 };
 
-const insufficientCoins = (message) => {
+const insufficientCoins = (message, pond) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription("You don't have enough coins to go fishing...")

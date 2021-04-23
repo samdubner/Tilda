@@ -87,7 +87,7 @@ const checkChampion = async (client, topUsers) => {
     })
 
     for (let podiumWinner of podiumUsers) {
-      let podiumMember = guild.members.fetch(podiumWinner)
+      let podiumMember = await guild.members.fetch(podiumWinner)
       podiumMember.roles.add(podiumRole.id)
     }
 
@@ -316,7 +316,7 @@ const daily = (message, user) => {
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle(`${message.author.username} got ${totalDaily} coins!`)
     .setDescription(`They now have ${user.score + totalDaily} coins`)
-    .setFooter(`You are on a ${user.streak} day long streak`)
+    .setFooter(`Daily Streak: ${user.streak} days`)
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
   message.reply(embed).catch(console.error);
