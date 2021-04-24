@@ -83,7 +83,7 @@ const checkChampion = async (client, topUsers) => {
     }
 
     podiumRole.members.each((member) => {
-      if (!podiumUsers.includes(member)) member.roles.remove(podiumRole.id)
+      if (!podiumUsers.includes(member.id)) member.roles.remove(podiumRole.id)
     })
 
     for (let podiumWinner of podiumUsers) {

@@ -317,11 +317,11 @@ const displayFish = async (message, pondName, embed = false) => {
   }
 };
 
-const reactAndWait = (message, embed) => {
+const reactAndWait = async (message, embed) => {
   validReactions = ["💦", "🐍", "🔥", "☁️", "🕸️", "⚫"];
 
   for (let reaction of validReactions) {
-    embed.react(reaction);
+    await embed.react(reaction);
   }
 
   const filter = (reaction, user) =>
