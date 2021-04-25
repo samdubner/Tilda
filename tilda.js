@@ -109,7 +109,7 @@ client.on("message", (message) => {
   if (COMMANDS[command]) {
     COMMANDS[command]();
   } else {
-    message.reply(`\`${command}\` is not a valid command`);
+    message.reply(`\`${messageContent[0]}\` is not a valid command`);
   }
 });
 
