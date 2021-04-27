@@ -16,7 +16,9 @@ mongoose
 const User = require("../models/User");
 
 const bleedTopUser = async () => {
-  let topUsers = await User.find().sort([["score", -1]]).limit(3)
+  let topUsers = await User.find()
+    .sort([["score", -1]])
+    .limit(3);
   let currentTopUser = topUsers[0];
 
   if (currentTopUser.score > 5) {
@@ -69,11 +71,11 @@ const checkChampion = async (client, topUsers) => {
 
     await guild.members.fetch();
     let championRole = await guild.roles.fetch("832069903703998505");
-    let podiumRole = await guild.roles.fetch("834173402016645130")
+    let podiumRole = await guild.roles.fetch("834173402016645130");
     let currentChampion = championRole.members.first();
 
     let leadUser = topUsers[0];
-    let podiumUsers = topUsers.slice(1).map(user => user.userId)
+    let podiumUsers = topUsers.slice(1).map((user) => user.userId);
 
     if (!currentChampion || currentChampion.id != leadUser.userId) {
       currentChampion.roles.remove(championRole.id);
@@ -83,14 +85,13 @@ const checkChampion = async (client, topUsers) => {
     }
 
     podiumRole.members.each((member) => {
-      if (!podiumUsers.includes(member.id)) member.roles.remove(podiumRole.id)
-    })
+      if (!podiumUsers.includes(member.id)) member.roles.remove(podiumRole.id);
+    });
 
     for (let podiumWinner of podiumUsers) {
-      let podiumMember = await guild.members.fetch(podiumWinner)
-      podiumMember.roles.add(podiumRole.id)
+      let podiumMember = await guild.members.fetch(podiumWinner);
+      podiumMember.roles.add(podiumRole.id);
     }
-
   } catch (e) {
     console.log("Main server not found... unable to change coin roles");
   }
@@ -540,7 +541,7 @@ let coinEvent = {
   messageId: 0,
 };
 
-const randomCoinEvent = (client) => {
+const randomCoinEvent = async (client) => {
   let coinAmount = Math.floor(Math.random() * 50) + 26;
 
   let embed = new MessageEmbed()
@@ -549,8 +550,9 @@ const randomCoinEvent = (client) => {
     .setTitle("Random Coin Event")
     .setDescription(`Use \`~claim\` to win ${coinAmount} coins!`);
 
-  client.channels
-    .fetch("735399594917363722")
+  let botChannel = await client.channels.fetch("735399594917363722");
+
+  botChannel
     .send(embed)
     .then((message) => {
       coinEvent = { isUp: true, messageId: message.id, coinAmount };

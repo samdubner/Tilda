@@ -4,7 +4,7 @@ const client = new Discord.Client();
 const fs = require("fs");
 
 const basic = require("./commands/basic");
-const info = require("./commands/info");
+const channel = require("./commands/channel");
 const coin = require("./commands/coin");
 const help = require("./commands/help");
 const roles = require("./commands/roles");
@@ -79,9 +79,9 @@ client.on("message", (message) => {
 
   const COMMANDS = {
     "~help": () => help.help(message),
-    "~pfp": () => info.pfp(message),
-    "~ui": () => info.ui(message),
-    "~si": () => info.si(message),
+    "~pfp": () => basic.pfp(message),
+    "~ui": () => basic.ui(message),
+    "~si": () => basic.si(message),
     "~suggest": () => basic.suggest(message),
     "~8ball": () => basic.eightBall(message, args),
     "~roll": () => basic.roll(message, args),
@@ -103,9 +103,10 @@ client.on("message", (message) => {
     "~fish": () => fish.fishManager(message, args),
     "~role": () => roles.role(message, args),
     "~kill": () => basic.kill(client, message),
-    "~update": () => basic.update(client, message)
+    "~update": () => basic.update(client, message),
+    "~channel": () => channel.channelManager(client, message)
   };
-
+ 
   if (COMMANDS[command]) {
     COMMANDS[command]();
   } else {

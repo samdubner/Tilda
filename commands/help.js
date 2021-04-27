@@ -7,7 +7,7 @@ const help = (message, helpEmbed) => {
     .setTitle(`Help`)
     .setThumbnail(message.guild.iconURL())
     .addField("1️⃣", "Basic Commands", true)
-    .addField("2️⃣", "Info Commands", true)
+    .addField("2️⃣", "Channel Commands", true)
     .addField("3️⃣", "Coin Commands", true)
     .addField("4️⃣", "Role Commands", true)
     .addField("5️⃣", "Shop Commands", true)
@@ -72,11 +72,7 @@ let editEmbed = (helpEmbed, message, num, color) => {
         {
           name: "~8ball [question]",
           value: "Ask the all powerful 8ball your questions",
-        }
-      );
-      break;
-    case "2️⃣":
-      embed.setDescription("Info Commands").addFields(
+        },
         {
           name: "~ui <@people>",
           value:
@@ -88,6 +84,11 @@ let editEmbed = (helpEmbed, message, num, color) => {
           value:
             "Sends the profile pictures of the mentioned people or yourself if nobody is mentioned",
         }
+      );
+      break;
+    case "2️⃣":
+      embed.setDescription("Channel Commands").addFields(
+        { name: "~channel", value: "creates a private category and gives you full control over it!" }
       );
       break;
     case "3️⃣":
