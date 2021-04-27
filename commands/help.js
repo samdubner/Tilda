@@ -90,11 +90,11 @@ let editEmbed = (helpEmbed, message, num, color) => {
       embed
         .setDescription("Room Commands")
         .addFields(
-          { name: "~room start", value: "<WIP>" },
-          { name: "~room end", value: "<WIP>" },
-          { name: "~room private", value: "<WIP>" },
-          { name: "~room add", value: "<WIP>" },
-          { name: "~room remove", value: "<WIP>" }
+          { name: "~room start", value: "Create your own category!" },
+          { name: "~room end", value: "Removes the category and channels within" },
+          { name: "~room private", value: "Changes the room to only be visible to you!" },
+          { name: "~room add @user", value: "Add other users to your private room" },
+          { name: "~room remove @user", value: "Remove users from your private room" }
         );
       break;
     case "3️⃣":

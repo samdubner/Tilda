@@ -20,12 +20,10 @@ const channelManager = (message, args) => {
       addUsersToRoom(message);
       break;
     case "remove":
-      removeUsersFromRoom(message)
+      removeUsersFromRoom(message);
       break;
     default:
-      message.reply(
-        "Please use either start or end as an argument for this command"
-      );
+      message.reply("Please provide a valid argument for this command");
   }
 };
 
@@ -37,10 +35,25 @@ const addUsersToRoom = async (message) => {
   }
 
   if (!user.categoryId) {
-    message.reply("You have to create a room before you can set it as private!");
+    message.reply("You have to create a room before you can add users!");
     return;
   }
-}
+
+  let category = await message.guild.channels.resolve(user.categoryId);
+
+  message.mentions.users.each((user) => {
+    category
+      .updateOverwrite(user.id, {
+        VIEW_CHANNEL: true,
+      })
+      .then((categoryChannel) => {
+        categoryChannel.children.each((channel) => {
+          channel.lockPermissions().catch(console.error);
+        });
+      })
+      .catch(console.error);
+  });
+};
 
 const removeUsersFromRoom = async (message) => {
   let user = await User.findOne({ userId: message.author.id });
@@ -50,10 +63,28 @@ const removeUsersFromRoom = async (message) => {
   }
 
   if (!user.categoryId) {
-    message.reply("You have to create a room before you can set it as private!");
+    message.reply(
+      "You have to create a room before you can set it as private!"
+    );
     return;
   }
-}
+
+
+  let category = await message.guild.channels.resolve(user.categoryId);
+
+  message.mentions.users.each((user) => {
+    category
+      .updateOverwrite(user.id, {
+        VIEW_CHANNEL: false,
+      })
+      .then((categoryChannel) => {
+        categoryChannel.children.each((channel) => {
+          channel.lockPermissions().catch(console.error);
+        });
+      })
+      .catch(console.error);
+  });
+};
 
 const privateCategory = async (message) => {
   let user = await User.findOne({ userId: message.author.id });
@@ -63,30 +94,25 @@ const privateCategory = async (message) => {
   }
 
   if (!user.categoryId) {
-    message.reply("You have to create a room before you can set it as private!");
+    message.reply(
+      "You have to create a room before you can set it as private!"
+    );
     return;
   }
 
-  let category = await message.guild.channels.resolve(user.categoryId)
+  let category = await message.guild.channels.resolve(user.categoryId);
 
-  let allowOwner = {
-    id: message.author.id,
-    allow: ["VIEW_CHANNEL"],
-  };
-
-  let denyEveryone = {
-    id: message.guild.roles.everyone,
-    deny: ["VIEW_CHANNEL"]
-  }
-
-  category.overwritePermissions([allowOwner, denyEveryone])
-    .then(categoryChannel => {
+  category
+    .updateOverwrite(message.guild.roles.everyone, {
+      VIEW_CHANNEL: false,
+    })
+    .then((categoryChannel) => {
       categoryChannel.children.each((channel) => {
         channel.lockPermissions().catch(console.error);
       });
     })
-
-}
+    .catch(console.error);
+};
 
 const createCategory = async (message) => {
   let user = await User.findOne({ userId: message.author.id });
@@ -121,7 +147,7 @@ const createCategory = async (message) => {
   let voiceChatOptions = {
     type: "voice",
     parent: category.id,
-    limit: 99
+    limit: 99,
   };
 
   let textChannel = await guild.channels.create(`text-chat`, textChatOptions);
@@ -133,19 +159,20 @@ const createCategory = async (message) => {
 
   let ownerManageChannels = {
     id: message.author.id,
-    allow: ["MANAGE_CHANNELS"],
+    allow: ["MANAGE_CHANNELS", "VIEW_CHANNEL"],
   };
 
   let allowEveryone = {
     id: message.guild.roles.everyone,
-    allow: ["VIEW_CHANNEL"]
-  }
+    allow: ["VIEW_CHANNEL"],
+  };
 
-  category.overwritePermissions([allowEveryone, ownerManageChannels])
-  .then(() => {
-    textChannel.lockPermissions()
-    voiceChannel.lockPermissions()
-  });
+  category
+    .overwritePermissions([allowEveryone, ownerManageChannels])
+    .then(() => {
+      textChannel.lockPermissions();
+      voiceChannel.lockPermissions();
+    });
 
   user.categoryId = category.id;
   user.save();
