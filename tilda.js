@@ -4,7 +4,7 @@ const client = new Discord.Client();
 const fs = require("fs");
 
 const basic = require("./commands/basic");
-const channel = require("./commands/channel");
+const room = require("./commands/room");
 const coin = require("./commands/coin");
 const help = require("./commands/help");
 const roles = require("./commands/roles");
@@ -104,7 +104,7 @@ client.on("message", (message) => {
     "~role": () => roles.role(message, args),
     "~kill": () => basic.kill(client, message),
     "~update": () => basic.update(client, message),
-    "~channel": () => channel.channelManager(client, message)
+    "~room": () => room.channelManager(message, args)
   };
  
   if (COMMANDS[command]) {

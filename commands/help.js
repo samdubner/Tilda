@@ -87,9 +87,15 @@ let editEmbed = (helpEmbed, message, num, color) => {
       );
       break;
     case "2️⃣":
-      embed.setDescription("Channel Commands").addFields(
-        { name: "~channel", value: "<WIP>" }
-      );
+      embed
+        .setDescription("Room Commands")
+        .addFields(
+          { name: "~room start", value: "<WIP>" },
+          { name: "~room end", value: "<WIP>" },
+          { name: "~room private", value: "<WIP>" },
+          { name: "~room add", value: "<WIP>" },
+          { name: "~room remove", value: "<WIP>" }
+        );
       break;
     case "3️⃣":
       embed.setDescription("Coin Commands").addFields(

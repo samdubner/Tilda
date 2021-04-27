@@ -32,6 +32,9 @@ const UserSchema = new Schema({
   },
   caughtFish: {
     type: [String]
+  },
+  categoryId: {
+    type: String
   }
 });
 

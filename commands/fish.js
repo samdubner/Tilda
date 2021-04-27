@@ -109,24 +109,23 @@ const catchManager = (message, args) => {
 };
 
 const fishManager = (message, args) => {
-  let primaryArg = args.split(" ")[0];
-  if (primaryArg)
-    switch (primaryArg) {
-      case "":
-        informCatchFish();
-        break;
-      case "list":
-      case "inventory":
-      case "inv":
-        displayFish(message, "plain");
-        break;
-      case "sell":
-      case "s":
-        sellFishCheck(message, args);
-        break;
-      default:
-        checkForFish(message, args);
-    }
+  let primaryArg = args.split(" ")[0].toLowerCase();
+  switch (primaryArg) {
+    case "":
+      informCatchFish();
+      break;
+    case "list":
+    case "inventory":
+    case "inv":
+      displayFish(message, "plain");
+      break;
+    case "sell":
+    case "s":
+      sellFishCheck(message, args);
+      break;
+    default:
+      checkForFish(message, args);
+  }
 };
 
 const informCatchFish = (message) => {
@@ -139,7 +138,7 @@ const sellFishCheck = async (message, args) => {
   let user = await User.findOne({ userId: message.author.id });
 
   if (!user) {
-    coin.createUser(message);
+    user = await coin.createUser(message);
     noFish(message);
     return;
   } else if (!user.fish.length) {
@@ -286,11 +285,11 @@ const displayFish = async (message, pondName, embed = false) => {
     .setThumbnail(message.author.displayAvatarURL())
     .setTimestamp();
 
-    if (user.fish.length) {
-      let totalFishPrice = 0;
-      user.fish.forEach((fish) => totalFishPrice += fish.price);
-      fishEmbed.setFooter(`FW: ${totalFishPrice} coins`)
-    }
+  if (user.fish.length) {
+    let totalFishPrice = 0;
+    user.fish.forEach((fish) => (totalFishPrice += fish.price));
+    fishEmbed.setFooter(`FW: ${totalFishPrice} coins`);
+  }
 
   for (fish in fishCount) {
     if (fishCount[fish] == 0) continue;
