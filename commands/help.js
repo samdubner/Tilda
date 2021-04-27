@@ -7,7 +7,7 @@ const help = (message, helpEmbed) => {
     .setTitle(`Help`)
     .setThumbnail(message.guild.iconURL())
     .addField("1️⃣", "Basic Commands", true)
-    .addField("2️⃣", "Channel Commands", true)
+    .addField("2️⃣", "Room Commands", true)
     .addField("3️⃣", "Coin Commands", true)
     .addField("4️⃣", "Role Commands", true)
     .addField("5️⃣", "Shop Commands", true)
