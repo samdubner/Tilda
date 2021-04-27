@@ -160,7 +160,7 @@ const createCategory = async (message) => {
 
   let ownerManageChannels = {
     id: message.author.id,
-    allow: ["MANAGE_CHANNELS", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
+    allow: ["MANAGE_CHANNELS", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_MESSAGES"],
   };
 
   let allowEveryone = {
