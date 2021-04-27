@@ -45,6 +45,7 @@ const addUsersToRoom = async (message) => {
     category
       .updateOverwrite(user.id, {
         VIEW_CHANNEL: true,
+        READ_MESSAGE_HISTORY: true
       })
       .then((categoryChannel) => {
         categoryChannel.children.each((channel) => {
@@ -159,12 +160,12 @@ const createCategory = async (message) => {
 
   let ownerManageChannels = {
     id: message.author.id,
-    allow: ["MANAGE_CHANNELS", "VIEW_CHANNEL"],
+    allow: ["MANAGE_CHANNELS", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
   };
 
   let allowEveryone = {
     id: message.guild.roles.everyone,
-    allow: ["VIEW_CHANNEL"],
+    allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
   };
 
   category
