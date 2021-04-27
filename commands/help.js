@@ -88,7 +88,7 @@ let editEmbed = (helpEmbed, message, num, color) => {
       break;
     case "2️⃣":
       embed.setDescription("Channel Commands").addFields(
-        { name: "~channel", value: "creates a private category and gives you full control over it!" }
+        { name: "~channel", value: "<WIP>" }
       );
       break;
     case "3️⃣":
