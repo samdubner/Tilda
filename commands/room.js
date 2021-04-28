@@ -14,10 +14,10 @@ const channelManager = (message, args) => {
       removeCategory(message);
       break;
     case "private":
-      privateCategory(message);
+      changeCategoryPrivacy(message, false)
       break;
     case "public":
-      publicCategory(message);
+      changeCategoryPrivacy(message, true)
       break;
     case "add":
       addUsersToRoom(message);
@@ -95,19 +95,19 @@ const removeUsersFromRoom = async (message) => {
         });
 
         const notifyEmbed = new MessageEmbed()
-        .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-        .setTitle("Room status")
-        .setDescription(
-          `Removed \`${message.mentions.users.size}\` user(s) from the room`
-        );
+          .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+          .setTitle("Room status")
+          .setDescription(
+            `Removed \`${message.mentions.users.size}\` user(s) from the room`
+          );
 
-      message.reply(notifyEmbed);
+        message.reply(notifyEmbed);
       })
       .catch(console.error);
   });
 };
 
-const privateCategory = async (message) => {
+const changeCategoryPrivacy = async (message, privacy) => {
   let user = await User.findOne({ userId: message.author.id });
 
   if (!user) {
@@ -125,58 +125,29 @@ const privateCategory = async (message) => {
 
   category
     .updateOverwrite(message.guild.roles.everyone, {
-      VIEW_CHANNEL: false,
+      VIEW_CHANNEL: privacy,
     })
     .then((categoryChannel) => {
       categoryChannel.children.each((channel) => {
         channel.lockPermissions().catch(console.error);
       });
 
-      const notifyEmbed = new MessageEmbed()
-        .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-        .setTitle("Room status")
-        .setDescription(
-          `${message.member.displayName}'s room was changed to \`private\``
-        );
-
-      message.reply(notifyEmbed);
+      notifyStatus(message, privacy);
     })
     .catch(console.error);
 };
 
-const publicCategory = async (message) => {
-  let user = await User.findOne({ userId: message.author.id });
+const notifyStatus = (message, status) => {
+  status = status === true ? "public" : "private";
 
-  if (!user) {
-    user = await coin.createUser(message);
-  }
+  const notifyEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle("Room status")
+    .setDescription(
+      `${message.member.displayName}'s room was changed to \`${status}\``
+    );
 
-  if (!user.categoryId) {
-    message.reply("You have to create a room before you can set it as public!");
-    return;
-  }
-
-  let category = await message.guild.channels.resolve(user.categoryId);
-
-  category
-    .updateOverwrite(message.guild.roles.everyone, {
-      VIEW_CHANNEL: true,
-    })
-    .then((categoryChannel) => {
-      categoryChannel.children.each((channel) => {
-        channel.lockPermissions().catch(console.error);
-      });
-
-      const notifyEmbed = new MessageEmbed()
-        .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-        .setTitle("Room status")
-        .setDescription(
-          `${message.member.displayName}'s room was changed to \`public\``
-        );
-
-      message.reply(notifyEmbed);
-    })
-    .catch(console.error);
+  message.reply(notifyEmbed);
 };
 
 const createCategory = async (message) => {
