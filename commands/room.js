@@ -54,18 +54,18 @@ const addUsersToRoom = async (message) => {
         categoryChannel.children.each((channel) => {
           channel.lockPermissions().catch(console.error);
         });
-
-        const notifyEmbed = new MessageEmbed()
-          .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-          .setTitle("Room status")
-          .setDescription(
-            `Added \`${message.mentions.users.size}\` user(s) to the room`
-          );
-
-        message.reply(notifyEmbed);
       })
       .catch(console.error);
   });
+
+  const notifyEmbed = new MessageEmbed()
+  .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+  .setTitle("Room status")
+  .setDescription(
+    `Added \`${message.mentions.users.size}\` user(s) to the room`
+  );
+
+message.reply(notifyEmbed);
 };
 
 const removeUsersFromRoom = async (message) => {
