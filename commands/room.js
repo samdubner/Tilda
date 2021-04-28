@@ -14,10 +14,10 @@ const channelManager = (message, args) => {
       removeCategory(message);
       break;
     case "private":
-      changeCategoryPrivacy(message, false)
+      changeCategoryPrivacy(message, false);
       break;
     case "public":
-      changeCategoryPrivacy(message, true)
+      changeCategoryPrivacy(message, true);
       break;
     case "add":
       addUsersToRoom(message);
@@ -59,13 +59,13 @@ const addUsersToRoom = async (message) => {
   });
 
   const notifyEmbed = new MessageEmbed()
-  .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-  .setTitle("Room status")
-  .setDescription(
-    `Added \`${message.mentions.users.size}\` user(s) to the room`
-  );
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle("Room status")
+    .setDescription(
+      `Added \`${message.mentions.users.size}\` user(s) to the room`
+    );
 
-message.reply(notifyEmbed);
+  message.reply(notifyEmbed);
 };
 
 const removeUsersFromRoom = async (message) => {
@@ -93,18 +93,18 @@ const removeUsersFromRoom = async (message) => {
         categoryChannel.children.each((channel) => {
           channel.lockPermissions().catch(console.error);
         });
-
-        const notifyEmbed = new MessageEmbed()
-          .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-          .setTitle("Room status")
-          .setDescription(
-            `Removed \`${message.mentions.users.size}\` user(s) from the room`
-          );
-
-        message.reply(notifyEmbed);
       })
       .catch(console.error);
   });
+
+  const notifyEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle("Room status")
+    .setDescription(
+      `Removed \`${message.mentions.users.size}\` user(s) from the room`
+    );
+
+  message.reply(notifyEmbed);
 };
 
 const changeCategoryPrivacy = async (message, privacy) => {
