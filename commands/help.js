@@ -93,6 +93,7 @@ let editEmbed = (helpEmbed, message, num, color) => {
           { name: "~room start", value: "Create your own category!" },
           { name: "~room end", value: "Removes the category and channels within" },
           { name: "~room private", value: "Changes the room to only be visible to you!" },
+          { name: "~room public", value: "Changes the room to only be visible to everyone!" },
           { name: "~room add @user", value: "Add other users to your private room" },
           { name: "~room remove @user", value: "Remove users from your private room" }
         );

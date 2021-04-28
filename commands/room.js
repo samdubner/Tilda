@@ -16,6 +16,9 @@ const channelManager = (message, args) => {
     case "private":
       privateCategory(message);
       break;
+    case "public":
+      publicCategory(message);
+      break;
     case "add":
       addUsersToRoom(message);
       break;
@@ -45,12 +48,21 @@ const addUsersToRoom = async (message) => {
     category
       .updateOverwrite(user.id, {
         VIEW_CHANNEL: true,
-        READ_MESSAGE_HISTORY: true
+        READ_MESSAGE_HISTORY: true,
       })
       .then((categoryChannel) => {
         categoryChannel.children.each((channel) => {
           channel.lockPermissions().catch(console.error);
         });
+
+        const notifyEmbed = new MessageEmbed()
+          .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+          .setTitle("Room status")
+          .setDescription(
+            `Added \`${message.mentions.users.size}\` user(s) to the room`
+          );
+
+        message.reply(notifyEmbed);
       })
       .catch(console.error);
   });
@@ -70,7 +82,6 @@ const removeUsersFromRoom = async (message) => {
     return;
   }
 
-
   let category = await message.guild.channels.resolve(user.categoryId);
 
   message.mentions.users.each((user) => {
@@ -82,6 +93,15 @@ const removeUsersFromRoom = async (message) => {
         categoryChannel.children.each((channel) => {
           channel.lockPermissions().catch(console.error);
         });
+
+        const notifyEmbed = new MessageEmbed()
+        .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+        .setTitle("Room status")
+        .setDescription(
+          `Removed \`${message.mentions.users.size}\` user(s) from the room`
+        );
+
+      message.reply(notifyEmbed);
       })
       .catch(console.error);
   });
@@ -111,6 +131,50 @@ const privateCategory = async (message) => {
       categoryChannel.children.each((channel) => {
         channel.lockPermissions().catch(console.error);
       });
+
+      const notifyEmbed = new MessageEmbed()
+        .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+        .setTitle("Room status")
+        .setDescription(
+          `${message.member.displayName}'s room was changed to \`private\``
+        );
+
+      message.reply(notifyEmbed);
+    })
+    .catch(console.error);
+};
+
+const publicCategory = async (message) => {
+  let user = await User.findOne({ userId: message.author.id });
+
+  if (!user) {
+    user = await coin.createUser(message);
+  }
+
+  if (!user.categoryId) {
+    message.reply("You have to create a room before you can set it as public!");
+    return;
+  }
+
+  let category = await message.guild.channels.resolve(user.categoryId);
+
+  category
+    .updateOverwrite(message.guild.roles.everyone, {
+      VIEW_CHANNEL: true,
+    })
+    .then((categoryChannel) => {
+      categoryChannel.children.each((channel) => {
+        channel.lockPermissions().catch(console.error);
+      });
+
+      const notifyEmbed = new MessageEmbed()
+        .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+        .setTitle("Room status")
+        .setDescription(
+          `${message.member.displayName}'s room was changed to \`public\``
+        );
+
+      message.reply(notifyEmbed);
     })
     .catch(console.error);
 };
@@ -129,13 +193,30 @@ const createCategory = async (message) => {
     return;
   }
 
-  let guild = message.guild;
+  let permissionOverwrites = [
+    {
+      id: message.guild.roles.everyone,
+      deny: ["VIEW_CHANNEL"],
+    },
+    {
+      id: message.author.id,
+      allow: [
+        "MANAGE_CHANNELS",
+        "VIEW_CHANNEL",
+        "READ_MESSAGE_HISTORY",
+        "MANAGE_MESSAGES",
+        "MUTE_MEMBERS",
+        "DEAFEN_MEMBERS",
+      ],
+    },
+  ];
 
   let categoryOptions = {
     type: "category",
+    permissionOverwrites,
   };
 
-  let category = await guild.channels.create(
+  let category = await message.guild.channels.create(
     `${message.member.displayName}'s Room`,
     categoryOptions
   );
@@ -148,32 +229,21 @@ const createCategory = async (message) => {
   let voiceChatOptions = {
     type: "voice",
     parent: category.id,
-    limit: 99,
+    userLimit: 99,
   };
 
-  let textChannel = await guild.channels.create(`text-chat`, textChatOptions);
+  let textChannel = await message.guild.channels.create(
+    `text-chat`,
+    textChatOptions
+  );
 
-  let voiceChannel = await guild.channels.create(
+  let voiceChannel = await message.guild.channels.create(
     `voice-chat`,
     voiceChatOptions
   );
 
-  let ownerManageChannels = {
-    id: message.author.id,
-    allow: ["MANAGE_CHANNELS", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_MESSAGES"],
-  };
-
-  let allowEveryone = {
-    id: message.guild.roles.everyone,
-    allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-  };
-
-  category
-    .overwritePermissions([allowEveryone, ownerManageChannels])
-    .then(() => {
-      textChannel.lockPermissions();
-      voiceChannel.lockPermissions();
-    });
+  await textChannel.lockPermissions();
+  await voiceChannel.lockPermissions();
 
   user.categoryId = category.id;
   user.save();
