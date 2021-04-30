@@ -84,6 +84,9 @@ const removeUsersFromRoom = async (message) => {
 
   let category = await message.guild.channels.resolve(user.categoryId);
 
+  let mentionedUsers = message.mentions.users.filter(user => user.id != message.author.id)
+  // if (mentionedUsers.count)
+
   message.mentions.users.each((user) => {
     category
       .updateOverwrite(user.id, {
