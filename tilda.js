@@ -104,13 +104,18 @@ client.on("message", (message) => {
     "~role": () => roles.role(message, args),
     "~kill": () => basic.kill(client, message),
     "~update": () => basic.update(client, message),
-    "~room": () => room.channelManager(message, args)
+    "~room": () => room.channelManager(message, args),
   };
- 
+
   if (COMMANDS[command]) {
     COMMANDS[command]();
   } else {
-    message.reply(`\`${messageContent[0]}\` is not a valid command`);
+    let embed = new Discord.MessageEmbed()
+      .setColor(`#ff0000`)
+      .setTitle(`Invalid Command`)
+      .setDescription(`\`${messageContent[0]}\` is not a valid command`);
+
+    message.reply(embed).catch(console.error);
   }
 });
 
