@@ -510,7 +510,11 @@ const balance = async (message, user) => {
 
 const claim = (message, user) => {
   if (!coinEvent.isUp) {
-    message.channel.send("There is currently no ongoing coin event to claim!");
+    let embed = new MessageEmbed()
+      .setColor(`#ff0000`)
+      .setTitle("There is currently no ongoing coin event to claim!");
+
+    message.reply(embed).catch(console.error);
     return;
   }
 
