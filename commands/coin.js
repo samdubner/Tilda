@@ -512,7 +512,9 @@ const claim = (message, user) => {
   if (!coinEvent.isUp) {
     let embed = new MessageEmbed()
       .setColor(`#ff0000`)
-      .setTitle("There is currently no ongoing coin event to claim!");
+      .setTitle(
+        `${message.member.displayName}, there is currently no ongoing coin event to be claimed :(`
+      );
 
     message.reply(embed).catch(console.error);
     return;
