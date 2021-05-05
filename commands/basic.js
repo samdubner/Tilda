@@ -41,10 +41,7 @@ const eightBallResponses = [
 ];
 
 const eightBall = (message, args) => {
-  if (args == "") {
-    message.reply("Please ask a question when you try again");
-    return;
-  }
+  if (args == "") args = "<?>";
 
   let response =
     eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)];

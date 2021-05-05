@@ -97,12 +97,21 @@ const checkChampion = async (client, topUsers) => {
   }
 };
 
+const warnWrongChannel = (message) => {
+  let embed = new Discord.MessageEmbed()
+    .setColor(`#ff0000`)
+    .setTitle(`Invalid Channel`)
+    .setDescription("Please only use coin commands in <#735399594917363722>");
+
+  message.reply(embed).catch(console.error);
+};
+
 const leaderboard = async (message) => {
   if (
     message.channel.id != "735399594917363722" &&
     message.author.id != "340002869912666114"
   ) {
-    message.reply("Please only use coin commands in <#735399594917363722>");
+    warnWrongChannel(message);
     return;
   }
 
@@ -152,7 +161,7 @@ const continueUser = async (message, args, type) => {
     message.author.id != "171330866189041665" &&
     message.author.id != "385991322693009421"
   ) {
-    message.reply("Please only use coin commands in <#735399594917363722>");
+    warnWrongChannel();
     return;
   }
 
@@ -204,6 +213,15 @@ const continueUser = async (message, args, type) => {
   }
 };
 
+const sendErrorMessage = (message, error) => {
+  let embed = new Discord.MessageEmbed()
+    .setColor(`#ff0000`)
+    .setTitle(`Argument Error`)
+    .setDescription(error);
+
+  message.reply(embed).catch(console.error);
+};
+
 const flip = (message, args, user) => {
   let flipResult = Math.floor(Math.random() * 2);
   let bet = Math.ceil(args.split(" ")[0]);
@@ -211,21 +229,26 @@ const flip = (message, args, user) => {
   args = args.toLowerCase();
 
   if (user.score == 0) {
-    message.reply(
+    sendErrorMessage(
+      message,
       "You need more coins before you can bet again, try using ~daily or ~beg"
     );
     return;
   }
 
   if (bet <= 0) {
-    message.reply(
+    sendErrorMessage(
+      message,
       "You cannot bet a number of coins less than or equal to zero"
     );
     return;
   }
 
   if (bet > user.score) {
-    message.reply("That bet is too large, please try again with a smaller bet");
+    sendErrorMessage(
+      message,
+      "That bet is too large, please try again with a smaller bet"
+    );
     return;
   }
 
