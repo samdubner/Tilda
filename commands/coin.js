@@ -214,7 +214,7 @@ const continueUser = async (message, args, type) => {
 };
 
 const sendErrorMessage = (message, error) => {
-  let embed = new Discord.MessageEmbed()
+  let embed = new MessageEmbed()
     .setColor(`#ff0000`)
     .setTitle(`Argument Error`)
     .setDescription(error);
