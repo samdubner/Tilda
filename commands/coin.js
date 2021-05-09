@@ -337,7 +337,7 @@ const daily = (message, user) => {
   ).catch(console.error);
 
   let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setColor(`#00ff00`)
     .setTitle(`${message.author.username} got ${totalDaily} coins!`)
     .setDescription(`They now have ${user.score + totalDaily} coins`)
     .setFooter(`Daily Streak: ${user.streak} days`)
@@ -372,7 +372,7 @@ const beg = (message, user) => {
   ).catch(console.error);
 
   let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setColor(`#00ff00`)
     .setTitle(`${message.author.username} got 10 coins!`)
     .setDescription(`They now have ${user.score + 10} coins`)
     .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
