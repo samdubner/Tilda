@@ -123,10 +123,19 @@ const fishManager = (message, args) => {
     case "s":
       sellFishCheck(message, args);
       break;
+    case "logbook":
+    case "log":
+      fishLog(message)
+      break;
     default:
       checkForFish(message, args);
   }
 };
+
+const fishLog= (message) => {
+  let user = await User.findOne({ userId: message.author.id })
+  
+}
 
 const informCatchFish = (message) => {
   message.reply(
