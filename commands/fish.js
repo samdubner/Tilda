@@ -163,7 +163,7 @@ const fishLog = async (message) => {
     }
 
     let fishString = fishNames.join("\n")
-    fishEmbed.addField(`${PONDS[pond].name}`, fishString, true)
+    fishEmbed.addField(`${fName(PONDS[pond].name)} Pond`, fishString, true)
     fishNames = []
   }
 
