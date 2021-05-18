@@ -324,8 +324,10 @@ const daily = (message, user) => {
     return;
   }
 
-  if (user.streak < 20) user.streak++;
-  let totalDaily = 100 + 10 * user.streak;
+  user.streak++;
+  let streakBonus = user.streak * 10
+  if (streakBonus > 200) streakBonus = 200;
+  let totalDaily = 100 + streakBonus;
 
   User.updateOne(
     { userId: message.author.id },
