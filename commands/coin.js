@@ -325,7 +325,7 @@ const daily = (message, user) => {
   }
 
   user.streak++;
-  let streakBonus = user.streak * 10
+  let streakBonus = user.streak * 10;
   if (streakBonus > 200) streakBonus = 200;
   let totalDaily = 100 + streakBonus;
 
