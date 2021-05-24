@@ -164,7 +164,7 @@ let editEmbed = (helpEmbed, message, num, color) => {
         {
           name: "~fish sell [rarity]",
           value: "sells all the fish of that rarity",
-        }
+        },
         {
           name: "~fish log",
           value: "shows you all the types of fish you've caught!",
