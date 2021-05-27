@@ -20,8 +20,8 @@ const FishSchema = new Schema({
   },
   pond: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = Fish = mongoose.model("Fish", FishSchema);

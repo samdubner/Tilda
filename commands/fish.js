@@ -125,7 +125,7 @@ const fishManager = (message, args) => {
       break;
     case "logbook":
     case "log":
-      fishLog(message)
+      fishLog(message);
       break;
     default:
       checkForFish(message, args);
@@ -133,7 +133,7 @@ const fishManager = (message, args) => {
 };
 
 const fishLog = async (message) => {
-  let user = await User.findOne({ userId: message.author.id })
+  let user = await User.findOne({ userId: message.author.id });
 
   if (!user) {
     user = coin.createUser();
@@ -148,27 +148,26 @@ const fishLog = async (message) => {
   const fishEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle(`${message.member.displayName}'s Fish Logbook`)
-    .setThumbnail(message.author.displayAvatarURL())
-  
+    .setThumbnail(message.author.displayAvatarURL());
+
   let fishNames = [];
 
   for (let pond in PONDS) {
-
     for (let fish of PONDS[pond].names) {
       if (user.caughtFish.includes(fish)) {
-        fishNames.push(fish)
+        fishNames.push(fish);
       } else {
-        fishNames.push("???")
+        fishNames.push("???");
       }
     }
 
-    let fishString = fishNames.join("\n")
-    fishEmbed.addField(`${fName(PONDS[pond].name)} Pond`, fishString, true)
-    fishNames = []
+    let fishString = fishNames.join("\n");
+    fishEmbed.addField(`${fName(PONDS[pond].name)} Pond`, fishString, true);
+    fishNames = [];
   }
 
-  message.channel.send(fishEmbed).catch(console.error)
-}
+  message.channel.send(fishEmbed).catch(console.error);
+};
 
 const informCatchFish = (message) => {
   message.reply(

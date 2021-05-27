@@ -31,11 +31,11 @@ const UserSchema = new Schema({
     type: [Fish.schema],
   },
   caughtFish: {
-    type: [String]
+    type: [String],
   },
   categoryId: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 module.exports = User = mongoose.model("User", UserSchema);

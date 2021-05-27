@@ -44,7 +44,9 @@ const addUsersToRoom = async (message) => {
 
   let category = await message.guild.channels.resolve(user.categoryId);
 
-  let mentionedUsers = message.mentions.users.filter(user => user.id != message.author.id)
+  let mentionedUsers = message.mentions.users.filter(
+    (user) => user.id != message.author.id
+  );
 
   mentionedUsers.each((user) => {
     category
@@ -86,10 +88,12 @@ const removeUsersFromRoom = async (message) => {
 
   let category = await message.guild.channels.resolve(user.categoryId);
 
-  let mentionedUsers = message.mentions.users.filter(user => user.id != message.author.id)
+  let mentionedUsers = message.mentions.users.filter(
+    (user) => user.id != message.author.id
+  );
 
   if (mentionedUsers.size <= 0) {
-    message.reply("You must remove one user besides yourself...")
+    message.reply("You must remove one user besides yourself...");
     return;
   }
 

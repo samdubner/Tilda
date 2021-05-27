@@ -63,10 +63,7 @@ const purchaseShop = async (message) => {
       ShopEmbed.setDescription(
         "Click the reaction of the item you'd like to buy!"
       );
-      ShopEmbed.addField(
-        `${item.icon}  ${item.name}`,
-        `${item.price} coins`
-        );
+      ShopEmbed.addField(`${item.icon}  ${item.name}`, `${item.price} coins`);
     }
   }
 
@@ -92,7 +89,7 @@ const awaitPurchase = async (message, embed, shopItems, user) => {
 
 const handlePurchase = (message, user, collected) => {
   collected.each(async (reaction) => {
-    reaction.message.reactions.removeAll().catch(console.error)
+    reaction.message.reactions.removeAll().catch(console.error);
     let selectedItem = await Item.findOne({ icon: reaction.emoji.name });
 
     if (!selectedItem) {
@@ -118,7 +115,7 @@ const handlePurchase = (message, user, collected) => {
 const insufficientCoins = (message) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
-    .setTitle("You don't have enough coins to buy that item!")
+    .setTitle("You don't have enough coins to buy that item!");
 
   message.edit(embed);
 };
