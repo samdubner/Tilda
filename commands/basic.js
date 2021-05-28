@@ -239,14 +239,14 @@ const question = async (message, question) => {
     model: "davinci",
     examples_context: "In 2017, U.S. life expectancy was 78.6 years.",
     examples: [
-      ["What is human life expectancy in the United States?", "78 years."],
+      ["What is human life expectancy in the United States?", "The life expectancy in the United States is 78 years."],
     ],
     max_tokens: 100,
+    temperature: 0.5,
     stop: ["\n", "<|endoftext|>"]
   });
 
   message.reply(gptResponse.data.answers[0])
-  console.log(gptResponse.data);
 };
 
 module.exports = {
