@@ -1,6 +1,12 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 const { execSync } = require("child_process");
 
+const OpenAi = require("openai-api");
+const fs = require("fs");
+const openai = new OpenAi(
+  JSON.parse(fs.readFileSync("./token.json")).openaiToken
+);
+
 const suggest = (message) => {
   let suggestion = mesage.content.split(" ").slice(1).join(" ");
   console.log(
@@ -226,4 +232,31 @@ const pfp = (message) => {
   }
 };
 
-module.exports = { suggest, eightBall, roll, kill, update, ui, si, pfp };
+const question = async (message, question) => {
+  const gptResponse = await openai.answers({
+    documents: [],
+    question,
+    model: "davinci",
+    examples_context: "In 2017, U.S. life expectancy was 78.6 years.",
+    examples: [
+      ["What is human life expectancy in the United States?", "78 years."],
+    ],
+    max_tokens: 100,
+    stop: ["\n", "<|endoftext|>"]
+  });
+
+  message.reply(gptResponse.data.answers[0])
+  console.log(gptResponse.data);
+};
+
+module.exports = {
+  suggest,
+  eightBall,
+  roll,
+  kill,
+  update,
+  ui,
+  si,
+  pfp,
+  question,
+};

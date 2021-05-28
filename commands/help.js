@@ -83,6 +83,11 @@ let editEmbed = (helpEmbed, message, num, color) => {
           name: "~pfp <@people>",
           value:
             "Sends the profile pictures of the mentioned people or yourself if nobody is mentioned",
+        },
+        {
+          name: "~question <question goes here>",
+          value:
+            "Will use the power of gpt-3 to answer your questions!",
         }
       );
       break;

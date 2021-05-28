@@ -105,6 +105,8 @@ client.on("message", (message) => {
     "~kill": () => basic.kill(client, message),
     "~update": () => basic.update(client, message),
     "~room": () => room.channelManager(message, args),
+    "~question": () => COMMANDS["~q"](),
+    "~q": () => basic.question(message, args)
   };
 
   if (COMMANDS[command]) {
