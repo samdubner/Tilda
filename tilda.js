@@ -106,7 +106,9 @@ client.on("message", (message) => {
     "~update": () => basic.update(client, message),
     "~room": () => room.channelManager(message, args),
     "~question": () => COMMANDS["~q"](),
-    "~q": () => basic.question(message, args)
+    "~q": () => basic.question(message, args),
+    "~response": () => COMMANDS["~r"](),
+    "~r": () => basic.response(message)
   };
 
   if (COMMANDS[command]) {

@@ -233,6 +233,8 @@ const pfp = (message) => {
 };
 
 const question = async (message, question) => {
+  if (message.channel.type == "dm") return;
+
   const gptResponse = await openai.answers({
     documents: [],
     question,
@@ -242,12 +244,36 @@ const question = async (message, question) => {
       ["What is human life expectancy in the United States?", "The life expectancy in the United States is 78 years."],
     ],
     max_tokens: 100,
-    temperature: 0.5,
+    temperature: 0.9,
     stop: ["\n", "<|endoftext|>"]
   });
 
   message.reply(gptResponse.data.answers[0])
 };
+
+const response = async (message) => {
+  return;
+  let messageChannel = message.channel
+  await message.delete()
+  let messages = await messageChannel.messages.fetch({ limit: 5})
+  messages = messages.map(message => `Human: ${message.content}`).reverse().join("\n ")
+
+  let prompt = `Tilda is a chatbot with lengthy and sarcastic replies.\n\n${messages}\nAI: `
+
+
+  const gptResponse = await openai.complete({
+    engine: "davinci",
+    prompt,
+    temperature: 0.4,
+    presencePenalty: 0.2,
+    frequencyPenalty: 0.6,
+    maxTokens: 64,
+    stop: ["\n", " Human:", " AI:"]
+  });
+
+  message.reply(gptResponse.data.choices[0].text.trim())
+  console.log(gptResponse.data)
+}
 
 module.exports = {
   suggest,
@@ -259,4 +285,5 @@ module.exports = {
   si,
   pfp,
   question,
+  response
 };
