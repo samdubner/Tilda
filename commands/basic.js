@@ -252,7 +252,7 @@ const question = async (message, question) => {
 };
 
 const response = async (message) => {
-  return;
+  if (message.author.id != "340002869912666114") return;
   let messageChannel = message.channel
   await message.delete()
   let messages = await messageChannel.messages.fetch({ limit: 5})
