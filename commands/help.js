@@ -87,7 +87,7 @@ let editEmbed = (helpEmbed, message, num, color) => {
         {
           name: "~question <question goes here>",
           value:
-            "Will use the power of gpt-3 to answer your questions!",
+            "Will use the power of AI to answer all your burning questions!",
         }
       );
       break;
