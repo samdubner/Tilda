@@ -573,7 +573,7 @@ let coinEvent = {
 };
 
 const randomCoinEvent = async (client) => {
-  let coinAmount = Math.floor(Math.random() * 50) + 26;
+  let coinAmount = Math.floor(Math.random() * 50) + 51;
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
