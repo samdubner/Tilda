@@ -61,11 +61,6 @@ client.on("message", (message) => {
   ) {
     message
       .delete()
-      .then((message) => {
-        console.log(
-          `[DELETED] ${message.author.username}#${message.author.discriminator} => ${message.content}`
-        );
-      })
       .catch(console.error);
     return;
   }
