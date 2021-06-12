@@ -253,6 +253,9 @@ const question = async (message, question) => {
 
 const response = async (message) => {
   if (message.author.id != "340002869912666114") return;
+  //5% chance to pass
+  let rand = Math.floor(Math.random() * 20)
+  if (rand != 0) return;
   let messageChannel = message.channel
   await message.delete()
   let messages = await messageChannel.messages.fetch({ limit: 5})
