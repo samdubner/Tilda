@@ -93,18 +93,18 @@ let editEmbed = (helpEmbed, message, num, color) => {
       break;
     case "2️⃣":
       embed.setDescription("Room Commands").addFields(
-        { name: "~room start", value: "Create your own category!" },
+        { name: "~room start", value: "Create your own category and channels!" },
         {
           name: "~room end",
           value: "Removes the category and channels within",
         },
         {
           name: "~room private",
-          value: "Changes the room to only be visible to you!",
+          value: "Changes the room to only be visible to you and whoever you add",
         },
         {
           name: "~room public",
-          value: "Changes the room to only be visible to everyone!",
+          value: "Changes the room to only be visible to everyone",
         },
         {
           name: "~room add @user",
