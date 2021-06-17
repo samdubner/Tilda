@@ -124,7 +124,7 @@ let editEmbed = (helpEmbed, message, num, color) => {
         },
         { name: "~balance", value: "View the amount of coins you have" },
         { name: "~flip [amount of coins]", value: "50/50" },
-        { name: "~daily", value: "Get 100 coins once every 24 hours" },
+        { name: "~daily", value: "Get 100 coins once every 24 hours (do it every day for a bonus!)" },
         { name: "~beg", value: "Get 10 coins every 10 minutes" },
         {
           name: "~leaderboard",
