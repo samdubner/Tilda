@@ -42,7 +42,7 @@ client.on("ready", () => {
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
       coin.randomCoinEvent(client);
-  }, 1000 * 60 * 60 * 2);
+  }, 1000 * 60 * 60 * 3);
 });
 
 client.on("guildMemberAdd", (member) => {
