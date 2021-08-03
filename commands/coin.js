@@ -594,6 +594,22 @@ const randomCoinEvent = async (client) => {
       );
     })
     .catch(console.error);
+
+  setTimeout(() => {
+    if (coinEvent.isUp) {
+      let embed = new MessageEmbed()
+        .setColor(`#ff0000`)
+        .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
+        .setTitle("Expired Coin Event")
+        .setDescription(
+          `This coin event has expired and can no longer be claimed!`
+        );
+      
+      coinEvent.isUp = false;
+
+      botChannel.messages.cache.get(coinEvent.messageId).edit(embed);
+    }
+  }, 1000 * 60 * 60);
 };
 
 const challenge = async (message, args, user) => {
