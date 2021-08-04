@@ -93,7 +93,7 @@ let editEmbed = (helpEmbed, message, num, color) => {
       break;
     case "2️⃣":
       embed.setDescription("Room Commands").addFields(
-        { name: "~room start", value: "Create your own category and channels!" },
+        { name: "~room start", value: "Create your own category and channels! [rooms are now limited to 1 per person]" },
         {
           name: "~room end",
           value: "Removes the category and channels within",
