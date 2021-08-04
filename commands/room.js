@@ -229,6 +229,8 @@ const createCategory = async (message) => {
   await textChannel.lockPermissions();
   await voiceChannel.lockPermissions();
 
+  textChannel.send("Welcome to your new room!").catch(console.error);
+
   user.categoryId = category.id;
   user.save();
 };
