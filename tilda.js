@@ -5,56 +5,56 @@ const client = new Client({
 
 const fs = require("fs");
 
-const basic = require("./commands/basic");
-const room = require("./commands/room");
-const coin = require("./commands/coin");
-const help = require("./commands/help");
-const roles = require("./commands/roles");
-const shop = require("./commands/shop");
-const fish = require("./commands/fish");
+// const basic = require("./commands/basic");
+// const room = require("./commands/room");
+// const coin = require("./commands/coin");
+// const help = require("./commands/help");
+// const roles = require("./commands/roles");
+// const shop = require("./commands/shop");
+// const fish = require("./commands/fish");
 
-const schedule = require("node-schedule");
+// const schedule = require("node-schedule");
 
-schedule.scheduleJob("0 0 * * *", async () => {
-  let topUsers = await coin.bleedTopUser();
-  await coin.checkStreaks();
-  coin.resetDailies();
+// schedule.scheduleJob("0 0 * * *", async () => {
+//   let topUsers = await coin.bleedTopUser();
+//   await coin.checkStreaks();
+//   coin.resetDailies();
 
-  coin.notifyDailyReset(client, topUsers);
-  coin.checkChampion(client, topUsers);
-});
+//   coin.notifyDailyReset(client, topUsers);
+//   coin.checkChampion(client, topUsers);
+// });
 
-const randomizeRoleColor = async () => {
-  let guild;
-  try {
-    guild = await client.guilds.fetch("735395621703385099");
-  } catch (e) {
-    console.log("Main server not found... unable to change role colors");
-    return;
-  }
-  const role = await guild.roles.fetch("735395776967999515");
-  role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-};
+// const randomizeRoleColor = async () => {
+//   let guild;
+//   try {
+//     guild = await client.guilds.fetch("735395621703385099");
+//   } catch (e) {
+//     console.log("Main server not found... unable to change role colors");
+//     return;
+//   }
+//   const role = await guild.roles.fetch("735395776967999515");
+//   role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+// };
 
-schedule.scheduleJob("0 0 * * *", randomizeRoleColor);
+// schedule.scheduleJob("0 0 * * *", randomizeRoleColor);
 
-client.on("ready", () => {
-  console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
+// client.on("ready", () => {
+//   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  setInterval(() => {
-    if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
-      coin.randomCoinEvent(client);
-  }, 1000 * 60 * 60 * 3);
-});
+//   setInterval(() => {
+//     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
+//       coin.randomCoinEvent(client);
+//   }, 1000 * 60 * 60 * 3);
+// });
 
-client.on("guildMemberAdd", (member) => {
-  member.roles.add("735395776967999515");
-  console.log(
-    `[${new Date().toLocaleTimeString("en-US")}] ${
-      member.displayName
-    } has joined the server`
-  );
-});
+// client.on("guildMemberAdd", (member) => {
+//   member.roles.add("735395776967999515");
+//   console.log(
+//     `[${new Date().toLocaleTimeString("en-US")}] ${
+//       member.displayName
+//     } has joined the server`
+//   );
+// });
 
 client.on("interactionCreate", (interaction) => {
   console.log(interaction);
