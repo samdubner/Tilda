@@ -1,9 +1,19 @@
-const { Client, Intents } = require("discord.js");
+const { Client, Collection, Intents } = require("discord.js");
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
+client.commands = new Collection();
 
 const fs = require("fs");
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
+
+const commandData = require("./commandData")
 
 // const basic = require("./commands/basic");
 // const room = require("./commands/room");
@@ -38,8 +48,8 @@ const fs = require("fs");
 
 // schedule.scheduleJob("0 0 * * *", randomizeRoleColor);
 
-// client.on("ready", () => {
-//   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
+client.on("ready", async () => {
+  console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
 //   setInterval(() => {
 //     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
@@ -54,10 +64,21 @@ const fs = require("fs");
 //       member.displayName
 //     } has joined the server`
 //   );
-// });
+});
 
-client.on("interactionCreate", (interaction) => {
+client.on("interactionCreate", async (interaction) => {
   console.log(interaction);
+
+	if (!interaction.isCommand()) return;
+
+	if (!client.commands.has(interaction.commandName)) return;
+
+	try {
+		await client.commands.get(interaction.commandName).execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
   // if (
   //   message.channel.id == "735404269426966580" &&
   //   !["340002869912666114", "670849450599645218"].includes(message.author.id)
