@@ -1,4 +1,5 @@
 const { Client, Collection, Intents } = require("discord.js");
+
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
@@ -12,41 +13,33 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-
 const commandData = require("./commandData")
 
-// const basic = require("./commands/basic");
-// const room = require("./commands/room");
-// const coin = require("./commands/coin");
-// const help = require("./commands/help");
-// const roles = require("./commands/roles");
-// const shop = require("./commands/shop");
-// const fish = require("./commands/fish");
+const schedule = require("node-schedule");
 
-// const schedule = require("node-schedule");
+const coin = require("./helpers/coinHelper");
 
-// schedule.scheduleJob("0 0 * * *", async () => {
-//   let topUsers = await coin.bleedTopUser();
-//   await coin.checkStreaks();
-//   coin.resetDailies();
+const randomizeRoleColor = async () => {
+  let guild;
+  try {
+    guild = await client.guilds.fetch("735395621703385099");
+  } catch (e) {
+    console.log("Main server not found... unable to change role colors");
+    return;
+  }
+  const role = await guild.roles.fetch("735395776967999515");
+  role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+};
 
-//   coin.notifyDailyReset(client, topUsers);
-//   coin.checkChampion(client, topUsers);
-// });
+schedule.scheduleJob("0 0 * * *", async () => {
+  let topUsers = await coin.bleedTopUser();
+  await coin.checkStreaks();
+  coin.resetDailies();
 
-// const randomizeRoleColor = async () => {
-//   let guild;
-//   try {
-//     guild = await client.guilds.fetch("735395621703385099");
-//   } catch (e) {
-//     console.log("Main server not found... unable to change role colors");
-//     return;
-//   }
-//   const role = await guild.roles.fetch("735395776967999515");
-//   role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-// };
-
-// schedule.scheduleJob("0 0 * * *", randomizeRoleColor);
+  coin.notifyDailyReset(client, topUsers);
+  coin.checkChampion(client, topUsers);
+  randomiseRoleColor()
+});
 
 client.on("ready", async () => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
