@@ -1,3 +1,5 @@
+const { execSync } = require("child_process");
+
 module.exports = {
   name: "update",
   description: "updates tilda to the latest version! (authorized users only)",
