@@ -77,24 +77,7 @@ const roll = (message, args) => {
 };
 
 const kill = (client, message) => {
-  if (!["340002869912666114", "171330866189041665"].includes(message.author.id))
-    return;
-  message.react("✅").then((messageReaction) => {
-    const filter = (reaction, user) =>
-      reaction.emoji.name === "✅" &&
-      ["340002869912666114", "171330866189041665"].includes(user.id);
-    messageReaction.message
-      .awaitReactions(filter, { time: 5000 })
-      .then((collected) => {
-        if (collected.get("✅") != undefined) {
-          client.destroy();
-          console.log(
-            `${message.member.displayName} has destroyed the client, exiting node process...`
-          );
-          process.exit(0);
-        }
-      });
-  });
+
 };
 
 const ui = (message) => {
