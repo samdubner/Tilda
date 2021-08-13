@@ -46,5 +46,3 @@ module.exports = {
     interaction.reply({ embeds: [embed] }).catch(console.error);
   },
 };
-
-const eightBall = (message, args) => {};
