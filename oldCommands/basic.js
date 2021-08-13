@@ -97,29 +97,6 @@ const kill = (client, message) => {
   });
 };
 
-const update = (client, message) => {
-  if (!["340002869912666114", "171330866189041665"].includes(message.author.id))
-    return;
-  message.react("✅").then((messageReaction) => {
-    const filter = (reaction, user) =>
-      reaction.emoji.name === "✅" &&
-      ["340002869912666114", "171330866189041665"].includes(user.id);
-    messageReaction.message
-      .awaitReactions(filter, { time: 5000 })
-      .then((collected) => {
-        if (collected.get("✅") != undefined) {
-          client.destroy();
-          console.log(
-            `${message.member.displayName} has destroyed the client, updating local repository...`
-          );
-          execSync("git pull --ff-only");
-          console.log("Exiting node process...");
-          process.exit(0);
-        }
-      });
-  });
-};
-
 const ui = (message) => {
   let person = message.mentions.members.first();
 
@@ -283,7 +260,6 @@ module.exports = {
   eightBall,
   roll,
   kill,
-  update,
   ui,
   si,
   pfp,
