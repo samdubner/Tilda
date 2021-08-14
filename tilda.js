@@ -8,11 +8,6 @@ client.commands = new Collection();
 const fs = require("fs");
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
-
 const commandData = require("./commandData")
 
 const schedule = require("node-schedule");
@@ -42,6 +37,12 @@ schedule.scheduleJob("0 0 * * *", async () => {
 });
 
 client.on("ready", async () => {
+  for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    // client.application.commands.create(command, "469659852109643786")
+    client.commands.set(command.name, command);
+  }
+
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
 //   setInterval(() => {

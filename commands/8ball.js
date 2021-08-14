@@ -1,3 +1,5 @@
+const MessageEmbed = require("discord.js").MessageEmbed;
+
 const eightBallResponses = [
   "It is certain",
   "It is decidedly so",
@@ -37,10 +39,10 @@ module.exports = {
       eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)];
 
     let embed = new MessageEmbed()
-      .setAuthor(`8ball`, message.author.avatarURL())
+      .setAuthor(`8ball`, interaction.user.avatarURL())
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setThumbnail("https://i.imgur.com/z7ayPJL.gif")
-      .addField("Question", interaction.options.get("question"))
+      .addField("Question", interaction.options.get("question").value)
       .addField("Answer", response);
 
     interaction.reply({ embeds: [embed] }).catch(console.error);
