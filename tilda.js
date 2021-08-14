@@ -61,7 +61,13 @@ client.on("ready", async () => {
 });
 
 client.on("interactionCreate", async (interaction) => {
-  console.log(interaction);
+  if (
+    interaction.channelId != "735404269426966580" &&
+    !["340002869912666114", "670849450599645218"].includes(interaction.user.id)
+  ) {
+    interaction.reply({content: "You cannot use commands outside of the bot channel", ephemeral: true})
+    return;
+  }
 
 	if (!interaction.isCommand()) return;
 
@@ -73,15 +79,6 @@ client.on("interactionCreate", async (interaction) => {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
-  // if (
-  //   message.channel.id == "735404269426966580" &&
-  //   !["340002869912666114", "670849450599645218"].includes(message.author.id)
-  // ) {
-  //   message
-  //     .delete()
-  //     .catch(console.error);
-  //   return;
-  // }
 
   // let messageContent = message.content.split(" ");
   // let command = messageContent[0].toLowerCase();
@@ -91,49 +88,28 @@ client.on("interactionCreate", async (interaction) => {
   // let args = messageContent.slice(1).join(" ");
 
   // const COMMANDS = {
-  //   "~help": () => help.help(message),
   //   "~pfp": () => basic.pfp(message),
   //   "~ui": () => basic.ui(message),
   //   "~si": () => basic.si(message),
   //   "~suggest": () => basic.suggest(message),
-  //   "~8ball": () => basic.eightBall(message, args),
   //   "~roll": () => basic.roll(message, args),
   //   "~leaderboard": () => coin.leaderboard(message),
-  //   "~l": () => COMMANDS["~leaderboard"](),
   //   "~flip": () => coin.continueUser(message, args, "flip"),
-  //   "~f": () => COMMANDS["~flip"](),
   //   "~daily": () => coin.continueUser(message, args, "daily"),
   //   "~balance": () => coin.continueUser(message, args, "balance"),
-  //   "~bal": () => COMMANDS["~balance"](),
   //   "~give": () => coin.continueUser(message, args, "give"),
   //   "~print": () => coin.continueUser(message, args, "print"),
   //   "~beg": () => coin.continueUser(message, args, "beg"),
   //   "~claim": () => coin.continueUser(message, args, "claim"),
   //   "~challenge": () => coin.continueUser(message, args, "challenge"),
   //   "~shop": () => shop.shopManager(message, args),
-  //   "~c": () => COMMANDS["~catch"](),
   //   "~catch": () => fish.catchManager(message, args),
   //   "~fish": () => fish.fishManager(message, args),
   //   "~role": () => roles.role(message, args),
-  //   "~kill": () => basic.kill(client, message),
-  //   "~update": () => basic.update(client, message),
   //   "~room": () => room.channelManager(message, args),
-  //   "~question": () => COMMANDS["~q"](),
   //   "~q": () => basic.question(message, args),
-  //   "~response": () => COMMANDS["~r"](),
   //   "~r": () => basic.response(message)
   // };
-
-  // if (COMMANDS[command]) {
-  //   COMMANDS[command]();
-  // } else {
-  //   let embed = new Discord.MessageEmbed()
-  //     .setColor(`#ff0000`)
-  //     .setTitle(`Invalid Command`)
-  //     .setDescription(`\`${messageContent[0]}\` is not a valid command`);
-
-  //   message.reply(embed).catch(console.error);
-  // }
 });
 
 client.login(JSON.parse(fs.readFileSync("./token.json")).token);
