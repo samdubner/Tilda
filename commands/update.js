@@ -13,7 +13,7 @@ module.exports = {
 
     client.destroy();
     console.log(
-      `${message.member.displayName} has destroyed the client, updating local repository...`
+      `${interaction.member.displayName} has destroyed the client, updating local repository...`
     );
     execSync("git pull --ff-only");
     console.log("Exiting node process...");
