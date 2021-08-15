@@ -93,9 +93,6 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   // const COMMANDS = {
-  //   "~pfp": () => basic.pfp(message),
-  //   "~suggest": () => basic.suggest(message),
-  //   "~roll": () => basic.roll(message, args),
   //   "~leaderboard": () => coin.leaderboard(message),
   //   "~flip": () => coin.continueUser(message, args, "flip"),
   //   "~daily": () => coin.continueUser(message, args, "daily"),
@@ -110,7 +107,6 @@ client.on("interactionCreate", async (interaction) => {
   //   "~fish": () => fish.fishManager(message, args),
   //   "~role": () => roles.role(message, args),
   //   "~room": () => room.channelManager(message, args),
-  //   "~q": () => basic.question(message, args),
   // };
 });
 
