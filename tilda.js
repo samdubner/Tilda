@@ -6,9 +6,11 @@ const client = new Client({
 client.commands = new Collection();
 
 const fs = require("fs");
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs
+  .readdirSync("./commands")
+  .filter((file) => file.endsWith(".js"));
 
-const commandData = require("./commandData")
+const commandData = require("./commandData");
 
 const schedule = require("node-schedule");
 
@@ -33,31 +35,32 @@ schedule.scheduleJob("0 0 * * *", async () => {
 
   coin.notifyDailyReset(client, topUsers);
   coin.checkChampion(client, topUsers);
-  randomizeRoleColor()
+  randomizeRoleColor();
 });
 
 client.on("ready", async () => {
   for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    client.application.commands.create(command, "469659852109643786") //uncomment when adding new commands
+    client.application.commands.create(command, "469659852109643786"); //uncomment when adding new commands
     client.commands.set(command.name, command);
   }
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-//   setInterval(() => {
-//     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
-//       coin.randomCoinEvent(client);
-//   }, 1000 * 60 * 60 * 3);
-// });
+  //   setInterval(() => {
+  //     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
+  //       coin.randomCoinEvent(client);
+  //   }, 1000 * 60 * 60 * 3);
+  // });
+});
 
-// client.on("guildMemberAdd", (member) => {
-//   member.roles.add("735395776967999515");
-//   console.log(
-//     `[${new Date().toLocaleTimeString("en-US")}] ${
-//       member.displayName
-//     } has joined the server`
-//   );
+client.on("guildMemberAdd", (member) => {
+  member.roles.add("735395776967999515");
+  console.log(
+    `[${new Date().toLocaleTimeString("en-US")}] ${
+      member.displayName
+    } has joined the server`
+  );
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -65,32 +68,29 @@ client.on("interactionCreate", async (interaction) => {
     interaction.channelId != "735404269426966580" &&
     !["340002869912666114", "670849450599645218"].includes(interaction.user.id)
   ) {
-    interaction.reply({content: "You cannot use commands outside of the bot channel", ephemeral: true})
+    interaction.reply({
+      content: "You cannot use commands outside of the bot channel",
+      ephemeral: true,
+    });
     return;
   }
 
-	if (!interaction.isCommand()) return;
+  if (!interaction.isCommand()) return;
 
-	if (!client.commands.has(interaction.commandName)) return;
+  if (!client.commands.has(interaction.commandName)) return;
 
-	try {
-		await client.commands.get(interaction.commandName).execute(interaction);
-	} catch (error) {
-		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-	}
-
-  // let messageContent = message.content.split(" ");
-  // let command = messageContent[0].toLowerCase();
-
-  // if (message.author.bot || !command.startsWith("~")) return;
-
-  // let args = messageContent.slice(1).join(" ");
+  try {
+    await client.commands.get(interaction.commandName).execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({
+      content: "There was an error while executing this command!",
+      ephemeral: true,
+    });
+  }
 
   // const COMMANDS = {
   //   "~pfp": () => basic.pfp(message),
-  //   "~ui": () => basic.ui(message),
-  //   "~si": () => basic.si(message),
   //   "~suggest": () => basic.suggest(message),
   //   "~roll": () => basic.roll(message, args),
   //   "~leaderboard": () => coin.leaderboard(message),
