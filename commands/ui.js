@@ -12,17 +12,24 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    let nick = interaction.member.nickname;
-    let role = interaction.member.roles.hoist || interaction.member.roles.highest;
-    let roleColor = interaction.member.displayHexColor;
+    if(!interaction.options.get("person").member) {
+      interaction.reply({content: "You can only use UI on people", ephemeral: true})
+      return
+    }
+
+    mentionedMember = interaction.options.get("person").member
+
+    let nick = mentionedMember.nickname;
+    let role = mentionedMember.roles.hoist || mentionedMember.roles.highest;
+    let roleColor = mentionedMember.displayHexColor;
     if (roleColor == "#000000") roleColor = "#99aab5";
 
     let embed = new MessageEmbed()
-      .setAuthor("User Info", interaction.user.avatarURL())
+      .setAuthor("User Info", mentionedMember.user.avatarURL())
       .setColor(roleColor)
-      .setThumbnail(interaction.user.avatarURL())
-      .addField("Username", interaction.user.username, false);
-    if (!(nick == null || nick == interaction.user.username)) {
+      .setThumbnail(mentionedMember.user.avatarURL())
+      .addField("Username", mentionedMember.user.username, false);
+    if (!(nick == null || nick == mentionedMember.user.username)) {
       embed.addField("Nickname", nick, false);
     }
     // if (interaction.member.presence.activities.length != 0) {
@@ -31,12 +38,12 @@ module.exports = {
     // embed.addField("Status", interaction.member.presence.status, false);
     embed.addField(
       "Joined Date",
-      interaction.member.joinedAt.toLocaleString(),
+      mentionedMember.joinedAt.toLocaleString(),
       false
     );
     embed.addField(
       "Account Creation Date",
-      interaction.user.createdAt.toLocaleString(),
+      mentionedMember.user.createdAt.toLocaleString(),
       false
     );
     embed.addField("Highest Role", role.name, false);
