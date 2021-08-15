@@ -108,7 +108,6 @@ client.on("interactionCreate", async (interaction) => {
   //   "~role": () => roles.role(message, args),
   //   "~room": () => room.channelManager(message, args),
   //   "~q": () => basic.question(message, args),
-  //   "~r": () => basic.response(message)
   // };
 });
 

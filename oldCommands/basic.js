@@ -88,30 +88,6 @@ const ui = (message) => {
   }
 };
 
-const si = (message) => {
-  let embed = new MessageEmbed()
-    .setAuthor("Server Info", message.author.avatarURL())
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setThumbnail(message.guild.iconURL())
-    .addFields([
-      { name: "Server Name", value: message.guild.name, inline: false },
-      { name: "# of Members", value: message.guild.memberCount, inline: false },
-      {
-        name: "# of Boosters",
-        value: message.guild.premiumSubscriptionCount,
-        inline: false,
-      },
-      {
-        name: "Server Creation Date",
-        value: message.guild.createdAt.toLocaleString(),
-        inline: false,
-      },
-      { name: "Owner", value: message.guild.owner, inline: false },
-    ]);
-
-  message.channel.send(embed).catch(console.error);
-};
-
 const pfp = (message) => {
   if (message.mentions.users.first() == undefined) {
     let embed = new MessageEmbed()
@@ -151,38 +127,9 @@ const question = async (message, question) => {
   message.reply(gptResponse.data.answers[0])
 };
 
-const response = async (message) => {
-  if (message.author.id != "340002869912666114") return;
-  //5% chance to pass
-  let rand = Math.floor(Math.random() * 20)
-  if (rand != 0) return;
-  let messageChannel = message.channel
-  await message.delete()
-  let messages = await messageChannel.messages.fetch({ limit: 5})
-  messages = messages.map(message => `Human: ${message.content}`).reverse().join("\n ")
-
-  let prompt = `Tilda is a chatbot with lengthy and sarcastic replies.\n\n${messages}\nAI: `
-
-
-  const gptResponse = await openai.complete({
-    engine: "davinci",
-    prompt,
-    temperature: 0.4,
-    presencePenalty: 0.2,
-    frequencyPenalty: 0.6,
-    maxTokens: 64,
-    stop: ["\n", " Human:", " AI:"]
-  });
-
-  message.reply(gptResponse.data.choices[0].text.trim())
-  console.log(gptResponse.data)
-}
-
 module.exports = {
   roll,
   ui,
-  si,
   pfp,
   question,
-  response
 };
