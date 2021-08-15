@@ -6,22 +6,6 @@ const openai = new OpenAi(
   JSON.parse(fs.readFileSync("./token.json")).openaiToken
 );
 
-const suggest = (message) => {
-  let suggestion = mesage.content.split(" ").slice(1).join(" ");
-  console.log(
-    `[SUGGESTION] ${message.author.username}#${message.author.discriminator} => ${suggestion}`
-  );
-
-  let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle("Bot Feature Suggestion Sent")
-    .addField("Request", suggestion, false)
-    .setThumbnail(message.author.displayAvatarURL())
-    .setFooter("It will be taken very seriously");
-
-  message.reply(embed);
-};
-
 const roll = (message, args) => {
   args = args ? args : "6";
   randomResult = Math.floor(Math.random() * parseInt(args.split(" ")[0])) + 1;
@@ -195,7 +179,6 @@ const response = async (message) => {
 }
 
 module.exports = {
-  suggest,
   roll,
   ui,
   si,
