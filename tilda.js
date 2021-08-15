@@ -10,11 +10,14 @@ const commandFiles = fs
   .readdirSync("./commands")
   .filter((file) => file.endsWith(".js"));
 
-const commandData = require("./commandData");
-
 const schedule = require("node-schedule");
 
 const coin = require("./helpers/coinHelper");
+
+/*
+TODO:
+make the ui command show activities
+*/
 
 const randomizeRoleColor = async () => {
   let guild;

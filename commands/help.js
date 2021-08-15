@@ -58,7 +58,7 @@ module.exports = {
           {
             name: "~ui <@people>",
             value:
-              "Sends some basic info about the mentioned peopple or yourself if nobody is mentioned",
+              "Sends some basic info about the mentioned person",
           },
           { name: "~si", value: "Sends basic server information" },
           {
