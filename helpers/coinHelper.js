@@ -1,3 +1,5 @@
+const MessageEmbed = require("discord.js").MessageEmbed;
+
 const fs = require("fs");
 const mongoose = require("mongoose");
 const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
@@ -140,9 +142,9 @@ const checkChampion = async (client, topUsers) => {
   }
 };
 
-const createUser = async (user) => {
+const createUser = async (interaction) => {
   const newUser = new User({
-    userId: user.id,
+    userId: interaction.user.id,
     score: 100,
     streak: 0,
     dailyDone: true,
@@ -153,7 +155,7 @@ const createUser = async (user) => {
 
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] Added <${newUser.userId}> ${
-      user.username
+      interaction.user.username
     } to the coin collection`
   );
 
@@ -171,9 +173,9 @@ const createUser = async (user) => {
       user.client.user.displayAvatarURL()
     );
 
-  message.channel.send(embed);
+  interaction.reply(embed);
 
-  return { newUser, embed };
+  return newUser;
 };
 
 module.exports = {

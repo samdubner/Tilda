@@ -34,13 +34,13 @@ module.exports = {
   ],
   async execute(interaction) {
     let user = await User.findOne({ userId: interaction.user.id });
-    let data = intercation.options.get("data").value
+    let data = interaction.options.get("data").value
 
     if (!user) {
-      user = await coin.createUser(interaction.user);
-      user = await createRole(interaction.member);
+      user = await coin.createUser(interaction);
+      user = await createRole(interaction.member, user, interaction);
     } else if (!user.role) {
-      user = await createRole(interaction.member);
+      user = await createRole(interaction.member, user, interaction);
     }
 
     customRole = await interaction.guild.roles.fetch(user.role.roleId);
@@ -51,28 +51,11 @@ module.exports = {
         break;
       case "color":
         updateRole("color", data, customRole, interaction);
-        break;
-      default:
-        let embed = new MessageEmbed()
-          .setColor(customRole.hexColor)
-          .setTitle(`${interaction.user.username}'s Custom Role`)
-          .setThumbnail(interaction.user.displayAvatarURL())
-          .addField(
-            "Role Details",
-            `Your role currently has a color of \`${customRole.hexColor}\` and name of \`${customRole.name}\``,
-            false
-          )
-          .setFooter(
-            "Don't forget to check out ~help",
-            interaction.client.user.displayAvatarURL()
-          );
-
-        interaction.reply({ embeds: [embed], ephemeral: true });
     }
   },
 };
 
-const createRole = async (member) => {
+const createRole = async (member, user, interaction) => {
   let role = await member.guild.roles
     .create({
       data: {
@@ -99,6 +82,8 @@ const createRole = async (member) => {
       member.user.username
     } a custom role`
   );
+
+  interaction.channel.send("Created your custom role!")
 
   return user;
 };
