@@ -140,6 +140,42 @@ const checkChampion = async (client, topUsers) => {
   }
 };
 
+const createUser = async (message) => {
+  const newUser = new User({
+    userId: message.author.id,
+    score: 100,
+    streak: 0,
+    dailyDone: true,
+    begDate: new Date().getTime(),
+  });
+
+  newUser.save().catch(console.error);
+
+  console.log(
+    `[${new Date().toLocaleTimeString("en-US")}] Added <${newUser.userId}> ${
+      message.author.username
+    } to the coin collection`
+  );
+
+  let embed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle(`${message.author.username} has registered with Tilda!`)
+    .setThumbnail(message.author.displayAvatarURL())
+    .addField("New Account Balance", `You currently have 100 coins`, false)
+    .addField(
+      "Cooldown Status",
+      "You have just received 100 coins, `~daily` and `~beg` are on cooldown"
+    )
+    .setFooter(
+      "Thank you for registering with Tilda",
+      message.client.user.displayAvatarURL()
+    );
+
+  message.channel.send(embed);
+
+  return newUser;
+};
+
 module.exports = {
   coinEvent,
   randomCoinEvent,
@@ -147,5 +183,6 @@ module.exports = {
   checkStreaks,
   resetDailies,
   notifyDailyReset,
-  checkChampion
+  checkChampion,
+  createUser
 }
