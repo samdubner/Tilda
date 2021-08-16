@@ -50,7 +50,7 @@ const randomCoinEvent = async (client) => {
         .setDescription(
           `This coin event has expired and can no longer be claimed!`
         );
-      
+
       coinEvent.isUp = false;
 
       botChannel.messages.cache.get(coinEvent.messageId).edit(embed);
@@ -140,9 +140,9 @@ const checkChampion = async (client, topUsers) => {
   }
 };
 
-const createUser = async (message) => {
+const createUser = async (user) => {
   const newUser = new User({
-    userId: message.author.id,
+    userId: user.id,
     score: 100,
     streak: 0,
     dailyDone: true,
@@ -153,14 +153,14 @@ const createUser = async (message) => {
 
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] Added <${newUser.userId}> ${
-      message.author.username
+      user.username
     } to the coin collection`
   );
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`${message.author.username} has registered with Tilda!`)
-    .setThumbnail(message.author.displayAvatarURL())
+    .setTitle(`${user.username} has registered with Tilda!`)
+    .setThumbnail(user.displayAvatarURL())
     .addField("New Account Balance", `You currently have 100 coins`, false)
     .addField(
       "Cooldown Status",
@@ -168,12 +168,12 @@ const createUser = async (message) => {
     )
     .setFooter(
       "Thank you for registering with Tilda",
-      message.client.user.displayAvatarURL()
+      user.client.user.displayAvatarURL()
     );
 
   message.channel.send(embed);
 
-  return newUser;
+  return { newUser, embed };
 };
 
 module.exports = {
@@ -184,5 +184,5 @@ module.exports = {
   resetDailies,
   notifyDailyReset,
   checkChampion,
-  createUser
-}
+  createUser,
+};
