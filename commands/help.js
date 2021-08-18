@@ -102,7 +102,7 @@ module.exports = {
         embed.setDescription("Coin Commands").addFields(
           {
             name: "leaderboard",
-            value: "Get the top coin scores of everyone in the server!",
+            value: "Shows the coins of the top 5 users in the server!",
           },
           { name: "balance", value: "View the amount of coins you have" },
           { name: "flip [amount of coins]", value: "50/50" },

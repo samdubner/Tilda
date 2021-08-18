@@ -662,6 +662,4 @@ module.exports = {
   leaderboard,
   continueUser,
   getUser,
-  randomCoinEvent,
-  createUser,
 };
