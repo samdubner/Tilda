@@ -178,6 +178,54 @@ const createUser = async (interaction) => {
   return newUser;
 };
 
+const checkUser = async (interaction) => {
+  let user = await User.findOne({ userId: message.author.id });
+
+  if (!user) {
+    user = await createUser(interaction);
+  }
+
+  // for (let mentionedUser of message.mentions.users) {
+  //   let dbUser = await User.findOne({ userId: mentionedUser[0] });
+
+  //   if (!dbUser) {
+  //     message.reply(
+  //       `${mentionedUser[1].username} is not yet registered with tilda, they cannot use any coin commands!`
+  //     );
+  //     return;
+  //   }
+  // }
+
+  // switch (type) {
+  //   case "flip":
+  //     flip(message, args, user);
+  //     break;
+  //   case "daily":
+  //     daily(message, user);
+  //     break;
+  //   case "beg":
+  //     beg(message, user);
+  //     break;
+  //   case "balance":
+  //     balance(message, user);
+  //     break;
+  //   case "give":
+  //     give(message, args, user);
+  //     break;
+  //   case "print":
+  //     print(message, args, user);
+  //     break;
+  //   case "claim":
+  //     claim(message, user);
+  //     break;
+  //   case "challenge":
+  //     challenge(message, args, user);
+  //     break;
+  //   default:
+  //     balance(message, user);
+  // }
+};
+
 module.exports = {
   coinEvent,
   randomCoinEvent,
@@ -187,4 +235,5 @@ module.exports = {
   notifyDailyReset,
   checkChampion,
   createUser,
+  checkUser
 };

@@ -105,7 +105,6 @@ client.on("interactionCreate", async (interaction) => {
   //   "~shop": () => shop.shopManager(message, args),
   //   "~catch": () => fish.catchManager(message, args),
   //   "~fish": () => fish.fishManager(message, args),
-  //   "~role": () => roles.role(message, args),
   //   "~room": () => room.channelManager(message, args),
   // };
 });
