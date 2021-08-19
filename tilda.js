@@ -93,15 +93,11 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   // const COMMANDS = {
-  //   "~leaderboard": () => coin.leaderboard(message),
   //   "~flip": () => coin.continueUser(message, args, "flip"),
   //   "~daily": () => coin.continueUser(message, args, "daily"),
   //   "~balance": () => coin.continueUser(message, args, "balance"),
   //   "~give": () => coin.continueUser(message, args, "give"),
-  //   "~print": () => coin.continueUser(message, args, "print"),
-  //   "~beg": () => coin.continueUser(message, args, "beg"),
   //   "~claim": () => coin.continueUser(message, args, "claim"),
-  //   "~challenge": () => coin.continueUser(message, args, "challenge"),
   //   "~shop": () => shop.shopManager(message, args),
   //   "~catch": () => fish.catchManager(message, args),
   //   "~fish": () => fish.fishManager(message, args),

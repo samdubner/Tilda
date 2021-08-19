@@ -106,8 +106,8 @@ module.exports = {
           },
           { name: "balance", value: "View the amount of coins you have" },
           { name: "flip [amount of coins]", value: "50/50" },
-          { name: "daily", value: "Get 100 coins once every 24 hours (do it every day for a bonus!)" },
-          { name: "beg", value: "Get 10 coins every 10 minutes" },
+          { name: "daily", value: "Get 100 coins once every 24 hours (do it every day for a bonus)!" },
+          { name: "beg", value: "Receive 10 coins every 10 minutes!" },
           {
             name: "leaderboard",
             value: "Get the top coin scores of everyone in the server!",

@@ -179,11 +179,13 @@ const createUser = async (interaction) => {
 };
 
 const checkUser = async (interaction) => {
-  let user = await User.findOne({ userId: message.author.id });
+  let user = await User.findOne({ userId: interaction.user.id });
 
   if (!user) {
     user = await createUser(interaction);
   }
+
+  return user;
 
   // for (let mentionedUser of message.mentions.users) {
   //   let dbUser = await User.findOne({ userId: mentionedUser[0] });

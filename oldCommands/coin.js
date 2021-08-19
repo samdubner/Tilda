@@ -9,54 +9,6 @@ const warnWrongChannel = (message) => {
   message.reply(embed).catch(console.error);
 };
 
-const leaderboard = async (message) => {
-  if (
-    message.channel.id != "735399594917363722" &&
-    message.author.id != "340002869912666114"
-  ) {
-    warnWrongChannel(message);
-    return;
-  }
-
-  let userList = await User.find()
-    .sort([["score", -1]])
-    .limit(10);
-  let members = await message.guild.members.fetch();
-  userList = userList.filter(
-    (user) => message.guild.member(user.userId) != undefined
-  );
-  userList = userList.slice(0, 5);
-
-  let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle("Coin Leaderboard")
-    .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
-
-  let i = 1;
-  for (let user of userList) {
-    if (user.score == userList[0].score) {
-      if (members.get(user.userId) != undefined) {
-        embed.addField(
-          `${1}) ${members.get(user.userId).user.username}`,
-          ` 🎉 ${user.score} 🎉`,
-          false
-        );
-      }
-    } else {
-      if (members.get(user.userId) != undefined) {
-        embed.addField(
-          `${i}) ${members.get(user.userId).user.username}`,
-          user.score,
-          false
-        );
-      }
-    }
-    i++;
-  }
-
-  message.channel.send(embed).catch(console.error);
-};
-
 const continueUser = async (message, args, type) => {
   if (
     message.channel.id != "735399594917363722" &&
@@ -101,9 +53,6 @@ const continueUser = async (message, args, type) => {
       break;
     case "give":
       give(message, args, user);
-      break;
-    case "print":
-      print(message, args, user);
       break;
     case "claim":
       claim(message, user);
@@ -348,58 +297,6 @@ const give = async (message, args, sender) => {
   message.channel.send(embed);
 };
 
-const print = async (message, args) => {
-  if (message.author.id != "340002869912666114") {
-    let embed = new MessageEmbed()
-      .setColor(`#ff0000`)
-      .setTitle("You cannot use this command.");
-
-    message.channel.send(embed);
-    return;
-  }
-
-  let receipt = await User.findOne({
-    userId: message.mentions.users.first().id,
-  });
-
-  if (!receipt) {
-    message.reply(
-      "You cannot give money to someone who hasn't used a betting command before, tell them to use `~bal`"
-    );
-    return;
-  }
-
-  let giveAmount = args.split(" ")[0];
-
-  if (isNaN(giveAmount)) {
-    message.reply(
-      "Make sure you put the amount you want to bet before the ping"
-    );
-    return;
-  }
-
-  if (giveAmount < 1) {
-    message.reply("You cannot give less than one coin");
-    return;
-  }
-
-  User.updateOne(
-    { userId: receipt.userId },
-    { score: parseInt(giveAmount) }
-  ).catch(console.error);
-
-  let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle("Coins Printed")
-    .addField(
-      `${message.mentions.users.first().username}'s Balance (+)`,
-      `${parseInt(giveAmount)}`,
-      false
-    );
-
-  message.channel.send(embed);
-};
-
 const balance = async (message, user) => {
   let coinVariation;
   if (message.mentions.users.first() == null) {
@@ -470,176 +367,6 @@ const claim = (message, user) => {
   coinEvent.isUp = false;
 };
 
-const challenge = async (message, args, user) => {
-  let entryPrice = args.split(" ")[0];
-  let unconfirmed = 0;
-  let users = [user];
-
-  if (entryPrice <= 0) {
-    message.reply("You cannot set an entry of less than or equal to zero");
-    return;
-  }
-
-  if (entryPrice > user.score) {
-    message.reply(
-      "That entry price is too large, please try again with a smaller amonut of coins"
-    );
-    return;
-  }
-
-  if (
-    entryPrice == null ||
-    entryPrice == undefined ||
-    isNaN(entryPrice) ||
-    entryPrice == ""
-  ) {
-    message.reply(
-      "You must set an entry price with a valid amount, please try again with a valid number"
-    );
-    return;
-  }
-
-  message.mentions.users.forEach(async (mentionedUser) => {
-    if (mentionedUser.id != message.author.id && !message.author.bot) {
-      let dbUser = await User.findOne({
-        userId: mentionedUser.id,
-      });
-
-      if (dbUser.score < entryPrice) {
-        message.channel.send(
-          `${mentionedUser.username} has less than ${entryPrice} coins, they cannot accept this challenge!` +
-            `\nMaybe try creating a new challenge with a lower entry price?`
-        );
-        return;
-      }
-
-      unconfirmed++;
-      message.channel.send(
-        `${mentionedUser.username}, respond \`yes\` to accept ${message.author.username}'s challenge for \`${entryPrice}\` coins!`
-      );
-      const filter = (m) => m.author.id == mentionedUser.id;
-      message.channel
-        .awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] })
-        .then(async (messages) => {
-          let response = messages.first();
-          if (response.content.toLowerCase() != "yes") {
-            message.channel.send(
-              `${mentionedUser.username} has rejected ${message.author.username}'s challenge!`
-            );
-            return;
-          }
-
-          unconfirmed--;
-
-          users.push(dbUser);
-
-          if (unconfirmed == 0) {
-            challengeCountdown(message, users, entryPrice);
-          }
-        })
-        .catch(() => {
-          message.channel.send(
-            `${mentionedUser.username} did not accept the challenge in time!`
-          );
-        });
-    }
-  });
-};
-
-const challengeCountdown = (message, users, entryPrice) => {
-  let pool = 0;
-
-  for (let user of users) {
-    User.updateOne(
-      { userId: user.userId },
-      { score: parseInt(user.score) - parseInt(entryPrice) }
-    ).catch(console.error);
-    pool += parseInt(entryPrice);
-  }
-
-  message.channel.send(`Everyone has accepted, challenge is starting now!`);
-  message.channel.send(
-    `I will ask a basic math question and the first person to get it right wins all the coins!`
-  );
-
-  let num1 = Math.floor(Math.random() * 100) + 1;
-  let num2 = Math.floor(Math.random() * 100) + 1;
-  let ans = num1 + num2;
-
-  let i = 3;
-  let interval = setInterval(() => {
-    if (i != 0) {
-      message.channel.send(`${i}...`);
-      i--;
-    } else {
-      message.channel.send(`\`${num1}\` + \`${num2}\` is equal to what?`);
-      catchResponse(message, pool, users, ans);
-      clearInterval(interval);
-    }
-  }, 1000);
-};
-
-const catchResponse = (message, prizePool, users, ans) => {
-  let ids = users.map((user) => user.userId);
-  const filter = (m) => m.content == ans && ids.includes(m.author.id);
-
-  message.channel
-    .awaitMessages(filter, { max: 1, time: 60000, errors: ["time"] })
-    .then((collected) => {
-      let res = collected.first();
-      res.react("🌟");
-      message.channel.send(
-        `${res.author.username} got the correct answer with ${ans}, they win ${prizePool} coins!`
-      );
-
-      let winner = users.filter((user) => user.userId == res.author.id)[0];
-
-      User.updateOne(
-        { userId: res.author.id },
-        { score: parseInt(winner.score) + parseInt(prizePool) }
-      ).catch(console.error);
-    })
-    .catch(() => {
-      message.channel.send("Nobody got the problem correct in time :(");
-    });
-};
-
-const createUser = async (message) => {
-  const newUser = new User({
-    userId: message.author.id,
-    score: 100,
-    streak: 0,
-    dailyDone: true,
-    begDate: new Date().getTime(),
-  });
-
-  newUser.save().catch(console.error);
-
-  console.log(
-    `[${new Date().toLocaleTimeString("en-US")}] Added <${newUser.userId}> ${
-      message.author.username
-    } to the coin collection`
-  );
-
-  let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`${message.author.username} has registered with Tilda!`)
-    .setThumbnail(message.author.displayAvatarURL())
-    .addField("New Account Balance", `You currently have 100 coins`, false)
-    .addField(
-      "Cooldown Status",
-      "You have just received 100 coins, `~daily` and `~beg` are on cooldown"
-    )
-    .setFooter(
-      "Thank you for registering with Tilda",
-      message.client.user.displayAvatarURL()
-    );
-
-  message.channel.send(embed);
-
-  return newUser;
-};
-
 const getUser = async (userId) => {
   let user = await Users.findOne({ userId });
   let username = client.guilds.cache
@@ -659,7 +386,6 @@ const getUser = async (userId) => {
 };
 
 module.exports = {
-  leaderboard,
   continueUser,
   getUser,
 };
