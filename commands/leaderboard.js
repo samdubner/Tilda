@@ -10,56 +10,42 @@ module.exports = {
       .sort([["score", -1]])
       .limit(10);
 
-    // try {
-    //   let members = await interaction.guild.members.fetch();
-    // } catch(e) {
-    //   console.error(e)
-    // }
-    await removeNotInGuild(userList, interaction)
-    interaction.reply("testing");
+    userList = await removeNotInGuild(userList, interaction);
+    userList = userList.slice(0, 5);
 
-    // userList = userList.filter(
-    //   (user) => interaction.guild.members.fetch(user.userId) != undefined
-    // );
-    // userList = userList.slice(0, 5);
+    let embed = new MessageEmbed()
+      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+      .setTitle("Coin Leaderboard")
+      .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
 
-    // let embed = new MessageEmbed()
-    //   .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    //   .setTitle("Coin Leaderboard")
-    //   .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
+    let i = 1;
+    for (let user of userList) {
+      if (user.score == userList[0].score) {
+        let guildMember = await interaction.guild.members.fetch(user.userId);
+        embed.addField(
+          `${1}) ${guildMember.user.username}`,
+          ` 🎉 ${user.score} 🎉`,
+          false
+        );
+      } else {
+        let guildMember = await interaction.guild.members.fetch(user.userId);
+        embed.addField(`${i}) ${guildMember.user.username}`, `${user.score}`, false);
+      }
+      i++;
+    }
 
-    // let i = 1;
-    // for (let user of userList) {
-    //   if (user.score == userList[0].score) {
-    //     // if (members.get(user.userId) != undefined) {
-    //       embed.addField(
-    //         `${1}) ${await interaction.guild.fetch(user.userId).user.username}`,
-    //         ` 🎉 ${user.score} 🎉`,
-    //         false
-    //       );
-    //     // }
-    //   } else {
-    //     // if (members.get(user.userId) != undefined) {
-    //       embed.addField(
-    //         `${i}) ${members.get(user.userId).user.username}`,
-    //         user.score,
-    //         false
-    //       );
-    //     // }
-    //   }
-    //   i++;
-    // }
-    // interaction.reply({embeds: [embed]}).catch(console.error);
+    interaction.reply({ embeds: [embed] }).catch(console.error);
   },
 };
 
 removeNotInGuild = async (userList, interaction) => {
-  // let newList = [];
+  let newList = [];
 
-  // for (let user of userList) {
-  //   user = await interaction.guild.members.resolve(user.id)
-  //   console.log(user)
-  // }
+  for (let user of userList) {
+    guildMember = await interaction.guild.members.fetch(user.userId);
 
-  // return newList;
-}
+    if (guildMember) newList.push(user);
+  }
+
+  return newList;
+};
