@@ -50,7 +50,6 @@ module.exports = {
       args != "all" &&
       args != "a"
     ) {
-
       sendErrorMessage(
         interaction,
         "You have to bet a valid amount, please try again with a valid number"
@@ -78,7 +77,7 @@ module.exports = {
         )
         .setDescription(`They now have ${totalCoins} ${totalCoinsVariation}`)
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
-      interaction.reply({embeds: [embed]});
+      interaction.reply({ embeds: [embed] });
       scoreWon = bet;
     } else {
       totalCoins = parseInt(user.score) - parseInt(scoreWon);
@@ -91,7 +90,7 @@ module.exports = {
         )
         .setDescription(`They now have ${totalCoins} ${totalCoinsVariation}`)
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
-      interaction.reply({embeds: [embed]});
+      interaction.reply({ embeds: [embed] });
       scoreWon = bet * -1;
     }
 
@@ -105,8 +104,8 @@ module.exports = {
 const sendErrorMessage = (interaction, error) => {
   let embed = new MessageEmbed()
     .setColor(`#ff0000`)
-    .setTitle(`Argument Error`)
+    .setTitle("Flip Error")
     .setDescription(error);
 
-  interaction.reply({embeds: [embed], ephemeral: true}).catch(console.error);
+  interaction.reply({ embeds: [embed], ephemeral: true }).catch(console.error);
 };
