@@ -16,6 +16,8 @@ const coin = require("./helpers/coinHelper");
 
 /*
 TODO:
+move claim logic to coinHelper
+change coinevent to main channel & regular intervals
 make the ui command show activities
 */
 
@@ -50,11 +52,10 @@ client.on("ready", async () => {
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  //   setInterval(() => {
-  //     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
-  //       coin.randomCoinEvent(client);
-  //   }, 1000 * 60 * 60 * 3);
-  // });
+  setInterval(() => {
+    if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
+      coin.randomCoinEvent(client);
+  }, 1000 * 60 * 60 * 3);
 });
 
 client.on("guildMemberAdd", (member) => {

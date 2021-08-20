@@ -27,12 +27,12 @@ const randomCoinEvent = async (client) => {
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
     .setTitle("Random Coin Event")
-    .setDescription(`Use \`~claim\` to win ${coinAmount} coins!`);
+    .setDescription(`Use \`/claim\` to win ${coinAmount} coins!`);
 
-  let botChannel = await client.channels.resolve("735399594917363722");
+  let botChannel = await client.channels.resolve("469659852109643788"); //dev 469659852109643788 //main 735399594917363722
 
   botChannel
-    .send(embed)
+    .send({ embeds: [embed] })
     .then((message) => {
       coinEvent = { isUp: true, messageId: message.id, coinAmount };
       console.log(
@@ -55,9 +55,46 @@ const randomCoinEvent = async (client) => {
 
       coinEvent.isUp = false;
 
-      botChannel.messages.cache.get(coinEvent.messageId).edit(embed);
+      botChannel.messages.cache
+        .get(coinEvent.messageId)
+        .edit({ embeds: [embed] });
     }
   }, 1000 * 60 * 60);
+};
+
+const claim = (interaction, user) => {
+  if (!coinEvent.isUp) {
+    let embed = new MessageEmbed()
+      .setColor(`#ff0000`)
+      .setTitle(
+        `${interaction.member.displayName}, there is currently no ongoing coin event to be claimed :(`
+      );
+  
+    return false;
+  }
+  
+  User.updateOne(
+    { userId: interaction.user.id },
+    { score: parseInt(user.score) + coinEvent.coinAmount }
+  ).catch(console.error);
+  
+  let embed = new MessageEmbed()
+    .setColor(`#00ff00`)
+    .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
+    .setTitle("Random Coin Event")
+    .addField(
+      `${interaction.user.username} claimed ${coinEvent.coinAmount} coins!`,
+      `They now have ${parseInt(user.score) + coinEvent.coinAmount} coins`,
+      false
+    );
+  
+  interaction.channel.messages.cache
+    .get(coinEvent.messageId)
+    .edit({embeds: [embed]})
+    .catch(console.error);
+  coinEvent.isUp = false;
+
+  return true;
 };
 
 const bleedTopUser = async () => {
@@ -237,5 +274,6 @@ module.exports = {
   notifyDailyReset,
   checkChampion,
   createUser,
-  checkUser
+  checkUser,
+  claim
 };
