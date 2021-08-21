@@ -47,34 +47,34 @@ module.exports = {
       case "basic":
         embed.setDescription("Basic Commands").addFields(
           {
-            name: "request [message]",
+            name: "/request [message]",
             value:
               "Sends <@340002869912666114> a message with your idea to improve Tilda",
           },
           {
-            name: "8ball [question]",
+            name: "/8ball [question]",
             value: "Ask the all powerful 8ball your questions",
           },
           {
-            name: "ui <@person>",
+            name: "/ui <@person>",
             value:
               "Sends some basic info about the mentioned person",
           },
-          { name: "si", value: "Sends basic server information" },
+          { name: "/si", value: "Sends basic server information" },
           {
-            name: "pfp <@person>",
+            name: "/pfp <@person>",
             value:
               "Sends the profile pictures of the mentioned people or yourself if nobody is mentioned",
           },
           {
-            name: "roll <number of sides>",
+            name: "/roll <number of sides>",
             value:
               "Will roll a x number sided die (default: 6)",
           }
         );
         break;
       case "room":
-        embed.setDescription("Room Commands").addFields(
+        embed.setDescription("Room Commands [Under Construction]").addFields(
           { name: "room start", value: "Create your own category and channels! [rooms are now limited to 1 per person]" },
           {
             name: "room end",
@@ -101,45 +101,37 @@ module.exports = {
       case "coin":
         embed.setDescription("Coin Commands").addFields(
           {
-            name: "leaderboard",
+            name: "/leaderboard",
             value: "Shows the coins of the top 5 users in the server!",
           },
-          { name: "balance", value: "View the amount of coins you have" },
-          { name: "flip [amount of coins]", value: "50/50" },
-          { name: "daily", value: "Get 100 coins once every 24 hours (do it every day for a bonus)!" },
-          { name: "beg", value: "Receive 10 coins every 10 minutes!" },
+          { name: "/balance", value: "View the amount of coins you have" },
+          { name: "/flip [amount of coins]", value: "50/50" },
+          { name: "/daily", value: "Get 100 coins once every 24 hours (do it every day for a bonus)!" },
+          { name: "/beg", value: "Receive 10 coins every 10 minutes!" },
           {
-            name: "leaderboard",
-            value: "Get the top coin scores of everyone in the server!",
-          },
-          {
-            name: "give [amount of coins] <@person>",
+            name: "/give [amount of coins] <@person>",
             value: "Give `x` amount of coins to mentioned person",
           },
-          {
-            name: "challenge [entry price] <@people>",
-            value: "Challenge mentioned users to a quick math game!",
-          }
         );
         break;
       case "role":
         embed.setDescription("Role Commands").addFields(
           {
-            name: "role",
+            name: "/role",
             value: "creates your custom role and displays info",
           },
           {
-            name: "role name [custom name]",
+            name: "/role name [custom name]",
             value: "change your role's name",
           },
           {
-            name: "role color [hex code]",
+            name: "/role color [hex code]",
             value: "change your role's color `EX: ~role color #FF0000`",
           }
         );
         break;
       case "shop":
-        embed.setDescription("Shop Commands").addFields(
+        embed.setDescription("Shop Commands [Under Construction]").addFields(
           {
             name: "shop",
             value: "View all items available for you to purchase in the shop!",
@@ -151,7 +143,7 @@ module.exports = {
         );
         break;
       case "fish":
-        embed.setDescription("Fish Commands").addFields(
+        embed.setDescription("Fish Commands [Under Construction]").addFields(
           {
             name: "catch [pond name]",
             value: "Catch a fish! (will default to plain pond)",
