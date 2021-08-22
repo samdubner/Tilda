@@ -109,8 +109,8 @@ module.exports = {
           { name: "/daily", value: "Get 100 coins once every 24 hours (do it every day for a bonus)!" },
           { name: "/beg", value: "Receive 10 coins every 10 minutes!" },
           {
-            name: "/give [amount of coins] <@person>",
-            value: "Give `x` amount of coins to mentioned person",
+            name: "/give @person [coins]",
+            value: "Sends some coins to a thankful person!",
           },
         );
         break;
