@@ -215,7 +215,8 @@ const createUser = async (interaction) => {
   return newUser;
 };
 
-const checkInteraction = async (user) => {
+//check to see if the person using a command has registered
+const checkInteraction = async (interaction) => {
   let user = await User.findOne({ userId: interaction.user.id });
 
   if (!user) {
@@ -225,16 +226,11 @@ const checkInteraction = async (user) => {
   return user;
 };
 
-
-
+//used to check if users in an argument have registered
 const checkUser = async (user) => {
-  let user = await User.findOne({ userId: interaction.user.id });
+  let check = await User.findOne({ userId: user.id });
 
-  if (!user) {
-    user = await createUser(interaction);
-  }
-
-  return user;
+  return !!check;
 };
 
 module.exports = {
