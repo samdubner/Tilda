@@ -30,7 +30,7 @@ module.exports = {
       return;
     }
 
-    let user = await helper.checkUser(interaction);
+    let user = await helper.checkInteraction(interaction);
 
     if (interaction.options.get("amount").value > user.score) {
       interaction.reply({

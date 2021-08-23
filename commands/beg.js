@@ -7,7 +7,7 @@ module.exports = {
   name: "beg",
   description: "Receive 10 coins every 10 minutes!",
   async execute(interaction) {
-    let user = await helper.checkUser(interaction);
+    let user = await helper.checkInteraction(interaction);
 
     let checkDate = user.begDate;
     let begTimer = new Date().getTime() - 10 * 60 * 1000;

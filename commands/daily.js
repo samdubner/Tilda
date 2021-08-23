@@ -8,7 +8,7 @@ module.exports = {
   description:
     "Get 100 coins once every 24 hours (do it every day for a bonus)!",
   async execute(interaction) {
-    let user = await helper.checkUser(interaction);
+    let user = await helper.checkInteraction(interaction);
 
     let dailyDone = user.dailyDone;
 

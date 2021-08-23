@@ -7,7 +7,7 @@ module.exports = {
   name: "balance",
   description: "View the amount of coins you have",
   async execute(interaction) {
-    let user = await helper.checkUser(interaction);
+    let user = await helper.checkInteraction(interaction);
 
     let coinVariation = user.score == 1 ? "coin" : "coins";
     let embed = new MessageEmbed()

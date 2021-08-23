@@ -7,7 +7,7 @@ module.exports = {
   name: "claim",
   description: "Be the first one to claim the coin event!",
   async execute(interaction) {
-    let user = await helper.checkUser(interaction);
+    let user = await helper.checkInteraction(interaction);
     let result = helper.claim(interaction, user);
 
     if (result) {

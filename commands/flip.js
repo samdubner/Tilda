@@ -15,7 +15,7 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    let user = await helper.checkUser(interaction);
+    let user = await helper.checkInteraction(interaction);
     let args = interaction.options.get("amount").value.toLowerCase();
 
     let flipResult = Math.floor(Math.random() * 2);
