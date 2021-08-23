@@ -16,7 +16,7 @@ const coin = require("./helpers/coinHelper");
 
 /*
 TODO:
-move claim logic to coinHelper
+rework give command to use simpler logic
 change coinevent to main channel & regular intervals
 make the ui command show activities
 */

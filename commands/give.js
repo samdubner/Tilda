@@ -45,40 +45,28 @@ module.exports = {
     }).catch(console.error);
   
     if (!receipt) {
-      message.reply(
-        "You cannot give money to someone who hasn't used a betting command before, tell them to use `~bal`"
-      );
       interaction.reply({
-        content: "You cannot give more coins than you have",
+        content: "You cannot give money to someone who hasn't used a betting command before, tell them to use `~bal`",
         ephemeral: true,
       });
       return;
     }
   
-    let giveAmount = args.split(" ")[0];
-  
-    if (isNaN(giveAmount)) {
-      message.reply(
-        "Make sure you put the amount you want to give before the mention"
-      );
-      interaction.reply({
-        content: "You cannot give more coins than you have",
-        ephemeral: true,
-      });
-      return;
-    }
+    let giveAmount = interaction.options.get("amount").value;
   
     if (giveAmount < 1) {
-      message.reply("You cannot give less than one coin");
       interaction.reply({
-        content: "You cannot give more coins than you have",
+        content:"You cannot give less than one coin",
         ephemeral: true,
       });
       return;
     }
   
-    if (receipt.userId == message.author.id) {
-      message.reply("You cannot give yourself coins");
+    if (receipt.userId == interaction.user.id) {
+      interaction.reply({
+        content:"You cannot give yourself coins",
+        ephemeral: true,
+      });
       return;
     }
   
@@ -96,12 +84,12 @@ module.exports = {
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle("Coin Transfer")
       .addField(
-        `${message.author.username}'s Balance (-${giveAmount})`,
+        `${interaction.user.username}'s Balance (-${giveAmount})`,
         `${parseInt(sender.score) - parseInt(giveAmount)}`,
         false
       )
       .addField(
-        `${message.mentions.users.first().username}'s Balance (+${giveAmount})`,
+        `${interaction.options.user.username}'s Balance (+${giveAmount})`,
         `${parseInt(receipt.score) + parseInt(giveAmount)}`,
         false
       );
