@@ -94,7 +94,6 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   // const COMMANDS = {
-  //   "~give": () => coin.continueUser(message, args, "give"),
   //   "~shop": () => shop.shopManager(message, args),
   //   "~catch": () => fish.catchManager(message, args),
   //   "~fish": () => fish.fishManager(message, args),
