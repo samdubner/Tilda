@@ -1,6 +1,5 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-const User = require("../models/User");
 const helper = require("../helpers/coinHelper")
 
 module.exports = {
@@ -27,16 +26,14 @@ module.exports = {
       interaction.reply({embeds: [embed]});
       return;
     }
-  
-    User.updateOne(
-      { userId: interaction.user.id },
-      { score: parseInt(user.score) + 10, begDate: new Date().getTime() }
-    ).catch(console.error);
+
+    user.score += 10;
+    user.save()
   
     let embed = new MessageEmbed()
       .setColor(`#00ff00`)
       .setTitle(`${interaction.member.displayName} got 10 coins!`)
-      .setDescription(`They now have ${user.score + 10} coins`)
+      .setDescription(`They now have ${user.score} coins`)
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
   
     interaction.reply({embeds: [embed]});
