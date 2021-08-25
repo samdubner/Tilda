@@ -72,11 +72,9 @@ const claim = (interaction, user) => {
   
     return false;
   }
-  
-  User.updateOne(
-    { userId: interaction.user.id },
-    { score: parseInt(user.score) + coinEvent.coinAmount }
-  ).catch(console.error);
+
+  user.score += coinEvent.coinAmount;
+  user.save()
   
   let embed = new MessageEmbed()
     .setColor(`#00ff00`)
@@ -84,7 +82,7 @@ const claim = (interaction, user) => {
     .setTitle("Random Coin Event")
     .addField(
       `${interaction.user.username} claimed ${coinEvent.coinAmount} coins!`,
-      `They now have ${parseInt(user.score) + coinEvent.coinAmount} coins`,
+      `They now have ${user.score} coins`,
       false
     );
   
