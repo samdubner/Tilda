@@ -15,7 +15,7 @@ module.exports = {
     console.log(
       `${interaction.member.displayName} has destroyed the client, updating local repository...`
     );
-    execSync("git pull --ff-only");
+    execSync("sudo git pull --ff-only");
     console.log("Exiting node process...");
     process.exit(0);
   },
