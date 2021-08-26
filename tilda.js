@@ -46,8 +46,9 @@ schedule.scheduleJob("0 0 * * *", async () => {
 client.on("ready", async () => {
   for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    client.application.commands.create(command, "735395621703385099"); //uncomment when adding new commands
-    client.commands.set(command.name, command);
+    // const mainGuild = await client.guilds.fetch("735395621703385099") //uncomment when adding new commands
+    // mainGuild.commands.create(command); //uncomment when adding new commands
+    client.commands.set(command.name, command); 
   }
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
@@ -69,8 +70,8 @@ client.on("guildMemberAdd", (member) => {
 
 client.on("interactionCreate", async (interaction) => {
   if (
-    interaction.channelId != "735404269426966580" &&
-    !["340002869912666114", "670849450599645218"].includes(interaction.user.id)
+    interaction.channelId != "735399594917363722" &&
+    !["340002869912666114", "171330866189041665"].includes(interaction.user.id)
   ) {
     interaction.reply({
       content: "You cannot use commands outside of the bot channel",
