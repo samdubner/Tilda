@@ -9,7 +9,7 @@ module.exports = {
         interaction.user.id
       )
     )
-      return;
+    return;
 
     interaction.client.destroy();
     console.log(

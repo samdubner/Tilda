@@ -1,8 +1,8 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
 module.exports = {
-  name: "update",
-  description: "updates tilda to the latest version! (authorized users only)",
+  name: "si",
+  description: "Sends basic server information",
   async execute(interaction) {
     let embed = new MessageEmbed()
     .setAuthor("Server Info", message.author.avatarURL())
