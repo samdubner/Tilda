@@ -17,7 +17,7 @@ const coin = require("./helpers/coinHelper");
 /*
 TODO:
 rework give command to use simpler logic
-change coinevent to main channel & regular intervals
+change coinevent to main channel
 make the ui command show activities
 */
 
@@ -46,7 +46,7 @@ schedule.scheduleJob("0 0 * * *", async () => {
 client.on("ready", async () => {
   for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    client.application.commands.create(command, "469659852109643786"); //uncomment when adding new commands
+    client.application.commands.create(command, "735395621703385099"); //uncomment when adding new commands
     client.commands.set(command.name, command);
   }
 

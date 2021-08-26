@@ -29,7 +29,7 @@ const randomCoinEvent = async (client) => {
     .setTitle("Random Coin Event")
     .setDescription(`Use \`/claim\` to win ${coinAmount} coins!`);
 
-  let botChannel = await client.channels.resolve("469659852109643788"); //dev 469659852109643788 //main 735399594917363722
+  let botChannel = await client.channels.resolve("735399594917363722"); //dev 469659852109643788 //main 735399594917363722
 
   botChannel
     .send({ embeds: [embed] })
