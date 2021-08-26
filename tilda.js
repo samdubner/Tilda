@@ -46,8 +46,12 @@ schedule.scheduleJob("0 0 * * *", async () => {
 client.on("ready", async () => {
   for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    const mainGuild = await client.guilds.fetch("469659852109643786"); //test server: 469659852109643786     main server: 735395621703385099
-    mainGuild.commands.create(command); //uncomment when adding new commands
+    const guildId =
+      client.user.id == "670849450599645218"
+        ? "735395621703385099"
+        : "469659852109643786";
+    const mainGuild = await client.guilds.fetch(guildId);
+    mainGuild.commands.create(command);
     client.commands.set(command.name, command);
   }
 
