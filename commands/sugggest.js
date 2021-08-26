@@ -12,7 +12,7 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    let suggestion = interaction.options.get
+    let suggestion = interaction.options.get("suggestion").value
     console.log(
       `[SUGGESTION] ${interaction.user.username}#${interaction.user.discriminator} => ${suggestion}`
     );
@@ -23,6 +23,6 @@ module.exports = {
       .addField("Request", suggestion, false)
       .setThumbnail(interaction.user.displayAvatarURL())
   
-    message.reply(embed);
+    interaction.reply({embeds: [embed]});
   },
 };
