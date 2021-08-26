@@ -11,7 +11,7 @@ module.exports = {
     )
       return;
 
-    client.destroy();
+    interaction.client.destroy();
     console.log(
       `${interaction.member.displayName} has destroyed the client, updating local repository...`
     );
