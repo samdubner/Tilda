@@ -10,10 +10,10 @@ module.exports = {
     .setThumbnail(interaction.guild.iconURL())
     .addFields([
       { name: "Server Name", value: interaction.guild.name, inline: false },
-      { name: "# of Members", value: interaction.guild.memberCount, inline: false },
+      { name: "# of Members", value: `${interaction.guild.memberCount}`, inline: false },
       {
         name: "# of Boosters",
-        value: Interaction.guild.premiumSubscriptionCount,
+        value: `${interaction.guild.premiumSubscriptionCount}`,
         inline: false,
       },
       {

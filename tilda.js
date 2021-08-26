@@ -1,4 +1,4 @@
-const { Client, Collection, Intents } = require("discord.js");
+const { Client, Collection, Intents, MessageEmbed } = require("discord.js");
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -46,9 +46,9 @@ schedule.scheduleJob("0 0 * * *", async () => {
 client.on("ready", async () => {
   for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    const mainGuild = await client.guilds.fetch("469659852109643786") //test server: 469659852109643786     main server: 735395621703385099
+    const mainGuild = await client.guilds.fetch("469659852109643786"); //test server: 469659852109643786     main server: 735395621703385099
     mainGuild.commands.create(command); //uncomment when adding new commands
-    client.commands.set(command.name, command); 
+    client.commands.set(command.name, command);
   }
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
@@ -87,9 +87,19 @@ client.on("interactionCreate", async (interaction) => {
   try {
     await client.commands.get(interaction.commandName).execute(interaction);
   } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: "There was an error while executing this command!",
+    console.log(error);
+    let embed = new MessageEmbed()
+      .setColor(`#ff0000`)
+      .setTitle(`Interaction Failed`)
+      .setThumbnail(interaction.guild.iconURL())
+      .addField(
+        "Command failed to execute",
+        "Look at the footer to see the error"
+      )
+      .setFooter(`${error}`);
+
+    interaction.reply({
+      embeds: [embed],
       ephemeral: true,
     });
   }
