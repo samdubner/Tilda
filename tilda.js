@@ -57,6 +57,8 @@ client.on("ready", async () => {
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
+  client.user.setActivity("all the coin flips", {type: 'WATCHING'});
+
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
       coin.randomCoinEvent(client);
