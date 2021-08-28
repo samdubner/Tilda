@@ -20,7 +20,7 @@ let coinEvent = {
   messageId: 0,
 };
 
-const randomCoinEvent = async (client) => {
+const randomCoinEvent = async (client, guildId) => {
   let coinAmount = Math.floor(Math.random() * 50) + 51;
 
   let embed = new MessageEmbed()
@@ -29,7 +29,12 @@ const randomCoinEvent = async (client) => {
     .setTitle("Random Coin Event")
     .setDescription(`Use \`/claim\` to win ${coinAmount} coins!`);
 
-  let botChannel = await client.channels.resolve("735399594917363722"); //dev 469659852109643788 //main 735399594917363722
+  let channelId =
+    guildId == "735395621703385099"
+      ? "735399594917363722"
+      : "469659852109643788";
+
+  let botChannel = await client.channels.resolve(channelId);
 
   botChannel
     .send({ embeds: [embed] })
@@ -69,13 +74,13 @@ const claim = (interaction, user) => {
       .setTitle(
         `${interaction.member.displayName}, there is currently no ongoing coin event to be claimed :(`
       );
-  
+
     return false;
   }
 
   user.score += coinEvent.coinAmount;
-  user.save()
-  
+  user.save();
+
   let embed = new MessageEmbed()
     .setColor(`#00ff00`)
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
@@ -85,10 +90,10 @@ const claim = (interaction, user) => {
       `They now have ${user.score} coins`,
       false
     );
-  
+
   interaction.channel.messages.cache
     .get(coinEvent.messageId)
-    .edit({embeds: [embed]})
+    .edit({ embeds: [embed] })
     .catch(console.error);
   coinEvent.isUp = false;
 
@@ -242,5 +247,5 @@ module.exports = {
   createUser,
   checkInteraction,
   checkUser,
-  claim
+  claim,
 };

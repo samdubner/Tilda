@@ -43,13 +43,14 @@ schedule.scheduleJob("0 0 * * *", async () => {
 });
 
 client.on("ready", async () => {
-  for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    const guildId =
-      client.user.id == "670849450599645218"
-        ? "735395621703385099"
-        : "469659852109643786";
-    const mainGuild = await client.guilds.fetch(guildId);
+  const guildId =
+  client.user.id == "670849450599645218"
+    ? "735395621703385099"
+    : "469659852109643786";  
+  const mainGuild = await client.guilds.fetch(guildId);
+
+  for (let file of commandFiles) {
+    let command = require(`./commands/${file}`);
     mainGuild.commands.create(command);
     client.commands.set(command.name, command);
   }
@@ -60,7 +61,7 @@ client.on("ready", async () => {
 
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
-      coin.randomCoinEvent(client);
+      coin.randomCoinEvent(client, guildId);
   }, 1000 * 60 * 60 * 3);
 });
 

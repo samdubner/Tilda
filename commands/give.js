@@ -70,16 +70,6 @@ module.exports = {
       });
       return;
     }
-
-    // User.updateOne(
-    //   { userId: sender.userId },
-    //   { score: parseInt(sender.score) - giveAmount }
-    // ).catch(console.error);
-    
-    // User.updateOne(
-    //   { userId: receipt.userId },
-    //   { score: parseInt(receipt.score) + giveAmount }
-    // ).catch(console.error);
     
     sender.score -= giveAmount;
     receipt.score += giveAmount;
