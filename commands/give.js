@@ -71,27 +71,32 @@ module.exports = {
       return;
     }
 
-    User.updateOne(
-      { userId: sender.userId },
-      { score: parseInt(sender.score) - giveAmount }
-    ).catch(console.error);
-
-    User.updateOne(
-      { userId: receipt.userId },
-      { score: parseInt(receipt.score) + giveAmount }
-    ).catch(console.error);
+    // User.updateOne(
+    //   { userId: sender.userId },
+    //   { score: parseInt(sender.score) - giveAmount }
+    // ).catch(console.error);
+    
+    // User.updateOne(
+    //   { userId: receipt.userId },
+    //   { score: parseInt(receipt.score) + giveAmount }
+    // ).catch(console.error);
+    
+    sender.score -= giveAmount;
+    receipt.score += giveAmount;
+    sender.save()
+    receipt.save()
 
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle("Coin Transfer")
       .addField(
         `${interaction.user.username}'s Balance (-${giveAmount})`,
-        `${parseInt(sender.score) - parseInt(giveAmount)}`,
+        `${sender.score}`,
         false
       )
       .addField(
         `${interaction.options.get("person").user.username}'s Balance (+${giveAmount})`,
-        `${parseInt(receipt.score) + parseInt(giveAmount)}`,
+        `${receipt.score}`,
         false
       );
 
