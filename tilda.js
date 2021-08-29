@@ -23,12 +23,12 @@ make the ui command show activities
 const randomizeRoleColor = async () => {
   let guild;
   try {
-    guild = await client.guilds.fetch("735395621703385099");
+    guild = await client.guilds.fetch("881621682870190091");
   } catch (e) {
     console.log("Main server not found... unable to change role colors");
     return;
   }
-  const role = await guild.roles.fetch("735395776967999515");
+  const role = await guild.roles.fetch("881627506908737546");
   role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
 };
 
@@ -45,7 +45,7 @@ schedule.scheduleJob("0 0 * * *", async () => {
 client.on("ready", async () => {
   const guildId =
   client.user.id == "670849450599645218"
-    ? "735395621703385099"
+    ? "881621682870190091"
     : "469659852109643786";  
   const mainGuild = await client.guilds.fetch(guildId);
 

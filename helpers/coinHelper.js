@@ -30,8 +30,8 @@ const randomCoinEvent = async (client, guildId) => {
     .setDescription(`Use \`/claim\` to win ${coinAmount} coins!`);
 
   let channelId =
-    guildId == "735395621703385099"
-      ? "735399594917363722"
+    guildId == "881621682870190091"
+      ? "881622803449774090"
       : "469659852109643788";
 
   let botChannel = await client.channels.resolve(channelId);
@@ -152,11 +152,11 @@ const notifyDailyReset = async (client, topUsers) => {
 
 const checkChampion = async (client, topUsers) => {
   try {
-    let guild = await client.guilds.fetch("735395621703385099");
+    let guild = await client.guilds.fetch("881621682870190091");
 
     await guild.members.fetch();
-    let championRole = await guild.roles.fetch("832069903703998505");
-    let podiumRole = await guild.roles.fetch("834173402016645130");
+    let championRole = await guild.roles.fetch("881626975649796097");
+    let podiumRole = await guild.roles.fetch("881627048014151730");
     let currentChampion = championRole.members.first();
 
     let leadUser = topUsers[0];
