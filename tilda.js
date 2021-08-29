@@ -66,7 +66,7 @@ client.on("ready", async () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-  member.roles.add("881627506908737546");
+  member.roles.cache.add("881627506908737546");
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] ${
       member.displayName
