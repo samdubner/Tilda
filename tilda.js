@@ -55,9 +55,6 @@ client.on("ready", async () => {
     client.commands.set(command.name, command);
   }
 
-  let guild = await client.guilds.fetch("881621682870190091")
-  guild.members.ban("283999023164030976")
-
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
   client.user.setActivity("all the coin flips", {type: 'WATCHING'});
