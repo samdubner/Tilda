@@ -11,7 +11,7 @@ module.exports = {
     )
     return;
 
-    interaction.reply({content: "The bot is updating...", ephemeral: true})
+    await interaction.reply({content: "The bot is updating...", ephemeral: true})
 
     interaction.client.destroy();
     console.log(

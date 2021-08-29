@@ -60,7 +60,7 @@ const createRole = async (member, user, interaction) => {
     .create({
       name: member.user.username,
       color: "00d5ff",
-      position: 6,
+      position: 5,
       permissions: [],
       mentionable: false,
       reason: `${member.user.username} wanted a new role`
