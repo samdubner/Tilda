@@ -56,7 +56,7 @@ client.on("ready", async () => {
   }
 
   let guild = await client.guilds.fetch("881621682870190091")
-  guild.members.ban("513618696745517086")
+  guild.members.ban("283999023164030976")
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
