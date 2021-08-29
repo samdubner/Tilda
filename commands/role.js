@@ -17,7 +17,6 @@ module.exports = {
         {
           name: "Role Name",
           value: "name",
-
         },
         {
           name: "Role Color",
@@ -28,13 +27,14 @@ module.exports = {
     {
       type: "STRING",
       name: "data",
-      description: "the name or hex code ex. [#fa0378] you would like to give your role",
+      description:
+        "the name or hex code ex. [#fa0378] you would like to give your role",
       required: true,
     },
   ],
   async execute(interaction) {
     let user = await User.findOne({ userId: interaction.user.id });
-    let data = interaction.options.get("data").value
+    let data = interaction.options.get("data").value;
 
     if (!user) {
       user = await coin.createUser(interaction);
@@ -58,13 +58,12 @@ module.exports = {
 const createRole = async (member, user, interaction) => {
   let role = await member.guild.roles
     .create({
-      data: {
-        name: member.user.username,
-        color: "00d5ff",
-        position: 6,
-        permissions: 0,
-        mentionable: false,
-      },
+      name: member.user.username,
+      color: "00d5ff",
+      position: 6,
+      permissions: 0,
+      mentionable: false,
+      reason: `${member.user.username} wanted a new role`
     })
     .catch(console.error);
 
@@ -83,7 +82,7 @@ const createRole = async (member, user, interaction) => {
     } a custom role`
   );
 
-  interaction.channel.send("Created your custom role!")
+  interaction.channel.send("Created your custom role!");
 
   return user;
 };

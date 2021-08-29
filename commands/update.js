@@ -11,6 +11,8 @@ module.exports = {
     )
     return;
 
+    interaction.reply({content: "The bot is updating...", ephemeral: true})
+
     interaction.client.destroy();
     console.log(
       `${interaction.member.displayName} has destroyed the client, updating local repository...`
