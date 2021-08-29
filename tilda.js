@@ -76,7 +76,7 @@ client.on("guildMemberAdd", (member) => {
 
 client.on("interactionCreate", async (interaction) => {
   if (
-    interaction.channelId != "735399594917363722" &&
+    interaction.channelId != "881622803449774090" &&
     !["340002869912666114", "171330866189041665"].includes(interaction.user.id)
   ) {
     interaction.reply({
