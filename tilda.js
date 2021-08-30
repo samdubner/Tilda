@@ -16,7 +16,6 @@ const coin = require("./helpers/coinHelper");
 
 /*
 TODO:
-change coinevent to main channel
 make the ui command show activities
 */
 
