@@ -132,22 +132,21 @@ const resetDailies = async () => {
 const notifyDailyReset = async (client, topUsers) => {
   let member = await client.users.fetch(topUsers[0].userId);
 
-  client.channels
-    .fetch("881622803449774090")
-    .then((channel) => {
-      let embed = new MessageEmbed()
-        .setColor("#00ff00")
-        .setTitle(`Dailies have been reset!`)
-        .setDescription(`${member.username} has also misplaced some coins...`)
-        .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
+  try {
+    let channel = await client.channels.fetch("881622803449774090");
 
-      channel.send(embed).catch(console.error);
-    })
-    .catch(() =>
-      console.log(
-        "Channel wasn't able to be found, daily reset notification not sent"
-      )
+    let embed = new MessageEmbed()
+      .setColor("#00ff00")
+      .setTitle(`Dailies have been reset!`)
+      .setDescription(`${member.username} has also misplaced some coins...`)
+      .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
+
+    channel.send({embeds: [embed]}).catch(console.error);
+  } catch (e) {
+    console.log(
+      "Channel wasn't able to be found, daily reset notification not sent"
     );
+  }
 };
 
 const checkChampion = async (client, topUsers) => {
