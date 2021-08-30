@@ -200,8 +200,8 @@ const createUser = async (interaction) => {
 
   let embed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`${user.username} has registered with Tilda!`)
-    .setThumbnail(user.displayAvatarURL())
+    .setTitle(`${interaction.user.username} has registered with Tilda!`)
+    .setThumbnail(interaction.user.displayAvatarURL())
     .addField("New Account Balance", `You currently have 100 coins`, false)
     .addField(
       "Cooldown Status",
@@ -209,7 +209,7 @@ const createUser = async (interaction) => {
     )
     .setFooter(
       "Thank you for registering with Tilda",
-      user.client.user.displayAvatarURL()
+      interaction.client.user.displayAvatarURL()
     );
 
   interaction.reply({embeds: [embed]});

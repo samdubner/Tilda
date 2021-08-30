@@ -59,7 +59,13 @@ client.on("ready", async () => {
   const mainGuild = await client.guilds.fetch(guildId);
 
   for (let file of commandFiles) {
-    let command = require(`./commands/${file}`);
+    let command;
+    try {
+      command = require(`./mainCommands/${file}`);
+    } catch (e) {
+      command = require(`./musicCommands/${file}`);
+    }
+
     mainGuild.commands.create(command);
     client.commands.set(command.name, command);
   }
