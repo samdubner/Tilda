@@ -1,14 +1,24 @@
 const { Client, Collection, Intents, MessageEmbed } = require("discord.js");
 
 const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES],
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MEMBERS,
+    Intents.FLAGS.GUILD_MESSAGES,
+  ],
 });
 client.commands = new Collection();
 
 const fs = require("fs");
-const commandFiles = fs
-  .readdirSync("./commands")
+
+const mainCommands = fs
+  .readdirSync("./mainCommands")
   .filter((file) => file.endsWith(".js"));
+const musicCommands = fs
+  .readdirSync("./musicCommands")
+  .filter((file) => file.endsWith(".js"));
+
+const commandFiles = mainCommands.concat(musicCommands);
 
 const schedule = require("node-schedule");
 
@@ -43,9 +53,9 @@ schedule.scheduleJob("0 0 * * *", async () => {
 
 client.on("ready", async () => {
   const guildId =
-  client.user.id == "670849450599645218"
-    ? "881621682870190091"
-    : "469659852109643786";  
+    client.user.id == "670849450599645218"
+      ? "881621682870190091"
+      : "469659852109643786";
   const mainGuild = await client.guilds.fetch(guildId);
 
   for (let file of commandFiles) {
@@ -56,7 +66,7 @@ client.on("ready", async () => {
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  client.user.setActivity("all the coin flips", {type: 'WATCHING'});
+  client.user.setActivity("all the coin flips", { type: "WATCHING" });
 
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
