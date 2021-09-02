@@ -37,6 +37,7 @@ module.exports = {
         room.createCategory(interaction)
         break;
       case "end":
+        room.removeCategory(interaction)
         break;
       case "private":
         break;

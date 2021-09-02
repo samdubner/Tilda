@@ -67,12 +67,41 @@ const createCategory = async (interaction) => {
   await textChannel.lockPermissions();
   await voiceChannel.lockPermissions();
 
-  textChannel.send(`<@${interaction.user.id}> Welcome to your new room!`).catch(console.error);
+  textChannel
+    .send(`<@${interaction.user.id}> Welcome to your new room!`)
+    .catch(console.error);
 
   user.categoryId = category.id;
   user.save();
 };
 
+const removeCategory = async (interaction) => {
+  let user = await coin.checkInteraction(interaction);
+
+  if (!user.categoryId) {
+    interaction.reply({
+      content: "You haven't started a room, there is nothing to close!",
+      ephemeral: true,
+    });
+    return;
+  }
+
+  let category = await interaction.guild.channels.resolve(user.categoryId);
+
+  category.children.each((channel) => {
+    channel.delete().catch(console.error);
+  });
+
+  category
+    .delete()
+    .then(() => {
+      user.categoryId = undefined;
+      user.save();
+    })
+    .catch(console.error);
+};
+
 module.exports = {
   createCategory,
+  removeCategory,
 };
