@@ -1,5 +1,7 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
+const room = require("../helpers/roomHelper")
+
 module.exports = {
   name: "room",
   description: "commands to create/manage your private category",
@@ -28,6 +30,20 @@ module.exports = {
     ]
   }],
   async execute(interaction) {
-		await interaction.reply('Pong!');
+    let options = interaction.options.get("option").value;
+
+    switch(options) {
+      case "start":
+        room.createCategory(interaction)
+        break;
+      case "end":
+        break;
+      case "private":
+        break;
+      case "public":
+        break;
+      }
+
+		interaction.reply('Under Construction!');
 	},
 };
