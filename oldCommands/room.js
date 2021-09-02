@@ -1,5 +1,4 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
-5;
 
 const coin = require("./coin");
 const User = require("../models/User");
