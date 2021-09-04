@@ -101,24 +101,21 @@ const removeCategory = async (interaction) => {
     .catch(console.error);
 };
 
-const changeCategoryPrivacy = async (message, privacy) => {
-  let user = await User.findOne({ userId: message.author.id });
-
-  if (!user) {
-    user = await coin.createUser(message);
-  }
+const changeCategoryPrivacy = async (interaction, privacy) => {
+  let user = await coin.checkInteraction(interaction);
 
   if (!user.categoryId) {
-    message.reply(
-      "You have to create a room before you can set it as private!"
-    );
+    interaction.reply({
+      content: "You have to create a room before you can set it as private!",
+      ephemeral: true,
+    });
     return;
   }
 
-  let category = await message.guild.channels.resolve(user.categoryId);
+  let category = await interaction.guild.channels.resolve(user.categoryId);
 
   category
-    .updateOverwrite(message.guild.roles.everyone, {
+    .updateOverwrite(interaction.guild.roles.everyone, {
       VIEW_CHANNEL: privacy,
     })
     .then((categoryChannel) => {
@@ -126,13 +123,26 @@ const changeCategoryPrivacy = async (message, privacy) => {
         channel.lockPermissions().catch(console.error);
       });
 
-      notifyStatus(message, privacy);
+      notifyStatus(interaction, privacy);
     })
     .catch(console.error);
+};
+
+const notifyStatus = (interaction, status) => {
+  status = status === true ? "public" : "private";
+
+  const notifyEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle("Room status")
+    .setDescription(
+      `${interaction.member.displayName}'s room was changed to \`${status}\``
+    );
+
+  interaction.reply({ embeds: [notifyEmbed] });
 };
 
 module.exports = {
   createCategory,
   removeCategory,
-  changeCategoryPrivacy
+  changeCategoryPrivacy,
 };
