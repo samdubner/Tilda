@@ -101,7 +101,38 @@ const removeCategory = async (interaction) => {
     .catch(console.error);
 };
 
+const changeCategoryPrivacy = async (message, privacy) => {
+  let user = await User.findOne({ userId: message.author.id });
+
+  if (!user) {
+    user = await coin.createUser(message);
+  }
+
+  if (!user.categoryId) {
+    message.reply(
+      "You have to create a room before you can set it as private!"
+    );
+    return;
+  }
+
+  let category = await message.guild.channels.resolve(user.categoryId);
+
+  category
+    .updateOverwrite(message.guild.roles.everyone, {
+      VIEW_CHANNEL: privacy,
+    })
+    .then((categoryChannel) => {
+      categoryChannel.children.each((channel) => {
+        channel.lockPermissions().catch(console.error);
+      });
+
+      notifyStatus(message, privacy);
+    })
+    .catch(console.error);
+};
+
 module.exports = {
   createCategory,
   removeCategory,
+  changeCategoryPrivacy
 };

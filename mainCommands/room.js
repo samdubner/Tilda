@@ -40,8 +40,10 @@ module.exports = {
         room.removeCategory(interaction)
         break;
       case "private":
+        room.changeCategoryPrivacy(interaction, false)
         break;
       case "public":
+        room.changeCategoryPrivacy(interaction, false)
         break;
       }
 
