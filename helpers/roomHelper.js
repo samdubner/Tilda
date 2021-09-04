@@ -34,7 +34,7 @@ const createCategory = async (interaction) => {
   ];
 
   let categoryOptions = {
-    type: "category",
+    type: "GUILD_CATEGORY",
     permissionOverwrites,
   };
 
@@ -44,12 +44,12 @@ const createCategory = async (interaction) => {
   );
 
   let textChatOptions = {
-    type: "text",
+    type: "GUILD_TEXT",
     parent: category.id,
   };
 
   let voiceChatOptions = {
-    type: "voice",
+    type: "GUILD_VOICE",
     parent: category.id,
     userLimit: 99,
   };
@@ -86,7 +86,7 @@ const removeCategory = async (interaction) => {
     return;
   }
 
-  let category = await interaction.guild.channels.resolve(user.categoryId);
+  let category = await interaction.guild.channels.fetch(user.categoryId);
 
   category.children.each((channel) => {
     channel.delete().catch(console.error);
@@ -98,6 +98,10 @@ const removeCategory = async (interaction) => {
       user.categoryId = undefined;
       user.save();
     })
+    .catch(console.error);
+
+  interaction
+    .reply({ content: "Your room has been removed!", ephemeral: true })
     .catch(console.error);
 };
 
@@ -112,20 +116,17 @@ const changeCategoryPrivacy = async (interaction, privacy) => {
     return;
   }
 
-  let category = await interaction.guild.channels.resolve(user.categoryId);
+  let category = await interaction.guild.channels.fetch(user.categoryId);
 
-  category
-    .updateOverwrite(interaction.guild.roles.everyone, {
-      VIEW_CHANNEL: privacy,
-    })
-    .then((categoryChannel) => {
-      categoryChannel.children.each((channel) => {
-        channel.lockPermissions().catch(console.error);
-      });
+  await category.permissionOverwrites.edit(interaction.guild.roles.everyone, {
+    VIEW_CHANNEL: privacy,
+  });
 
-      notifyStatus(interaction, privacy);
-    })
-    .catch(console.error);
+  category.children.each((channel) => {
+    channel.lockPermissions().catch(console.error);
+  });
+
+  notifyStatus(interaction, privacy);
 };
 
 const notifyStatus = (interaction, status) => {
