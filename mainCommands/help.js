@@ -76,7 +76,7 @@ module.exports = {
       case "room":
         embed.setDescription("Room Commands").addFields(
           {
-            name: "/room start",
+            name: "/room",
             value:
               "General command to start/end your room as well as manage it's privacy",
           },
