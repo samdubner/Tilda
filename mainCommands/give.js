@@ -70,11 +70,11 @@ module.exports = {
       });
       return;
     }
-    
+
     sender.score -= giveAmount;
     receipt.score += giveAmount;
-    sender.save()
-    receipt.save()
+    sender.save();
+    receipt.save();
 
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -85,11 +85,16 @@ module.exports = {
         false
       )
       .addField(
-        `${interaction.options.get("person").user.username}'s Balance (+${giveAmount})`,
+        `${
+          interaction.options.get("person").user.username
+        }'s Balance (+${giveAmount})`,
         `${receipt.score}`,
         false
       );
 
-    interaction.reply({ embeds: [embed] });
+    interaction.reply({
+      content: `<@${interaction.options.get("person").user.id}>`,
+      embeds: [embed],
+    });
   },
 };

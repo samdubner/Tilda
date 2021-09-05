@@ -86,7 +86,7 @@ const claim = (interaction, user) => {
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
     .setTitle("Random Coin Event")
     .addField(
-      `${interaction.user.username} claimed ${coinEvent.coinAmount} coins!`,
+      `${interaction.user.username} won the coin event and gained ${coinEvent.coinAmount} coins! :tada:`,
       `They now have ${user.score} coins`,
       false
     );
@@ -141,7 +141,7 @@ const notifyDailyReset = async (client, topUsers) => {
       .setDescription(`${member.username} has also misplaced some coins...`)
       .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
 
-    channel.send({embeds: [embed]}).catch(console.error);
+    channel.send({ embeds: [embed] }).catch(console.error);
   } catch (e) {
     console.log(
       "Channel wasn't able to be found, daily reset notification not sent"
@@ -212,7 +212,7 @@ const createUser = async (interaction) => {
       interaction.client.user.displayAvatarURL()
     );
 
-  interaction.reply({embeds: [embed]});
+  interaction.reply({ embeds: [embed] });
 
   return newUser;
 };
