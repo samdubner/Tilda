@@ -3,47 +3,49 @@ const MessageEmbed = require("discord.js").MessageEmbed;
 module.exports = {
   name: "help",
   description: "helpful command to show you all of Tilda's features",
-  options: [{
-    type: "STRING",
-    name: "menu",
-    description: "select which group of commands you would like help with",
-    required: true,
-    choices: [
-      {
-        name: "Basic Commands",
-        value: "basic"
-      },
-      {
-        name: "Room Commands",
-        value: "room"
-      },
-      {
-        name: "Coin Commands",
-        value: "coin"
-      },
-      {
-        name: "Role Commands",
-        value: "role"
-      },
-      {
-        name: "Shop Commands",
-        value: "shop"
-      },
-      {
-        name: "Fish Commands",
-        value: "fish"
-      },
-    ]
-  }],
+  options: [
+    {
+      type: "STRING",
+      name: "menu",
+      description: "select which group of commands you would like help with",
+      required: true,
+      choices: [
+        {
+          name: "Basic Commands",
+          value: "basic",
+        },
+        {
+          name: "Room Commands",
+          value: "room",
+        },
+        {
+          name: "Coin Commands",
+          value: "coin",
+        },
+        {
+          name: "Role Commands",
+          value: "role",
+        },
+        {
+          name: "Shop Commands",
+          value: "shop",
+        },
+        {
+          name: "Fish Commands",
+          value: "fish",
+        },
+      ],
+    },
+  ],
   async execute(interaction) {
     let menuOption = interaction.options.get("menu").value;
 
     let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`Help`)
-    .setThumbnail(interaction.guild.iconURL())
+      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+      .setTitle(`Help`)
+      .setThumbnail(interaction.guild.iconURL());
 
-    switch(menuOption) {
+    switch (menuOption) {
       case "basic":
         embed.setDescription("Basic Commands").addFields(
           {
@@ -57,8 +59,7 @@ module.exports = {
           },
           {
             name: "/ui <@person>",
-            value:
-              "Sends some basic info about the mentioned person",
+            value: "Sends some basic info about the mentioned person",
           },
           { name: "/si", value: "Sends basic server information" },
           {
@@ -68,32 +69,23 @@ module.exports = {
           },
           {
             name: "/roll <number of sides>",
-            value:
-              "Will roll a x number sided die (default: 6)",
+            value: "Will roll a x number sided die (default: 6)",
           }
         );
         break;
       case "room":
-        embed.setDescription("Room Commands [Under Construction]").addFields(
-          { name: "room start", value: "Create your own category and channels! [rooms are now limited to 1 per person]" },
+        embed.setDescription("Room Commands").addFields(
           {
-            name: "room end",
-            value: "Removes the category and channels within",
+            name: "/room start",
+            value:
+              "General command to start/end your room as well as manage it's privacy",
           },
           {
-            name: "room private",
-            value: "Changes the room to only be visible to you and whoever you add",
-          },
-          {
-            name: "room public",
-            value: "Changes the room to only be visible to everyone",
-          },
-          {
-            name: "room add @user",
+            name: "/add @user",
             value: "Add other users to your private room",
           },
           {
-            name: "room remove @user",
+            name: "/remove @user",
             value: "Remove users from your private room",
           }
         );
@@ -106,12 +98,16 @@ module.exports = {
           },
           { name: "/balance", value: "View the amount of coins you have" },
           { name: "/flip [amount of coins]", value: "50/50" },
-          { name: "/daily", value: "Get 100 coins once every 24 hours (do it every day for a bonus)!" },
+          {
+            name: "/daily",
+            value:
+              "Get 100 coins once every 24 hours (do it every day for a bonus)!",
+          },
           { name: "/beg", value: "Receive 10 coins every 10 minutes!" },
           {
             name: "/give @person [coins]",
             value: "Sends some coins to a thankful person!",
-          },
+          }
         );
         break;
       case "role":
@@ -164,6 +160,6 @@ module.exports = {
         );
     }
 
-    interaction.reply({embeds: [embed], ephemeral: true})
+    interaction.reply({ embeds: [embed], ephemeral: true });
   },
 };
