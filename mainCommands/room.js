@@ -4,7 +4,7 @@ const room = require("../helpers/roomHelper");
 
 module.exports = {
   name: "room",
-  description: "commands to create/manage your private category",
+  description: "create/manage your private category",
   options: [
     {
       type: "STRING",

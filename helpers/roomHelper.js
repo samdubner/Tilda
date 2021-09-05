@@ -142,8 +142,52 @@ const notifyStatus = (interaction, status) => {
   interaction.reply({ embeds: [notifyEmbed] });
 };
 
+const addUserToRoom = async (message) => {
+  let user = await User.findOne({ userId: message.author.id });
+
+  if (!user) {
+    user = await coin.createUser(message);
+  }
+
+  if (!user.categoryId) {
+    message.reply("You have to create a room before you can add users!");
+    return;
+  }
+
+  let category = await message.guild.channels.resolve(user.categoryId);
+
+  let mentionedUsers = message.mentions.users.filter(
+    (user) => user.id != message.author.id
+  );
+
+  mentionedUsers.each((user) => {
+    category
+      .updateOverwrite(user.id, {
+        VIEW_CHANNEL: true,
+        READ_MESSAGE_HISTORY: true,
+      })
+      .then((categoryChannel) => {
+        categoryChannel.children.each((channel) => {
+          channel.lockPermissions().catch(console.error);
+        });
+      })
+      .catch(console.error);
+  });
+
+  const notifyEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle("Room status")
+    .setDescription(
+      `Added \`${message.mentions.users.size}\` user(s) to the room`
+    );
+
+  message.reply(notifyEmbed);
+};
+
 module.exports = {
   createCategory,
   removeCategory,
   changeCategoryPrivacy,
+  addUserToRoom,
+  removeUserFromRoom
 };
