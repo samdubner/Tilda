@@ -184,6 +184,56 @@ const addUserToRoom = async (message) => {
   message.reply(notifyEmbed);
 };
 
+
+
+const removeUserFromRoom = async (message) => {
+  let user = await User.findOne({ userId: message.author.id });
+
+  if (!user) {
+    user = await coin.createUser(message);
+  }
+
+  if (!user.categoryId) {
+    message.reply(
+      "You have to create a room before you can set it as private!"
+    );
+    return;
+  }
+
+  let category = await message.guild.channels.resolve(user.categoryId);
+
+  let mentionedUsers = message.mentions.users.filter(
+    (user) => user.id != message.author.id
+  );
+
+  if (mentionedUsers.size <= 0) {
+    message.reply("You must remove one user besides yourself...");
+    return;
+  }
+
+  mentionedUsers.each((user) => {
+    category
+      .updateOverwrite(user.id, {
+        VIEW_CHANNEL: false,
+      })
+      .then((categoryChannel) => {
+        categoryChannel.children.each((channel) => {
+          channel.lockPermissions().catch(console.error);
+        });
+      })
+      .catch(console.error);
+  });
+
+  const notifyEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle("Room status")
+    .setDescription(
+      `Removed \`${message.mentions.users.size}\` user(s) from the room`
+    );
+
+  message.reply(notifyEmbed);
+};
+
 module.exports = {
   createCategory,
   removeCategory,
