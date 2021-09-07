@@ -76,8 +76,8 @@ const createCategory = async (interaction) => {
 
   interaction.reply({
     content: "Your room has been created!",
-    ephemeral: true
-  })
+    ephemeral: true,
+  });
 };
 
 const removeCategory = async (interaction) => {
@@ -90,24 +90,34 @@ const removeCategory = async (interaction) => {
     });
     return;
   }
+  try {
+    let category = await interaction.guild.channels.fetch(user.categoryId);
 
-  let category = await interaction.guild.channels.fetch(user.categoryId);
+    category.children.each((channel) => {
+      channel.delete().catch(console.error);
+    });
 
-  category.children.each((channel) => {
-    channel.delete().catch(console.error);
-  });
+    category
+      .delete()
+      .then(() => {
+        user.categoryId = undefined;
+        user.save();
+      })
+      .catch(console.error);
 
-  category
-    .delete()
-    .then(() => {
-      user.categoryId = undefined;
-      user.save();
-    })
-    .catch(console.error);
-
-  interaction
-    .reply({ content: "Your room has been removed!", ephemeral: true })
-    .catch(console.error);
+    interaction
+      .reply({ content: "Your room has been removed!", ephemeral: true })
+      .catch(console.error);
+  } catch (e) {
+    console.log("Someone mismanged their perms and deleted their custom category");
+    user.categoryId = undefined;
+    user.save();
+    interaction.reply({
+      content:
+        "Something happened with your room and it couldn't be removed properly",
+      ephemeral: true,
+    });
+  }
 };
 
 const changeCategoryPrivacy = async (interaction, privacy) => {
@@ -153,8 +163,8 @@ const addUserToRoom = async (interaction, mentionedUser) => {
   if (!user.categoryId) {
     interaction.reply({
       content: "You have to create a room before you can add users!",
-      ephemeral: true
-    })
+      ephemeral: true,
+    });
     return;
   }
 
@@ -172,14 +182,10 @@ const addUserToRoom = async (interaction, mentionedUser) => {
   const notifyEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle("Room status")
-    .setDescription(
-      `Added \`${mentionedUser.username}\` to the room`
-    );
+    .setDescription(`Added \`${mentionedUser.username}\` to the room`);
 
-  interaction.reply({embeds: [notifyEmbed]});
+  interaction.reply({ embeds: [notifyEmbed] });
 };
-
-
 
 const removeUserFromRoom = async (interaction, mentionedUser) => {
   let user = await coin.checkInteraction(interaction);
@@ -187,8 +193,8 @@ const removeUserFromRoom = async (interaction, mentionedUser) => {
   if (!user.categoryId) {
     interaction.reply({
       content: "You have to create a room before you can add users!",
-      ephemeral: true
-    })
+      ephemeral: true,
+    });
     return;
   }
 
@@ -212,11 +218,9 @@ const removeUserFromRoom = async (interaction, mentionedUser) => {
   const notifyEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle("Room status")
-    .setDescription(
-      `Removed \`${mentionedUser.username}\` from the room`
-    );
+    .setDescription(`Removed \`${mentionedUser.username}\` from the room`);
 
-  interaction.reply({embeds: [notifyEmbed]});
+  interaction.reply({ embeds: [notifyEmbed] });
 };
 
 module.exports = {
@@ -224,5 +228,5 @@ module.exports = {
   removeCategory,
   changeCategoryPrivacy,
   addUserToRoom,
-  removeUserFromRoom
+  removeUserFromRoom,
 };
