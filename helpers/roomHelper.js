@@ -73,6 +73,11 @@ const createCategory = async (interaction) => {
 
   user.categoryId = category.id;
   user.save();
+
+  interaction.reply({
+    content: "Your room has been created!",
+    ephemeral: true
+  })
 };
 
 const removeCategory = async (interaction) => {
