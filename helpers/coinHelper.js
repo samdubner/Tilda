@@ -84,7 +84,7 @@ const claim = (interaction, user) => {
   let embed = new MessageEmbed()
     .setColor(`#00ff00`)
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
-    .setTitle("Random Coin Event")
+    .setTitle("Coin Event Over")
     .addField(
       `${interaction.user.username} won the coin event and gained ${coinEvent.coinAmount} coins! :tada:`,
       `They now have ${user.score} coins`,
