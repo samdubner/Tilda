@@ -24,6 +24,13 @@ const schedule = require("node-schedule");
 
 const coin = require("./helpers/coinHelper");
 
+const activities = [
+  "all the coin flips",
+  "everything that happens",
+  "all the fun commands",
+  "what /room does",
+];
+
 /*
 TODO:
 make the ui command show activities
@@ -40,6 +47,13 @@ const randomizeRoleColor = async () => {
   const role = await guild.roles.fetch("881627506908737546");
   role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
 };
+
+const setActivity = async () => {
+  client.user.setActivity(
+    activities[Math.floor(Math.random() * activities.length)],
+    { type: "WATCHING" }
+  );
+}
 
 schedule.scheduleJob("0 0 * * *", async () => {
   let topUsers = await coin.bleedTopUser();
@@ -72,7 +86,11 @@ client.on("ready", async () => {
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  client.user.setActivity("all the coin flips", { type: "WATCHING" });
+  setActivity()
+
+  setInterval(() => {
+    setActivity()
+  }, 1000 * 60 * 60)
 
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
