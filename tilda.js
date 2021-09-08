@@ -31,11 +31,6 @@ const activities = [
   "what /room does",
 ];
 
-/*
-TODO:
-make the ui command show activities
-*/
-
 const randomizeRoleColor = async () => {
   let guild;
   try {
@@ -156,7 +151,6 @@ client.on("interactionCreate", async (interaction) => {
   //   "~shop": () => shop.shopManager(message, args),
   //   "~catch": () => fish.catchManager(message, args),
   //   "~fish": () => fish.fishManager(message, args),
-  //   "~room": () => room.channelManager(message, args),
   // };
 });
 
