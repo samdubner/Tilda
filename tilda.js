@@ -53,7 +53,7 @@ const setActivity = async () => {
     activities[Math.floor(Math.random() * activities.length)],
     { type: "WATCHING" }
   );
-}
+};
 
 schedule.scheduleJob("0 0 * * *", async () => {
   let topUsers = await coin.bleedTopUser();
@@ -86,11 +86,11 @@ client.on("ready", async () => {
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  setActivity()
+  setActivity();
 
   setInterval(() => {
-    setActivity()
-  }, 1000 * 60 * 60)
+    setActivity();
+  }, 1000 * 60 * 60);
 
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
@@ -108,12 +108,21 @@ client.on("guildMemberAdd", (member) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
+  let isInRoom = false;
+
+  if (coin.checkUser(interaction.user)) {
+    if (user.categoryId) isInRoom = true;
+  }
+
   if (
-    interaction.channelId != "881622803449774090" &&
-    !["340002869912666114", "171330866189041665"].includes(interaction.user.id)
+    (interaction.channelId != "881622803449774090" &&
+      !["340002869912666114", "171330866189041665"].includes(
+        interaction.user.id
+      )) ||
+    !isInRoom
   ) {
     interaction.reply({
-      content: "You cannot use commands outside of the bot channel",
+      content: "You cannot use commands outside of the bot channel or your room",
       ephemeral: true,
     });
     return;
