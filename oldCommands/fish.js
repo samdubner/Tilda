@@ -465,8 +465,7 @@ const generateFish = (message, user, pond) => {
   let embedColor = getColor(rarity);
 
   let fish = new Fish({
-    name,
-    rarity,
+    name,   rarity,
     size,
     pond: pond.name,
     price,

@@ -1,43 +1,58 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
+const catchHelper = require("../helpers/catchHelper")
+const coin = require("../helpers/coinHelper")
+
 module.exports = {
-  name: "help",
+  name: "catch",
   description: "helpful command to show you all of Tilda's features",
   options: [
     {
       type: "STRING",
-      name: "menu",
-      description: "select which group of commands you would like help with",
-      required: true,
+      name: "pond",
+      description: "the pond you'd like to fish from",
+      required: false,
       choices: [
         {
-          name: "Basic Commands",
-          value: "basic",
+          name: "Plain Pond",
+          value: "plain",
         },
         {
-          name: "Room Commands",
-          value: "room",
+          name: "Underground Pond",
+          value: "underground",
         },
         {
-          name: "Coin Commands",
-          value: "coin",
+          name: "Underworld Pond",
+          value: "underworld",
         },
         {
-          name: "Role Commands",
-          value: "role",
+          name: "Sky Pond",
+          value: "sky",
         },
         {
-          name: "Shop Commands",
-          value: "shop",
+          name: "Ancient Pond",
+          value: "ancient",
         },
         {
-          name: "Fish Commands",
-          value: "fish",
+          name: "Void Pond",
+          value: "void",
         },
       ],
     },
   ],
   async execute(interaction) {
-    let user = await helper.checkInteraction(interaction);
+    let user = await coin.checkInteraction(interaction);
+
+    let pond;
+
+    if (interaction.options.get("pond")) {
+      pond = interaction.options.get("pond").value
+    } else {
+      pond = "plain"
+    }
+  
+    console.log(pond)
+  
+    // catchFish(message, args, PONDS[primaryArg]);
   },
 };

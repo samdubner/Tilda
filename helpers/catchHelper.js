@@ -1,6 +1,6 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-const coin = require("./coin");
+const coin = require("./coinHelper");
 const User = require("../models/User");
 const Fish = require("../models/Fish");
 
@@ -94,18 +94,6 @@ const PONDS = {
       "vacuumfish",
     ],
   },
-};
-
-const catchManager = (message, args) => {
-  let primaryArg = args.split(" ")[0];
-  if (primaryArg == "") primaryArg = "plain";
-
-  if (!PONDS[primaryArg]) {
-    alertInvalidPond(message);
-    return;
-  }
-
-  catchFish(message, args, PONDS[primaryArg]);
 };
 
 const catchFish = async (message, args, pond) => {
