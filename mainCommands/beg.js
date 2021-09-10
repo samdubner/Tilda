@@ -28,6 +28,7 @@ module.exports = {
     }
 
     user.score += 10;
+    user.begDate = new Date().getTime();
     user.save()
   
     let embed = new MessageEmbed()
