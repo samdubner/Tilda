@@ -107,14 +107,14 @@ client.on("interactionCreate", async (interaction) => {
 
   if (coin.checkUser(interaction.user)) {
     let user = await User.findOne({ userId: interaction.user.id });
-    if (user.categoryId) isInRoom = true;
+    if (user.categoryId == interaction.channel.id) isInRoom = true;
   }
 
   if (
     (interaction.channelId != "881622803449774090" &&
       !["340002869912666114", "171330866189041665"].includes(
         interaction.user.id
-      )) ||
+      )) &&
     !isInRoom
   ) {
     interaction.reply({
