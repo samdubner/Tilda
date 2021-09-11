@@ -96,12 +96,8 @@ const PONDS = {
   },
 };
 
-const catchFish = async (message, args, pond) => {
-  let user = await User.findOne({ userId: message.author.id });
-
-  if (!user) {
-    user = await coin.createUser(message);
-  }
+const catchFish = async (message, user, pondName) => {
+  let pond = PONDS[pondName]
 
   if (!user.items.includes(pond.rodId)) {
     noRod(message);
@@ -249,3 +245,7 @@ const insufficientCoins = (message, pond) => {
 
   message.reply(embed);
 };
+
+module.exports = {
+  catchFish
+}

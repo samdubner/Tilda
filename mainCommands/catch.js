@@ -51,8 +51,6 @@ module.exports = {
       pond = "plain"
     }
   
-    console.log(pond)
-  
-    // catchFish(message, args, PONDS[primaryArg]);
+    catchHelper.catchFish(interaction, user, pond);
   },
 };
