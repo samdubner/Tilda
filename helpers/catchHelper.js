@@ -96,8 +96,8 @@ const PONDS = {
   },
 };
 
-const catchFish = async (message, user, pondName) => {
-  let pond = PONDS[pondName]
+const catchFish = async (interaction, user, pondName) => {
+  let pond = PONDS[pondName];
 
   if (!user.items.includes(pond.rodId)) {
     noRod(message);
@@ -106,14 +106,14 @@ const catchFish = async (message, user, pondName) => {
 
   if (user.score >= pond.cost) {
     user.score -= pond.cost;
-    generateFish(message, user, pond);
+    generateFish(interaction, user, pond);
   } else {
-    insufficientCoins(message, pond);
+    insufficientCoins(interaction, pond);
     return;
   }
 };
 
-const generateFish = (message, user, pond) => {
+const generateFish = (interaction, user, pond) => {
   let pondSize = pond.names.length;
   let name = pond.names[Math.floor(Math.random() * pondSize)];
   let rarity = generateRarity();
@@ -136,9 +136,9 @@ const generateFish = (message, user, pond) => {
   const FishEmbed = new MessageEmbed()
     .setColor(embedColor)
     .setTitle("You caught a fish!")
-    .setThumbnail(message.author.displayAvatarURL())
+    .setThumbnail(interaction.user.displayAvatarURL())
     .setDescription(
-      `${message.member.displayName} caught a ${fish.rarity} ${fName(
+      `${interaction.member.displayName} caught a ${fish.rarity} ${fName(
         fish.name
       )}`
     )
@@ -146,7 +146,7 @@ const generateFish = (message, user, pond) => {
     .addField("Price", `${fish.price} coins`, true)
     .setFooter(`Fishing Cost: ${pond.cost} coins`);
 
-  message.reply(FishEmbed);
+  interaction.reply({ embeds: [FishEmbed] });
 
   user.fish.push(fish);
   user.save().catch(console.error);
@@ -233,7 +233,7 @@ const noRod = (message) => {
   message.reply(embed);
 };
 
-const insufficientCoins = (message, pond) => {
+const insufficientCoins = (interaction, pond) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription("You don't have enough coins to go fishing...")
@@ -243,9 +243,12 @@ const insufficientCoins = (message, pond) => {
       )} Pond!`
     );
 
-  message.reply(embed);
+  interaction.reply({
+    embeds: [embed],
+    ephemeral: true,
+  });
 };
 
 module.exports = {
-  catchFish
-}
+  catchFish,
+};
