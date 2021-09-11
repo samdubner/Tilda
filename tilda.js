@@ -150,7 +150,6 @@ client.on("interactionCreate", async (interaction) => {
 
   // const COMMANDS = {
   //   "~shop": () => shop.shopManager(message, args),
-  //   "~catch": () => fish.catchManager(message, args),
   //   "~fish": () => fish.fishManager(message, args),
   // };
 });

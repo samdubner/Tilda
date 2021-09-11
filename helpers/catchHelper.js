@@ -100,7 +100,7 @@ const catchFish = async (interaction, user, pondName) => {
   let pond = PONDS[pondName];
 
   if (!user.items.includes(pond.rodId)) {
-    noRod(message);
+    noRod(interaction);
     return;
   }
 
@@ -222,7 +222,7 @@ const generateRarity = () => {
   }
 };
 
-const noRod = (message) => {
+const noRod = (interaction) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription(
@@ -230,7 +230,10 @@ const noRod = (message) => {
     )
     .setTitle("You don't have the proper fishing rod!");
 
-  message.reply(embed);
+  interaction.reply({
+    embeds: [embed],
+    ephemeral: true
+  });
 };
 
 const insufficientCoins = (interaction, pond) => {
