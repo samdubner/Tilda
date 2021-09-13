@@ -1,43 +1,39 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
 module.exports = {
-  name: "help",
-  description: "helpful command to show you all of Tilda's features",
+  name: "fish",
+  description: "helpful commands to manage your caught fish",
   options: [
     {
       type: "STRING",
-      name: "menu",
-      description: "select which group of commands you would like help with",
+      name: "options",
+      description: "select what you'd like to do with your fish",
       required: true,
       choices: [
         {
-          name: "Basic Commands",
-          value: "basic",
+          name: "Fish Inventory",
+          value: "inventory",
         },
         {
-          name: "Room Commands",
-          value: "room",
+          name: "Fish Logbook",
+          value: "log",
         },
         {
-          name: "Coin Commands",
-          value: "coin",
-        },
-        {
-          name: "Role Commands",
-          value: "role",
-        },
-        {
-          name: "Shop Commands",
-          value: "shop",
-        },
-        {
-          name: "Fish Commands",
-          value: "fish",
+          name: "Sell Fish",
+          value: "sell",
         },
       ],
     },
   ],
   async execute(interaction) {
+    let fishOption = interaction.options.get("options").value;
 
+    switch(fishOption) {
+      case "inventory":
+        break;
+      case "log":
+        break;
+      case "sell":
+    }
   },
 };

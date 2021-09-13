@@ -5,7 +5,7 @@ const coin = require("../helpers/coinHelper")
 
 module.exports = {
   name: "catch",
-  description: "helpful command to show you all of Tilda's features",
+  description: "catch some fish using your coins!",
   options: [
     {
       type: "STRING",
