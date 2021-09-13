@@ -592,4 +592,5 @@ module.exports = {
   fishManager,
   catchManager,
   catchFish,
+  PONDS
 };
