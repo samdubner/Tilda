@@ -1,5 +1,7 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
+const fishHelper = require("../helpers/fishHelper")
+
 module.exports = {
   name: "fish",
   description: "helpful commands to manage your caught fish",
@@ -30,6 +32,7 @@ module.exports = {
 
     switch(fishOption) {
       case "inventory":
+        fishHelper.displayFish(interaction, "plain");
         break;
       case "log":
         break;

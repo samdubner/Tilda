@@ -254,4 +254,6 @@ const insufficientCoins = (interaction, pond) => {
 
 module.exports = {
   catchFish,
+  fName,
+  PONDS
 };
