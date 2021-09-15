@@ -364,9 +364,12 @@ const reactAndWait = async (message, embed) => {
     await embed.react(reaction);
   }
 
+  console.log("got here")
+
   const filter = (reaction, user) =>
     user.id == message.author.id &&
     validReactions.includes(reaction.emoji.name);
+
   embed
     .awaitReactions(filter, { max: 1, time: 30000 })
     .then((collected) => handleSelection(message, collected, embed))
@@ -374,6 +377,7 @@ const reactAndWait = async (message, embed) => {
 };
 
 const handleSelection = (message, collected, embed) => {
+
   let pondName;
 
   collected.each((reaction) => {

@@ -1,14 +1,15 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
 const fishHelper = require("../helpers/fishHelper")
+
 module.exports = {
-  name: "fish",
-  description: "helpful commands to manage your caught fish",
+  name: "inventory",
+  description: "see all the fish you've caught",
   options: [
     {
       type: "STRING",
       name: "options",
-      description: "select what you'd like to do with your fish",
+      description: "the pond of fish you'd like to see",
       required: true,
       choices: [
         {

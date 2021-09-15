@@ -72,16 +72,19 @@ const reactAndWait = async (interaction, msg) => {
     await msg.react(reaction);
   }
 
-  const filter = (reaction, user) =>
-    user.id == interaction.user.id &&
-    validReactions.includes(reaction.emoji.name);
+  const filter = (reaction, user) => user.id == interaction.user.id
+    // user.id == interaction.user.id &&
+  //   return validReactions.includes(reaction.emoji.name);
+  // }
+
   msg
-    .awaitReactions(filter, { max: 1, time: 30000 })
-    .then((collected) => handleSelection(interaction, collected, embed))
+    .awaitReactions({max: 1, time: 5000})
+    .then((collected) => handleSelection(interaction, collected, msg))
     .catch(console.error);
 };
 
 const handleSelection = (interaction, collected, msg) => {
+  console.log(msg.reactions.cache)
   let pondName;
 
   collected.each((reaction) => {
