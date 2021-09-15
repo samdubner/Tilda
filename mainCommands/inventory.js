@@ -8,35 +8,40 @@ module.exports = {
   options: [
     {
       type: "STRING",
-      name: "options",
+      name: "pond",
       description: "the pond of fish you'd like to see",
       required: true,
       choices: [
         {
-          name: "Fish Inventory",
-          value: "inventory",
+          name: "Plain Pond",
+          value: "plain",
         },
         {
-          name: "Fish Logbook",
-          value: "log",
+          name: "Underground Pond",
+          value: "underground",
         },
         {
-          name: "Sell Fish",
-          value: "sell",
+          name: "Underworld Pond",
+          value: "underworld",
+        },
+        {
+          name: "Sky Pond",
+          value: "sky",
+        },
+        {
+          name: "Ancient Pond",
+          value: "ancient",
+        },
+        {
+          name: "Void Pond",
+          value: "void",
         },
       ],
     },
   ],
   async execute(interaction) {
-    let fishOption = interaction.options.get("options").value;
+    let fishOption = interaction.options.get("pond").value;
 
-    switch(fishOption) {
-      case "inventory":
-        fishHelper.displayFish(interaction, "plain");
-        break;
-      case "log":
-        break;
-      case "sell":
-    }
+    fishHelper.displayFish(interaction, fishOption);
   },
 };

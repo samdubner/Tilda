@@ -7,7 +7,7 @@ const Fish = require("../models/Fish");
 
 const PONDS = catchHelper.PONDS;
 
-const displayFish = async (interaction, pondName, embed = false) => {
+const displayFish = async (interaction, pondName) => {
   let user = await coin.checkInteraction(interaction);
 
   if (!user.fish || user.fish.length == 0) {
@@ -53,68 +53,7 @@ const displayFish = async (interaction, pondName, embed = false) => {
     );
   }
 
-  if (embed) {
-    embed
-      .edit({embeds: [fishEmbed]})
-      .then((msg) => reactAndWait(interaction, msg))
-      .catch(console.error);
-  } else {
-    await interaction.reply({ embeds: [fishEmbed]})
-    let reply = await interaction.fetchReply()
-    reactAndWait(interaction, reply)
-  }
-};
-
-const reactAndWait = async (interaction, msg) => {
-  validReactions = ["💦", "🐍", "🔥", "☁️", "🕸️", "⚫"];
-
-  for (let reaction of validReactions) {
-    await msg.react(reaction);
-  }
-
-  const filter = (reaction, user) => user.id == interaction.user.id
-    // user.id == interaction.user.id &&
-  //   return validReactions.includes(reaction.emoji.name);
-  // }
-
-  msg
-    .awaitReactions({max: 1, time: 5000})
-    .then((collected) => handleSelection(interaction, collected, msg))
-    .catch(console.error);
-};
-
-const handleSelection = (interaction, collected, msg) => {
-  console.log(msg.reactions.cache)
-  let pondName;
-
-  collected.each((reaction) => {
-    reaction.message.reactions.removeAll().catch(console.error);
-
-    switch (reaction.emoji.name) {
-      case "💦":
-        pondName = "plain";
-        break;
-      case "🐍":
-        pondName = "underground";
-        break;
-      case "🔥":
-        pondName = "underworld";
-        break;
-      case "☁️":
-        pondName = "sky";
-        break;
-      case "🕸️":
-        pondName = "ancient";
-        break;
-      case "⚫":
-        pondName = "void";
-        break;
-    }
-  });
-
-  if (!pondName) return;
-
-  displayFish(interaction, pondName, msg);
+  interaction.reply({ embeds: [fishEmbed]})
 };
 
 const noFish = (interaction) => {
