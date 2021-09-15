@@ -29,6 +29,8 @@ const activities = [
   "everything that happens",
   "all the fun commands",
   "what /room does",
+  "nothing at all",
+  "how useful /help is"
 ];
 
 const randomizeRoleColor = async () => {
