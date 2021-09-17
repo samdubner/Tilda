@@ -33,10 +33,11 @@ module.exports = {
       embed.addField("Nickname", nick, false);
     }
 
-    // if (interaction.member.presence.activities.length != 0) {
-    //   embed.addField("Game", interaction.member.presence.activities[0].name, false);
-    // }
-    // embed.addField("Status", interaction.member.presence.status, false);
+    embed.addField("Status", interaction.member.presence.status, false);
+
+    if (interaction.member.presence.activities.length != 0) {
+      embed.addField("Activity", interaction.member.presence.activities[0].name, false);
+    }
     
     embed.addField(
       "Joined Date",
