@@ -1,5 +1,3 @@
-const MessageEmbed = require("discord.js").MessageEmbed;
-
 const catchHelper = require("../helpers/catchHelper")
 const coin = require("../helpers/coinHelper")
 

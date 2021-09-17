@@ -1,5 +1,3 @@
-const MessageEmbed = require("discord.js").MessageEmbed;
-
 const room = require("../helpers/roomHelper");
 
 module.exports = {

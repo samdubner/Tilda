@@ -1,5 +1,3 @@
-const MessageEmbed = require("discord.js").MessageEmbed;
-
 const coin = require("../helpers/coinHelper.js");
 const User = require("../models/User");
 const Role = require("../models/Role");

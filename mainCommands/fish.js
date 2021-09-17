@@ -1,5 +1,3 @@
-const MessageEmbed = require("discord.js").MessageEmbed;
-
 const fishHelper = require("../helpers/fishHelper")
 module.exports = {
   name: "fish",

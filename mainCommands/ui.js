@@ -32,10 +32,12 @@ module.exports = {
     if (!(nick == null || nick == mentionedMember.user.username)) {
       embed.addField("Nickname", nick, false);
     }
+
     // if (interaction.member.presence.activities.length != 0) {
     //   embed.addField("Game", interaction.member.presence.activities[0].name, false);
     // }
     // embed.addField("Status", interaction.member.presence.status, false);
+    
     embed.addField(
       "Joined Date",
       mentionedMember.joinedAt.toLocaleString(),
