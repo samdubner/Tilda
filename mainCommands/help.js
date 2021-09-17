@@ -137,16 +137,16 @@ module.exports = {
             value: "See all the fish you've caught",
           },
           {
+            name: "/logbook",
+            value: "shows you all the types of fish you've caught!",
+          },
+          {
             name: "fish sell [type of fish] [size of fish]",
             value: "sells the specific fish of that type and size",
           },
           {
             name: "fish sell [rarity]",
             value: "sells all the fish of that rarity",
-          },
-          {
-            name: "fish log",
-            value: "shows you all the types of fish you've caught!",
           }
         );
         break;

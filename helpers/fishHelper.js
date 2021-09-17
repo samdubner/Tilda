@@ -53,7 +53,7 @@ const displayFish = async (interaction, pondName) => {
     );
   }
 
-  interaction.reply({ embeds: [fishEmbed]})
+  interaction.reply({ embeds: [fishEmbed] });
 };
 
 const noFish = (interaction) => {
@@ -64,27 +64,22 @@ const noFish = (interaction) => {
 
   interaction.reply({
     embeds: [embed],
-    ephemeral: true
+    ephemeral: true,
   });
 };
 
-const fishLog = async (message) => {
-  let user = await User.findOne({ userId: message.author.id });
+const fishLog = async (interaction) => {
+  let user = await coin.checkInteraction(interaction);
 
-  if (!user) {
-    user = coin.createUser();
-
-    noFish(message);
-    return;
-  } else if (!user.fish || user.fish.length == 0) {
-    noFish(message);
+  if (!user.fish || user.fish.length == 0) {
+    noFish(interaction);
     return;
   }
 
   const fishEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`${message.member.displayName}'s Fish Logbook`)
-    .setThumbnail(message.author.displayAvatarURL());
+    .setTitle(`${interaction.member.displayName}'s Fish Logbook`)
+    .setThumbnail(interaction.user.displayAvatarURL());
 
   let fishNames = [];
 
@@ -98,15 +93,14 @@ const fishLog = async (message) => {
     }
 
     let fishString = fishNames.join("\n");
-    fishEmbed.addField(`${fName(PONDS[pond].name)} Pond`, fishString, true);
+    fishEmbed.addField(`${catchHelper.fName(PONDS[pond].name)} Pond`, fishString, true);
     fishNames = [];
   }
 
-  message.channel.send(fishEmbed).catch(console.error);
+  interaction.reply({ embeds: [fishEmbed] }).catch(console.error);
 };
-
 
 module.exports = {
   displayFish,
-  fishLog
+  fishLog,
 };
