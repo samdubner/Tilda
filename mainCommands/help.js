@@ -126,25 +126,16 @@ module.exports = {
           }
         );
         break;
-      case "shop":
-        embed.setDescription("Shop Commands [Under Construction]").addFields(
-          {
-            name: "shop",
-            value: "View all items available for you to purchase in the shop!",
-          },
-          {
-            name: "shop buy",
-            value: "open menu to purchase an item from the shop",
-          }
-        );
-        break;
       case "fish":
         embed.setDescription("Fish Commands [Under Construction]").addFields(
           {
-            name: "catch [pond name]",
+            name: "/catch [pond name]",
             value: "Catch a fish! (will default to plain pond)",
           },
-          { name: "fish inv", value: "See all the fish you've caught" },
+          {
+            name: "/inventory [pond name]",
+            value: "See all the fish you've caught",
+          },
           {
             name: "fish sell [type of fish] [size of fish]",
             value: "sells the specific fish of that type and size",
@@ -156,6 +147,18 @@ module.exports = {
           {
             name: "fish log",
             value: "shows you all the types of fish you've caught!",
+          }
+        );
+        break;
+      case "shop":
+        embed.setDescription("Shop Commands [Under Construction]").addFields(
+          {
+            name: "shop",
+            value: "View all items available for you to purchase in the shop!",
+          },
+          {
+            name: "shop buy",
+            value: "open menu to purchase an item from the shop",
           }
         );
     }

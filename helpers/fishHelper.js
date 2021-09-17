@@ -68,6 +68,45 @@ const noFish = (interaction) => {
   });
 };
 
+const fishLog = async (message) => {
+  let user = await User.findOne({ userId: message.author.id });
+
+  if (!user) {
+    user = coin.createUser();
+
+    noFish(message);
+    return;
+  } else if (!user.fish || user.fish.length == 0) {
+    noFish(message);
+    return;
+  }
+
+  const fishEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle(`${message.member.displayName}'s Fish Logbook`)
+    .setThumbnail(message.author.displayAvatarURL());
+
+  let fishNames = [];
+
+  for (let pond in PONDS) {
+    for (let fish of PONDS[pond].names) {
+      if (user.caughtFish.includes(fish)) {
+        fishNames.push(fish);
+      } else {
+        fishNames.push("???");
+      }
+    }
+
+    let fishString = fishNames.join("\n");
+    fishEmbed.addField(`${fName(PONDS[pond].name)} Pond`, fishString, true);
+    fishNames = [];
+  }
+
+  message.channel.send(fishEmbed).catch(console.error);
+};
+
+
 module.exports = {
   displayFish,
+  fishLog
 };
