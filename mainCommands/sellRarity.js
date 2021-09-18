@@ -3,12 +3,12 @@ const coin = require("../helpers/coinHelper")
 
 module.exports = {
   name: "sellRarity",
-  description: "sell fish by their rarity",
+  description: "sell all fish of a specific rarity",
   options: [
     {
       type: "STRING",
-      name: "pond",
-      description: "the pond you'd like to fish from",
+      name: "rarity",
+      description: "the rarity of fish you'd like to sell",
       required: false,
       choices: [
         {
