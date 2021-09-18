@@ -1,54 +1,42 @@
-const catchHelper = require("../helpers/catchHelper")
+const fishHelper = require("../helpers/fishHelper")
 const coin = require("../helpers/coinHelper")
 
 module.exports = {
-  name: "sellRarity",
+  name: "sellrarity",
   description: "sell all fish of a specific rarity",
   options: [
     {
       type: "STRING",
       name: "rarity",
       description: "the rarity of fish you'd like to sell",
-      required: false,
+      required: true,
       choices: [
         {
-          name: "Plain Pond",
-          value: "plain",
+          name: "Common Fish",
+          value: "common",
         },
         {
-          name: "Underground Pond",
-          value: "underground",
+          name: "Uncommon Fish",
+          value: "uncommon",
         },
         {
-          name: "Underworld Pond",
-          value: "underworld",
+          name: "Rare Fish",
+          value: "rare",
         },
         {
-          name: "Sky Pond",
-          value: "sky",
-        },
-        {
-          name: "Ancient Pond",
-          value: "ancient",
-        },
-        {
-          name: "Void Pond",
-          value: "void",
-        },
+          name: "Legendary Fish",
+          value: "legendary",
+        }
       ],
     },
   ],
   async execute(interaction) {
+    let rarity = interaction.options.get("rarity").value
+
     let user = await coin.checkInteraction(interaction);
 
-    let pond;
+    let result = user.fish.filter((fish) => fish.rarity == rarity);
 
-    if (interaction.options.get("pond")) {
-      pond = interaction.options.get("pond").value
-    } else {
-      pond = "plain"
-    }
-  
-    catchHelper.catchFish(interaction, user, pond);
+    fishHelper.sellFishCheck(interaction, user, result)
   },
 };

@@ -103,53 +103,37 @@ const fishLog = async (interaction) => {
   interaction.reply({ embeds: [fishEmbed] }).catch(console.error);
 };
 
-const sellFishCheck = async (interaction) => {
-  let user = await coin.checkInteraction(interaction);
-
+const sellFishCheck = async (interaction, user, result) => {
   if (!user.fish.length) {
     noFish(interaction);
     return;
   }
 
-  // args = args.toLowerCase().split(" ");
+  // let result;
 
-  // if (!args[1] && !(args[1] == "all" || args[1] == "a")) {
-  //   const embed = new MessageEmbed()
-  //     .setColor("#ff0000")
-  //     .setTitle("It doesn't look like that command was structured properly")
-  //     .setDescription(
-  //       `Make sure you do \`${
-  //         message.content.split(" ")[0]
-  //       } sell [fish name] [fish size]\``
-  //     );
-
-  //   message.reply(embed);
-  //   return;
+  // if (args[1] == "all" || args[1] == "a") {
+  //   result = user.fish;
+  // } else if (["common", "uncommon", "rare", "legendary"].includes(args[1])) {
+  //   result = user.fish.filter((fish) => fish.rarity == args[1]);
+  // } else if (args[2] == "all" || args[2] == "a" || (args[1] && !args[2])) {
+  //   result = user.fish.filter((fish) => fish.name == args[1]);
+  // } else {
+  //   result = user.fish.filter(
+  //     (fish) => fish.name == args[1] && fish.size == parseInt(args[2])
+  //   );
   // }
-
-  let result;
-
-  if (args[1] == "all" || args[1] == "a") {
-    result = user.fish;
-  } else if (["common", "uncommon", "rare", "legendary"].includes(args[1])) {
-    result = user.fish.filter((fish) => fish.rarity == args[1]);
-  } else if (args[2] == "all" || args[2] == "a" || (args[1] && !args[2])) {
-    result = user.fish.filter((fish) => fish.name == args[1]);
-  } else {
-    result = user.fish.filter(
-      (fish) => fish.name == args[1] && fish.size == parseInt(args[2])
-    );
-  }
 
   if (!result.length) {
     invalidFish(interaction);
     return;
   }
 
-  sellFish(message, user, [...result]);
+  console.log(result);
+
+  sellFish(interaction, user, result);
 };
 
-sellFish = (message, user, fish) => {
+sellFish = (interaction, user, fish) => {
   let totalSale = 0;
   let fishIndex;
 
@@ -163,17 +147,16 @@ sellFish = (message, user, fish) => {
 
   const fishEmbed = new MessageEmbed()
     .setColor(`#00ff00`)
-    .setTitle(`${message.member.displayName} sold ${fish.length} fish`)
-    .setThumbnail(message.author.displayAvatarURL())
+    .setTitle(`${interaction.member.displayName} sold ${fish.length} fish`)
+    .setThumbnail(interaction.user.displayAvatarURL())
     .addField(
       `Sold ${fish.length} fish for ${totalSale} coins!`,
       `They now have ${user.score} coins!`
     );
 
-  user
-    .save()
-    .then(message.reply(fishEmbed).catch(console.error))
-    .catch(console.error);
+  user.save();
+
+  interaction.reply({ embeds: [fishEmbed] }).catch(console.error);
 };
 
 const invalidFish = (interaction) => {
@@ -188,4 +171,5 @@ const invalidFish = (interaction) => {
 module.exports = {
   displayFish,
   fishLog,
+  sellFishCheck,
 };

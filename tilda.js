@@ -142,9 +142,8 @@ client.on("interactionCreate", async (interaction) => {
       .setThumbnail(interaction.guild.iconURL())
       .addField(
         "Command failed to execute",
-        "Look at the footer to see the error"
+        `${error}`
       )
-      .setFooter(`${error}`);
 
     interaction.reply({
       embeds: [embed],

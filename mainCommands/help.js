@@ -141,11 +141,11 @@ module.exports = {
             value: "shows you all the types of fish you've caught!",
           },
           {
-            name: "fish sell [type of fish] [size of fish]",
+            name: "/sellfish [type of fish] [size of fish]",
             value: "sells the specific fish of that type and size",
           },
           {
-            name: "fish sell [rarity]",
+            name: "/sellrarity [rarity]",
             value: "sells all the fish of that rarity",
           }
         );

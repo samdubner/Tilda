@@ -1,54 +1,39 @@
-const catchHelper = require("../helpers/catchHelper")
-const coin = require("../helpers/coinHelper")
+const fishHelper = require("../helpers/fishHelper");
+const coin = require("../helpers/coinHelper");
 
 module.exports = {
-  name: "sellFish",
-  description: "sell specific fish",
+  name: "sellfish",
+  description: "sell fish of a specific type",
   options: [
     {
       type: "STRING",
-      name: "pond",
-      description: "the pond you'd like to fish from",
+      name: "name",
+      description: "the type of fish you'd like to sell",
+      required: true,
+    },
+    {
+      type: "INTEGER",
+      name: "length",
+      description: "the length of the fish you'd like to sell",
       required: false,
-      choices: [
-        {
-          name: "Plain Pond",
-          value: "plain",
-        },
-        {
-          name: "Underground Pond",
-          value: "underground",
-        },
-        {
-          name: "Underworld Pond",
-          value: "underworld",
-        },
-        {
-          name: "Sky Pond",
-          value: "sky",
-        },
-        {
-          name: "Ancient Pond",
-          value: "ancient",
-        },
-        {
-          name: "Void Pond",
-          value: "void",
-        },
-      ],
     },
   ],
   async execute(interaction) {
     let user = await coin.checkInteraction(interaction);
 
-    let pond;
+    let result;
 
-    if (interaction.options.get("pond")) {
-      pond = interaction.options.get("pond").value
+    let fishName = interaction.options.get("name").value.toLowerCase();
+
+    if (interaction.options.get("length")) {
+      let fishLength = interaction.options.get("length").value;
+      result = user.fish.filter(
+        (fish) => fish.name == fishName && fish.size == fishLength
+      );
     } else {
-      pond = "plain"
+      result = user.fish.filter((fish) => fish.name == fishName);
     }
-  
-    catchHelper.catchFish(interaction, user, pond);
+
+    fishHelper.sellFishCheck(interaction, user, result);
   },
 };
