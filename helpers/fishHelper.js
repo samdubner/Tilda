@@ -114,8 +114,6 @@ const sellFishCheck = async (interaction, user, result) => {
     return;
   }
 
-  console.log(result);
-
   sellFish(interaction, user, result);
 };
 

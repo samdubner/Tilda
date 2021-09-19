@@ -7,7 +7,7 @@ module.exports = {
   async execute(interaction) {
     let user = await coin.checkInteraction(interaction);
 
-    let result = result = user.fish
+    let result = user.fish
 
     fishHelper.sellFishCheck(interaction, user, result);
   },
