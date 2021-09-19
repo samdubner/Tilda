@@ -147,6 +147,10 @@ module.exports = {
           {
             name: "/sellrarity [rarity]",
             value: "sells all the fish of that rarity",
+          },
+          {
+            name: "/sellall",
+            value: "sells all of your fish",
           }
         );
         break;

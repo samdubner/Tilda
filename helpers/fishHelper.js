@@ -109,20 +109,6 @@ const sellFishCheck = async (interaction, user, result) => {
     return;
   }
 
-  // let result;
-
-  // if (args[1] == "all" || args[1] == "a") {
-  //   result = user.fish;
-  // } else if (["common", "uncommon", "rare", "legendary"].includes(args[1])) {
-  //   result = user.fish.filter((fish) => fish.rarity == args[1]);
-  // } else if (args[2] == "all" || args[2] == "a" || (args[1] && !args[2])) {
-  //   result = user.fish.filter((fish) => fish.name == args[1]);
-  // } else {
-  //   result = user.fish.filter(
-  //     (fish) => fish.name == args[1] && fish.size == parseInt(args[2])
-  //   );
-  // }
-
   if (!result.length) {
     invalidFish(interaction);
     return;
