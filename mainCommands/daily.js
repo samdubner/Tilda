@@ -27,7 +27,7 @@ module.exports = {
         )
         .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
-      interaction.reply({embeds: [embed]}).catch(console.error);
+      interaction.reply({ embeds: [embed] }).catch(console.error);
       return;
     }
 
@@ -52,6 +52,6 @@ module.exports = {
       .setFooter(`Daily Streak: ${user.streak} days`)
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
-    interaction.reply({embeds: [embed]}).catch(console.error);
+    interaction.reply({ embeds: [embed] }).catch(console.error);
   },
 };

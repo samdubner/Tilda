@@ -17,7 +17,7 @@ module.exports = {
         `${interaction.member.displayName} has ${user.score} ${coinVariation}`
       );
 
-    interaction.reply({embeds: [embed]});
+    interaction.reply({ embeds: [embed] });
     return;
   },
 };

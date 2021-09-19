@@ -2,13 +2,13 @@ const room = require("../helpers/roomHelper");
 
 module.exports = {
   name: "add",
-  description: "add people in the server to your room [only affects private rooms]",
+  description:
+    "add people in the server to your room [only affects private rooms]",
   options: [
     {
       type: "MENTIONABLE",
       name: "person",
-      description:
-        "the person who you'd like to add to your custom room",
+      description: "the person who you'd like to add to your custom room",
       required: true,
     },
   ],
@@ -23,6 +23,6 @@ module.exports = {
 
     mentionedUser = interaction.options.get("person").user;
 
-    room.addUserToRoom(interaction, mentionedUser)
+    room.addUserToRoom(interaction, mentionedUser);
   },
 };

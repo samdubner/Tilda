@@ -1,6 +1,6 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-const helper = require("../helpers/coinHelper")
+const helper = require("../helpers/coinHelper");
 
 module.exports = {
   name: "beg",
@@ -10,7 +10,7 @@ module.exports = {
 
     let checkDate = user.begDate;
     let begTimer = new Date().getTime() - 10 * 60 * 1000;
-  
+
     if (begTimer < checkDate) {
       let seconds = Math.trunc(((checkDate - begTimer) / 1000) % 60);
       let minutes = Math.trunc(((checkDate - begTimer) / 60000) % 60);
@@ -23,20 +23,20 @@ module.exports = {
           } and ${seconds} ${seconds == 1 ? "second" : "seconds"}`
         )
         .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
-      interaction.reply({embeds: [embed]});
+      interaction.reply({ embeds: [embed] });
       return;
     }
 
     user.score += 10;
     user.begDate = new Date().getTime();
-    user.save()
-  
+    user.save();
+
     let embed = new MessageEmbed()
       .setColor(`#00ff00`)
       .setTitle(`${interaction.member.displayName} got 10 coins!`)
       .setDescription(`They now have ${user.score} coins`)
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
-  
-    interaction.reply({embeds: [embed]});
+
+    interaction.reply({ embeds: [embed] });
   },
 };

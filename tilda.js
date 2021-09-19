@@ -5,7 +5,7 @@ const client = new Client({
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MEMBERS,
     Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_PRESENCES
+    Intents.FLAGS.GUILD_PRESENCES,
   ],
 });
 client.commands = new Collection();
@@ -31,7 +31,7 @@ const activities = [
   "all the fun commands",
   "what /room does",
   "nothing at all",
-  "how useful /help is"
+  "how useful /help is",
 ];
 
 const randomizeRoleColor = async () => {
@@ -115,14 +115,15 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   if (
-    (interaction.channelId != "881622803449774090" &&
-      !["340002869912666114", "171330866189041665"].includes(
-        interaction.user.id
-      )) &&
+    interaction.channelId != "881622803449774090" &&
+    !["340002869912666114", "171330866189041665"].includes(
+      interaction.user.id
+    ) &&
     !isInRoom
   ) {
     interaction.reply({
-      content: "You cannot use commands outside of the bot channel or your room",
+      content:
+        "You cannot use commands outside of the bot channel or your room",
       ephemeral: true,
     });
     return;
@@ -140,10 +141,7 @@ client.on("interactionCreate", async (interaction) => {
       .setColor(`#ff0000`)
       .setTitle(`Interaction Failed`)
       .setThumbnail(interaction.guild.iconURL())
-      .addField(
-        "Command failed to execute",
-        `${error}`
-      )
+      .addField("Command failed to execute", `${error}`);
 
     interaction.reply({
       embeds: [embed],

@@ -12,17 +12,17 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    let suggestion = interaction.options.get("suggestion").value
+    let suggestion = interaction.options.get("suggestion").value;
     console.log(
       `[SUGGESTION] ${interaction.user.username}#${interaction.user.discriminator} => ${suggestion}`
     );
-  
+
     let embed = new MessageEmbed()
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setTitle("Bot Feature Suggestion Sent")
       .addField("Request", suggestion, false)
-      .setThumbnail(interaction.user.displayAvatarURL())
-  
-    interaction.reply({embeds: [embed]});
+      .setThumbnail(interaction.user.displayAvatarURL());
+
+    interaction.reply({ embeds: [embed] });
   },
 };

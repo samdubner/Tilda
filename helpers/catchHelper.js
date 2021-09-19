@@ -232,7 +232,7 @@ const noRod = (interaction) => {
 
   interaction.reply({
     embeds: [embed],
-    ephemeral: true
+    ephemeral: true,
   });
 };
 
@@ -255,5 +255,5 @@ const insufficientCoins = (interaction, pond) => {
 module.exports = {
   catchFish,
   fName,
-  PONDS
+  PONDS,
 };

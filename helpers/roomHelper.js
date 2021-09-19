@@ -109,7 +109,9 @@ const removeCategory = async (interaction) => {
       .reply({ content: "Your room has been removed!", ephemeral: true })
       .catch(console.error);
   } catch (e) {
-    console.log("Someone mismanged their perms and deleted their custom category");
+    console.log(
+      "Someone mismanged their perms and deleted their custom category"
+    );
     user.categoryId = undefined;
     user.save();
     interaction.reply({

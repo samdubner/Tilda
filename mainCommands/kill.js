@@ -3,7 +3,9 @@ module.exports = {
   description: "updates tilda to the latest version! (authorized users only)",
   async execute(interaction) {
     if (
-      !["340002869912666114", "171330866189041665"].includes(interaction.user.id)
+      !["340002869912666114", "171330866189041665"].includes(
+        interaction.user.id
+      )
     )
       return;
 

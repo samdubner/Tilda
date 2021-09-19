@@ -7,8 +7,7 @@ module.exports = {
     {
       type: "MENTIONABLE",
       name: "person",
-      description:
-        "the person who you'd like to remove from your custom room",
+      description: "the person who you'd like to remove from your custom room",
       required: true,
     },
   ],
@@ -23,6 +22,6 @@ module.exports = {
 
     mentionedUser = interaction.options.get("person").user;
 
-    room.removeUserFromRoom(interaction, mentionedUser)
+    room.removeUserFromRoom(interaction, mentionedUser);
   },
 };

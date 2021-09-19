@@ -127,7 +127,7 @@ module.exports = {
         );
         break;
       case "fish":
-        embed.setDescription("Fish Commands [Under Construction]").addFields(
+        embed.setDescription("Fish Commands").addFields(
           {
             name: "/catch [pond name]",
             value: "Catch a fish! (will default to plain pond)",
@@ -139,6 +139,10 @@ module.exports = {
           {
             name: "/logbook",
             value: "shows you all the types of fish you've caught!",
+          },
+          {
+            name: "/view [fish name]",
+            value: "view all your fish of a specific species",
           },
           {
             name: "/sellfish [type of fish] [size of fish]",

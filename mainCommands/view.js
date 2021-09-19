@@ -15,6 +15,6 @@ module.exports = {
   async execute(interaction) {
     let fishName = interaction.options.get("name").value.toLowerCase();
 
-    fishHelper.sellFishCheck(interaction, fishName);
+    fishHelper.checkForFish(interaction, fishName);
   },
 };

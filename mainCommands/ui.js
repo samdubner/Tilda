@@ -7,17 +7,21 @@ module.exports = {
     {
       type: "MENTIONABLE",
       name: "person",
-      description: "the person whose info you'd like to receive, can be yourself",
+      description:
+        "the person whose info you'd like to receive, can be yourself",
       required: true,
     },
   ],
   async execute(interaction) {
-    if(!interaction.options.get("person").member) {
-      interaction.reply({content: "You can only use UI on people", ephemeral: true})
-      return
+    if (!interaction.options.get("person").member) {
+      interaction.reply({
+        content: "You can only use UI on people",
+        ephemeral: true,
+      });
+      return;
     }
 
-    mentionedMember = interaction.options.get("person").member
+    mentionedMember = interaction.options.get("person").member;
 
     let nick = mentionedMember.nickname;
     let role = mentionedMember.roles.hoist || mentionedMember.roles.highest;
@@ -36,9 +40,13 @@ module.exports = {
     embed.addField("Status", interaction.member.presence.status, false);
 
     if (interaction.member.presence.activities.length != 0) {
-      embed.addField("Activity", interaction.member.presence.activities[0].name, false);
+      embed.addField(
+        "Activity",
+        interaction.member.presence.activities[0].name,
+        false
+      );
     }
-    
+
     embed.addField(
       "Joined Date",
       mentionedMember.joinedAt.toLocaleString(),
@@ -51,6 +59,6 @@ module.exports = {
     );
     embed.addField("Highest Role", role.name, false);
 
-    interaction.reply({embeds: [embed]}).catch(console.error);
+    interaction.reply({ embeds: [embed] }).catch(console.error);
   },
 };

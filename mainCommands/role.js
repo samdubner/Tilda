@@ -61,7 +61,7 @@ const createRole = async (member, user, interaction) => {
       position: 5,
       permissions: [],
       mentionable: false,
-      reason: `${member.user.username} wanted a new role`
+      reason: `${member.user.username} wanted a new role`,
     })
     .catch(console.error);
 

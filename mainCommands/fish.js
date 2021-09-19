@@ -1,4 +1,4 @@
-const fishHelper = require("../helpers/fishHelper")
+const fishHelper = require("../helpers/fishHelper");
 module.exports = {
   name: "fish",
   description: "helpful commands to manage your caught fish",
@@ -27,7 +27,7 @@ module.exports = {
   async execute(interaction) {
     let fishOption = interaction.options.get("options").value;
 
-    switch(fishOption) {
+    switch (fishOption) {
       case "inventory":
         fishHelper.displayFish(interaction, "plain");
         break;

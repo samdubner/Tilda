@@ -173,13 +173,17 @@ const checkForFish = async (interaction, fishName) => {
 const displaySingleFish = (interaction, fishList) => {
   const fishEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-    .setTitle(`${interaction.member.displayName}'s ${fName(fishList[0].name)}`)
+    .setTitle(
+      `${interaction.member.displayName}'s ${catchHelper.fName(
+        fishList[0].name
+      )}`
+    )
     .setThumbnail(interaction.user.displayAvatarURL())
     .setTimestamp();
 
   for (fish of fishList) {
     fishEmbed.addField(
-      `${fName(fish.rarity)} ${fish.size}cm`,
+      `${catchHelper.fName(fish.rarity)} ${fish.size}cm`,
       `${fish.price} coins`,
       true
     );

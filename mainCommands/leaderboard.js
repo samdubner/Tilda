@@ -29,7 +29,11 @@ module.exports = {
         );
       } else {
         let guildMember = await interaction.guild.members.fetch(user.userId);
-        embed.addField(`${i}) ${guildMember.user.username}`, `${user.score}`, false);
+        embed.addField(
+          `${i}) ${guildMember.user.username}`,
+          `${user.score}`,
+          false
+        );
       }
       i++;
     }

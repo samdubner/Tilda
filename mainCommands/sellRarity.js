@@ -1,5 +1,5 @@
-const fishHelper = require("../helpers/fishHelper")
-const coin = require("../helpers/coinHelper")
+const fishHelper = require("../helpers/fishHelper");
+const coin = require("../helpers/coinHelper");
 
 module.exports = {
   name: "sellrarity",
@@ -26,17 +26,17 @@ module.exports = {
         {
           name: "Legendary Fish",
           value: "legendary",
-        }
+        },
       ],
     },
   ],
   async execute(interaction) {
-    let rarity = interaction.options.get("rarity").value
+    let rarity = interaction.options.get("rarity").value;
 
     let user = await coin.checkInteraction(interaction);
 
     let result = user.fish.filter((fish) => fish.rarity == rarity);
 
-    fishHelper.sellFishCheck(interaction, user, result)
+    fishHelper.sellFishCheck(interaction, user, result);
   },
 };

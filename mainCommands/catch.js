@@ -1,5 +1,5 @@
-const catchHelper = require("../helpers/catchHelper")
-const coin = require("../helpers/coinHelper")
+const catchHelper = require("../helpers/catchHelper");
+const coin = require("../helpers/coinHelper");
 
 module.exports = {
   name: "catch",
@@ -44,11 +44,11 @@ module.exports = {
     let pond;
 
     if (interaction.options.get("pond")) {
-      pond = interaction.options.get("pond").value
+      pond = interaction.options.get("pond").value;
     } else {
-      pond = "plain"
+      pond = "plain";
     }
-  
+
     catchHelper.catchFish(interaction, user, pond);
   },
 };

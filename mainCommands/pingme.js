@@ -4,7 +4,7 @@ module.exports = {
   name: "pingme",
   description: "enable/disable being pinged for server announcements!",
   async execute(interaction) {
-    let announcementsRole = "881733593595011094"
+    let announcementsRole = "881733593595011094";
     let hasRole = interaction.member.roles.cache.has(announcementsRole);
 
     let embed = new MessageEmbed()
