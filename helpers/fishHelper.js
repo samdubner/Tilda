@@ -152,8 +152,45 @@ const invalidFish = (interaction) => {
   interaction.reply({ embeds: [embed] });
 };
 
+const checkForFish = async (interaction, fishName) => {
+  let user = await coin.checkInteraction(interaction);
+
+  if (!user.fish) {
+    noFish(interaction);
+    return;
+  }
+
+  let fishList = user.fish.filter((fish) => fish.name == fishName);
+
+  if (fishList.length == 0) {
+    invalidFish(interaction);
+    return;
+  }
+
+  displaySingleFish(interaction, fishList);
+};
+
+const displaySingleFish = (interaction, fishList) => {
+  const fishEmbed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setTitle(`${interaction.member.displayName}'s ${fName(fishList[0].name)}`)
+    .setThumbnail(interaction.user.displayAvatarURL())
+    .setTimestamp();
+
+  for (fish of fishList) {
+    fishEmbed.addField(
+      `${fName(fish.rarity)} ${fish.size}cm`,
+      `${fish.price} coins`,
+      true
+    );
+  }
+
+  interaction.reply({ embeds: [fishEmbed] });
+};
+
 module.exports = {
   displayFish,
   fishLog,
   sellFishCheck,
+  checkForFish,
 };
