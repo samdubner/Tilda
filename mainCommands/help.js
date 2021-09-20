@@ -70,6 +70,10 @@ module.exports = {
           {
             name: "/roll <number of sides>",
             value: "Will roll a x number sided die (default: 6)",
+          },
+          {
+            name: "/pingme",
+            value: "add/remove a role to be pinged for announcements",
           }
         );
         break;
@@ -159,14 +163,14 @@ module.exports = {
         );
         break;
       case "shop":
-        embed.setDescription("Shop Commands [Under Construction]").addFields(
+        embed.setDescription("Shop Commands").addFields(
           {
-            name: "shop",
+            name: "/shop list",
             value: "View all items available for you to purchase in the shop!",
           },
           {
-            name: "shop buy",
-            value: "open menu to purchase an item from the shop",
+            name: "/shop buy <item name>",
+            value: "Purchase an item from the shop",
           }
         );
     }
