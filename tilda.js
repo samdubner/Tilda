@@ -148,10 +148,6 @@ client.on("interactionCreate", async (interaction) => {
       ephemeral: true,
     });
   }
-
-  // const COMMANDS = {
-  //   "~shop": () => shop.shopManager(message, args),
-  // };
 });
 
 client.login(JSON.parse(fs.readFileSync("./token.json")).token);

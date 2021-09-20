@@ -114,11 +114,12 @@ const sellFishCheck = async (interaction, user, result) => {
     return;
   }
 
-  sellFish(interaction, user, result);
+  sellFish(interaction, user, [...result]);
 };
 
 sellFish = (interaction, user, fish) => {
   let totalSale = 0;
+  let totalFish = fish.length;
   let fishIndex;
 
   fish.forEach((single) => {
@@ -131,10 +132,10 @@ sellFish = (interaction, user, fish) => {
 
   const fishEmbed = new MessageEmbed()
     .setColor(`#00ff00`)
-    .setTitle(`${interaction.member.displayName} sold ${fish.length} fish`)
+    .setTitle(`${interaction.member.displayName} sold ${totalFish} fish`)
     .setThumbnail(interaction.user.displayAvatarURL())
     .addField(
-      `Sold ${fish.length} fish for ${totalSale} coins!`,
+      `Sold ${totalFish} fish for ${totalSale} coins!`,
       `They now have ${user.score} coins!`
     );
 
