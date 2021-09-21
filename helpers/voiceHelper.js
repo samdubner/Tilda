@@ -71,6 +71,19 @@ const playAudio = async () => {
   }
 };
 
+const leaveChannel = (interaction) => {
+  let connection = getVoiceConnection(interaction.guild.id);
+
+  if(!connection) {
+    interaction.reply("Tilda is not currently playing music")
+    return
+  }
+
+  songQueue = [];
+  connection.destroy();
+}
+
 module.exports = {
   addToQueue,
+  leaveChannel
 };
