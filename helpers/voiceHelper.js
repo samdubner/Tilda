@@ -68,7 +68,11 @@ const addToQueue = async (interaction) => {
   songQueue.push(songEntry);
 
   let embed = new MessageEmbed()
-    .setAuthor(`Added Song to Queue`, interaction.user.avatarURL())
+    .setTitle("Added Song to Queue")
+    .setAuthor(
+      `Added by ${interaction.member.nickname}`,
+      interaction.user.avatarURL()
+    )
     .setColor(`#17d9eb`)
     .setThumbnail(interaction.guild.iconURL())
     .setURL(songEntry.url)
@@ -98,7 +102,11 @@ const playAudio = async (force) => {
     connection.subscribe(player);
 
     let embed = new MessageEmbed()
-      .setAuthor(`Now Playing`, interaction.user.avatarURL())
+      .setTitle("Now Playing")
+      .setAuthor(
+        `Added by ${interaction.member.nickname}`,
+        interaction.user.avatarURL()
+      )
       .setColor(`#11d632`)
       .setThumbnail(interaction.guild.iconURL())
       .setURL(songEntry.url)
