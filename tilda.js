@@ -6,6 +6,7 @@ const client = new Client({
     Intents.FLAGS.GUILD_MEMBERS,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_PRESENCES,
+    Intents.FLAGS.GUILD_VOICE_STATES
   ],
 });
 client.commands = new Collection();
@@ -32,6 +33,7 @@ const activities = [
   "what /room does",
   "nothing at all",
   "how useful /help is",
+  "over you"
 ];
 
 const randomizeRoleColor = async () => {
@@ -75,7 +77,7 @@ client.on("ready", async () => {
     try {
       command = require(`./mainCommands/${file}`);
     } catch (e) {
-      // console.log(e)
+      console.log(e)
       command = require(`./musicCommands/${file}`);
     }
 

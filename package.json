@@ -10,10 +10,13 @@
   "repository": "https://github.com/samdubner/Tilda",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/voice": "^0.6.0",
     "discord.js": "^13.0.1",
+    "libsodium-wrappers": "^0.7.9",
     "mongoose": "^5.12.3",
     "node-fetch": "^2.6.1",
     "node-schedule": "^2.0.0",
-    "openai-api": "^1.2.1"
+    "play-dl": "^0.9.9"
   }
 }
