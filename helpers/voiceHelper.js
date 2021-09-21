@@ -70,7 +70,7 @@ const addToQueue = async (interaction) => {
   let embed = new MessageEmbed()
     .setTitle("Added Song to Queue")
     .setAuthor(
-      `Added by ${interaction.member.nickname}`,
+      `Added by ${interaction.user.username}`,
       interaction.user.avatarURL()
     )
     .setColor(`#17d9eb`)
@@ -104,7 +104,7 @@ const playAudio = async (force) => {
     let embed = new MessageEmbed()
       .setTitle("Now Playing")
       .setAuthor(
-        `Added by ${interaction.member.nickname}`,
+        `Added by ${interaction.user.username}`,
         interaction.user.avatarURL()
       )
       .setColor(`#11d632`)
