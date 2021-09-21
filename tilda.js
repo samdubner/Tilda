@@ -109,6 +109,10 @@ client.on("guildMemberAdd", (member) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return;
+
+  if (!client.commands.has(interaction.commandName)) return;
+
   let isInRoom = false;
 
   if (coin.checkUser(interaction.user)) {
@@ -130,10 +134,6 @@ client.on("interactionCreate", async (interaction) => {
     });
     return;
   }
-
-  if (!interaction.isCommand()) return;
-
-  if (!client.commands.has(interaction.commandName)) return;
 
   try {
     await client.commands.get(interaction.commandName).execute(interaction);
