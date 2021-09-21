@@ -232,8 +232,6 @@ const checkInteraction = async (interaction) => {
 const checkUser = async (user) => {
   let check = await User.findOne({ userId: user.id });
 
-  console.log(!!check)
-
   return !!check;
 };
 

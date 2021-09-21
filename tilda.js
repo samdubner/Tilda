@@ -115,7 +115,7 @@ client.on("interactionCreate", async (interaction) => {
 
   let isInRoom = false;
 
-  if (coin.checkUser(interaction.user)) {
+  if (await coin.checkUser(interaction.user)) {
     let user = await User.findOne({ userId: interaction.user.id });
     if (user.categoryId == interaction.channel.id) isInRoom = true;
   }
