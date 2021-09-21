@@ -71,6 +71,7 @@ const addToQueue = async (interaction) => {
     .setAuthor(`Added Song to Queue`, interaction.user.avatarURL())
     .setColor(`#17d9eb`)
     .setThumbnail(interaction.guild.iconURL())
+    .setURL(songEntry.url)
     .addField("Song Name", songEntry.title, true)
     .addField("Song Length", `\`${songEntry.duration}\``, true);
 
@@ -100,6 +101,7 @@ const playAudio = async (force) => {
       .setAuthor(`Now Playing`, interaction.user.avatarURL())
       .setColor(`#11d632`)
       .setThumbnail(interaction.guild.iconURL())
+      .setURL(songEntry.url)
       .addField("Song Name", songEntry.title, true)
       .addField("Song Length", `\`${songEntry.duration}\``, true);
 
