@@ -15,17 +15,27 @@ let songQueue = [];
 
 const player = createAudioPlayer();
 
-player.on(AudioPlayerStatus.Idle, () => {
+player.on(AudioPlayerStatus.Idle, () => playNextOrLeave());
+
+const playNextOrLeave = (force = false) => {
   let interaction = songQueue[0].interaction;
   songQueue.shift();
 
   if (songQueue.length > 0) {
-    playAudio();
+    playAudio(force);
   } else {
     let connection = getVoiceConnection(interaction.guild.id);
     connection.destroy();
+
+    let embed = new MessageEmbed()
+      .setAuthor(`Finished Queue`, interaction.user.avatarURL())
+      .setColor(`#b00dd1`)
+      .setThumbnail(interaction.guild.iconURL())
+      .setTitle("Finished Playing and Disconnected, Cya!");
+
+    interaction.channel.send({ embeds: [embed] });
   }
-});
+};
 
 const addToQueue = async (interaction) => {
   let connection = getVoiceConnection(interaction.guild.id);
@@ -66,11 +76,11 @@ const addToQueue = async (interaction) => {
 
   interaction.reply({ embeds: [embed] });
 
-  playAudio();
+  playAudio(false);
 };
 
-const playAudio = async () => {
-  if (player.state.status == "idle") {
+const playAudio = async (force) => {
+  if (player.state.status == "idle" || force) {
     let songEntry = songQueue[0];
     let interaction = songEntry.interaction;
 
@@ -123,4 +133,5 @@ const leaveChannel = (interaction) => {
 module.exports = {
   addToQueue,
   leaveChannel,
+  playNextOrLeave,
 };
