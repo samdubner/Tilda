@@ -16,7 +16,7 @@ let songQueue = [];
 const player = createAudioPlayer();
 
 player.on(AudioPlayerStatus.Idle, () => {
-  let interaction = songQueue[0].interaction
+  let interaction = songQueue[0].interaction;
   songQueue.shift();
 
   if (songQueue.length > 0) {
@@ -27,7 +27,7 @@ player.on(AudioPlayerStatus.Idle, () => {
   }
 });
 
-const addToQueue = (interaction) => {
+const addToQueue = async (interaction) => {
   let connection = getVoiceConnection(interaction.guild.id);
 
   if (!interaction.member.voice.channelId) {
@@ -43,22 +43,39 @@ const addToQueue = (interaction) => {
     });
   }
 
+  let videoInfo = await play.video_basic_info(
+    interaction.options.get("url").value
+  );
+  videoInfo = videoInfo.video_details;
+
   let songEntry = {
-    url: interaction.options.get("url").value,
+    url: videoInfo.url,
+    title: videoInfo.title,
+    duration: videoInfo.durationRaw,
     interaction,
   };
 
   songQueue.push(songEntry);
 
+  let embed = new MessageEmbed()
+    .setAuthor(`Added Song to Queue`, interaction.user.avatarURL())
+    .setColor(`#17d9eb`)
+    .setThumbnail(interaction.guild.iconURL())
+    .addField("Song Name", songEntry.title, true)
+    .addField("Song Length", `\`${songEntry.duration}\``, true);
+
+  interaction.reply({ embeds: [embed] });
+
   playAudio();
 };
 
 const playAudio = async () => {
-  let songEntry = songQueue[0];
-
-  let connection = getVoiceConnection(songEntry.interaction.guild.id);
-
   if (player.state.status == "idle") {
+    let songEntry = songQueue[0];
+    let interaction = songEntry.interaction;
+
+    let connection = getVoiceConnection(interaction.guild.id);
+
     const stream = await play.stream(songEntry.url);
 
     let resource = createAudioResource(stream.stream, {
@@ -68,22 +85,42 @@ const playAudio = async () => {
     player.play(resource);
 
     connection.subscribe(player);
+
+    let embed = new MessageEmbed()
+      .setAuthor(`Now Playing`, interaction.user.avatarURL())
+      .setColor(`#11d632`)
+      .setThumbnail(interaction.guild.iconURL())
+      .addField("Song Name", songEntry.title, true)
+      .addField("Song Length", `\`${songEntry.duration}\``, true);
+
+    songEntry.interaction.channel.send({ embeds: [embed] });
   }
 };
 
 const leaveChannel = (interaction) => {
   let connection = getVoiceConnection(interaction.guild.id);
 
-  if(!connection) {
-    interaction.reply("Tilda is not currently playing music")
-    return
+  if (!connection) {
+    interaction.reply({
+      content: "Tilda is not currently playing music",
+      ephemeral: true,
+    });
+    return;
   }
 
   songQueue = [];
   connection.destroy();
-}
+
+  let embed = new MessageEmbed()
+    .setAuthor(`Disconnected From VC`, interaction.user.avatarURL())
+    .setColor(`#990909`)
+    .setThumbnail(interaction.guild.iconURL())
+    .setTitle("Thank you for listening, have a nice day!");
+
+  interaction.reply({ embeds: [embed] });
+};
 
 module.exports = {
   addToQueue,
-  leaveChannel
+  leaveChannel,
 };
