@@ -24,16 +24,15 @@ const playNextOrLeave = (force = false) => {
   if (songQueue.length > 0) {
     playAudio(force);
   } else {
-    let connection = getVoiceConnection(interaction.guild.id);
-    connection.destroy();
-
+    if (force) player.pause();
     let embed = new MessageEmbed()
       .setAuthor(`Finished Queue`, interaction.user.avatarURL())
       .setColor(`#b00dd1`)
       .setThumbnail(interaction.guild.iconURL())
-      .setTitle("Finished Playing and Disconnected, Cya!");
+      .setTitle("Finished Queue and Will Disconnect Shortly!");
 
     interaction.channel.send({ embeds: [embed] });
+    waitThenLeave(interaction, force);
   }
 };
 
@@ -138,6 +137,27 @@ const leaveChannel = (interaction) => {
     .setTitle("Thank you for listening, have a nice day!");
 
   interaction.reply({ embeds: [embed] });
+};
+
+const waitThenLeave = (interaction) => {
+  setTimeout(() => {
+    if (player.state.status == "idle") {
+      disconnectFromChannel(interaction);
+    }
+  }, 1000 * 60 * 2);
+};
+
+const disconnectFromChannel = (interaction) => {
+  let connection = getVoiceConnection(interaction.guild.id);
+  connection.destroy();
+
+  let embed = new MessageEmbed()
+    .setAuthor(`Disconnected`, interaction.user.avatarURL())
+    .setColor("#500982")
+    .setThumbnail(interaction.guild.iconURL())
+    .setTitle("Finished Playing and Disconnected, Cya!");
+
+  interaction.channel.send({ embeds: [embed] });
 };
 
 module.exports = {
