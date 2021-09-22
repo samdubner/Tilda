@@ -36,6 +36,52 @@ const playNextOrLeave = (force = false) => {
   }
 };
 
+const searchThenAddToQueue = async (interaction) => {
+  let connection = getVoiceConnection(interaction.guild.id);
+
+  if (!interaction.member.voice.channelId) {
+    interaction.reply("You must be in a voice channel to use music commands");
+    return;
+  }
+
+  if (!connection) {
+    connection = joinVoiceChannel({
+      channelId: interaction.member.voice.channelId,
+      guildId: interaction.guild.id,
+      adapterCreator: interaction.guild.voiceAdapterCreator,
+    });
+  }
+
+  let query = interaction.options.get("search").value
+  let results = await play.search(query, { limit: 1 });
+  let topResult = results [0]
+
+  let songEntry = {
+    url: topResult.url,
+    title: topResult.title,
+    duration: topResult.durationRaw,
+    interaction,
+  };
+
+  songQueue.push(songEntry);
+
+  let embed = new MessageEmbed()
+    .setTitle("Added Song to Queue")
+    .setAuthor(
+      `Added by ${interaction.user.username}`,
+      interaction.user.avatarURL()
+    )
+    .setColor(`#17d9eb`)
+    .setThumbnail(interaction.guild.iconURL())
+    .setURL(songEntry.url)
+    .addField("Song Name", songEntry.title, true)
+    .addField("Song Length", `\`${songEntry.duration}\``, true);
+
+  interaction.reply({ embeds: [embed] });
+
+  playAudio(false);
+};
+
 const addToQueue = async (interaction) => {
   let connection = getVoiceConnection(interaction.guild.id);
 
@@ -87,12 +133,12 @@ const addToQueue = async (interaction) => {
       .setColor(`#ff0000`)
       .addField("Invalid Song URL", "Please try again with another URL");
 
-    interaction.reply({ embeds: [embed] });
+    interaction.reply({ embeds: [embed], ephemeral: true });
   }
 };
 
 const playAudio = async (force) => {
-  if (player.state.status == "idle" || force) {
+  if (player.state.status == "idle" || player.state.status == "paused" || force) {
     let songEntry = songQueue[0];
     let interaction = songEntry.interaction;
 
@@ -170,6 +216,7 @@ const disconnectFromChannel = (interaction) => {
 
 module.exports = {
   addToQueue,
+  searchThenAddToQueue,
   leaveChannel,
   playNextOrLeave,
 };
