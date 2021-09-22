@@ -28,7 +28,6 @@ const playNextOrLeave = (force = false) => {
     let embed = new MessageEmbed()
       .setAuthor(`Finished Queue`, interaction.user.avatarURL())
       .setColor(`#b00dd1`)
-      .setThumbnail(interaction.guild.iconURL())
       .setTitle("Finished Queue and Will Disconnect Shortly!");
 
     interaction.channel.send({ embeds: [embed] });
@@ -52,9 +51,9 @@ const searchThenAddToQueue = async (interaction) => {
     });
   }
 
-  let query = interaction.options.get("search").value
+  let query = interaction.options.get("search").value;
   let results = await play.search(query, { limit: 1 });
-  let topResult = results [0]
+  let topResult = results[0];
 
   let songEntry = {
     url: topResult.url,
@@ -71,8 +70,7 @@ const searchThenAddToQueue = async (interaction) => {
       `Added by ${interaction.user.username}`,
       interaction.user.avatarURL()
     )
-    .setColor(`#17d9eb`)
-    .setThumbnail(interaction.guild.iconURL())
+    .setColor(`#17d9eb`)    .setThumbnail(interaction.guild.iconURL())
     .setURL(songEntry.url)
     .addField("Song Name", songEntry.title, true)
     .addField("Song Length", `\`${songEntry.duration}\``, true);
@@ -86,7 +84,10 @@ const addToQueue = async (interaction) => {
   let connection = getVoiceConnection(interaction.guild.id);
 
   if (!interaction.member.voice.channelId) {
-    interaction.reply("You must be in a voice channel to use music commands");
+    interaction.reply({
+      content: "You must be in a voice channel to use music commands",
+      ephemeral: true,
+    });
     return;
   }
 
@@ -138,7 +139,11 @@ const addToQueue = async (interaction) => {
 };
 
 const playAudio = async (force) => {
-  if (player.state.status == "idle" || player.state.status == "paused" || force) {
+  if (
+    player.state.status == "idle" ||
+    player.state.status == "paused" ||
+    force
+  ) {
     let songEntry = songQueue[0];
     let interaction = songEntry.interaction;
 
@@ -208,7 +213,6 @@ const disconnectFromChannel = (interaction) => {
   let embed = new MessageEmbed()
     .setAuthor(`Disconnected`, interaction.user.avatarURL())
     .setColor("#500982")
-    .setThumbnail(interaction.guild.iconURL())
     .setTitle("Finished Playing and Disconnected, Cya!");
 
   interaction.channel.send({ embeds: [embed] });
