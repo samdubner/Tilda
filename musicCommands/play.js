@@ -6,8 +6,8 @@ module.exports = {
   options: [
     {
       type: "STRING",
-      name: "url",
-      description: "the url of the youtube audio you'd like to play",
+      name: "query",
+      description: "the url/search of the youtube audio you'd like to play",
       required: true,
     },
   ],

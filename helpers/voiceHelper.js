@@ -35,53 +35,6 @@ const playNextOrLeave = (force = false) => {
   }
 };
 
-const searchThenAddToQueue = async (interaction) => {
-  let connection = getVoiceConnection(interaction.guild.id);
-
-  if (!interaction.member.voice.channelId) {
-    interaction.reply("You must be in a voice channel to use music commands");
-    return;
-  }
-
-  if (!connection) {
-    connection = joinVoiceChannel({
-      channelId: interaction.member.voice.channelId,
-      guildId: interaction.guild.id,
-      adapterCreator: interaction.guild.voiceAdapterCreator,
-    });
-  }
-
-  let query = interaction.options.get("search").value;
-  let results = await play.search(query, { limit: 1 });
-  let topResult = results[0];
-
-  let songEntry = {
-    url: topResult.url,
-    title: topResult.title,
-    duration: topResult.durationRaw,
-    channel: interaction.channel,
-    user: interaction.user,
-  };
-
-  songQueue.push(songEntry);
-
-  let embed = new MessageEmbed()
-    .setTitle("Added Song to Queue")
-    .setAuthor(
-      `Added by ${interaction.user.username}`,
-      interaction.user.avatarURL()
-    )
-    .setColor(`#17d9eb`)
-    .setThumbnail(interaction.guild.iconURL())
-    .setURL(songEntry.url)
-    .addField("Song Name", songEntry.title, true)
-    .addField("Song Length", `\`${songEntry.duration}\``, true);
-
-  interaction.reply({ embeds: [embed] });
-
-  playAudio(false);
-};
-
 const addToQueue = async (interaction) => {
   let connection = getVoiceConnection(interaction.guild.id);
 
@@ -101,44 +54,50 @@ const addToQueue = async (interaction) => {
     });
   }
 
+  let songEntry;
+  let query = interaction.options.get("query").value;
+
   try {
-    let videoInfo = await play.video_basic_info(
-      interaction.options.get("url").value
-    );
+    let videoInfo = await play.video_basic_info(query);
     videoInfo = videoInfo.video_details;
 
-    let songEntry = {
+    songEntry = {
       url: videoInfo.url,
       title: videoInfo.title,
       duration: videoInfo.durationRaw,
       channel: interaction.channel,
       user: interaction.user,
     };
-
-    songQueue.push(songEntry);
-
-    let embed = new MessageEmbed()
-      .setTitle("Added Song to Queue")
-      .setAuthor(
-        `Added by ${interaction.user.username}`,
-        interaction.user.avatarURL()
-      )
-      .setColor(`#17d9eb`)
-      .setThumbnail(interaction.guild.iconURL())
-      .setURL(songEntry.url)
-      .addField("Song Name", songEntry.title, true)
-      .addField("Song Length", `\`${songEntry.duration}\``, true);
-
-    interaction.reply({ embeds: [embed] });
-
-    playAudio(false);
   } catch (e) {
-    let embed = new MessageEmbed()
-      .setColor(`#ff0000`)
-      .addField("Invalid Song URL", "Please try again with another URL");
+    let results = await play.search(query, { limit: 1 });
+    let topResult = results[0];
 
-    interaction.reply({ embeds: [embed], ephemeral: true });
+    songEntry = {
+      url: topResult.url,
+      title: topResult.title,
+      duration: topResult.durationRaw,
+      channel: interaction.channel,
+      user: interaction.user,
+    };
   }
+
+  songQueue.push(songEntry);
+
+  let embed = new MessageEmbed()
+    .setTitle("Added Song to Queue")
+    .setAuthor(
+      `Added by ${interaction.user.username}`,
+      interaction.user.avatarURL()
+    )
+    .setColor(`#17d9eb`)
+    .setThumbnail(interaction.guild.iconURL())
+    .setURL(songEntry.url)
+    .addField("Song Name", songEntry.title, true)
+    .addField("Song Length", `\`${songEntry.duration}\``, true);
+
+  interaction.reply({ embeds: [embed] });
+
+  playAudio(false);
 };
 
 const playAudio = async (force) => {
@@ -222,7 +181,6 @@ const disconnectFromChannel = (channel) => {
 
 module.exports = {
   addToQueue,
-  searchThenAddToQueue,
   leaveChannel,
   playNextOrLeave,
 };
