@@ -18,7 +18,7 @@ const player = createAudioPlayer();
 player.on(AudioPlayerStatus.Idle, () => playNextOrLeave());
 
 const playNextOrLeave = (force = false) => {
-  let interaction = songQueue[0].interaction;
+  let channel = songQueue[0].channel;
   songQueue.shift();
 
   if (songQueue.length > 0) {
@@ -26,12 +26,12 @@ const playNextOrLeave = (force = false) => {
   } else {
     if (force) player.pause();
     let embed = new MessageEmbed()
-      .setAuthor(`Finished Queue`, interaction.user.avatarURL())
+      .setAuthor(`Finished Queue`)
       .setColor(`#b00dd1`)
       .setTitle("Finished Queue and Will Disconnect Shortly!");
 
-    interaction.channel.send({ embeds: [embed] });
-    waitThenLeave(interaction, force);
+    channel.send({ embeds: [embed] });
+    waitThenLeave(channel, force);
   }
 };
 
@@ -59,7 +59,8 @@ const searchThenAddToQueue = async (interaction) => {
     url: topResult.url,
     title: topResult.title,
     duration: topResult.durationRaw,
-    interaction,
+    channel: interaction.channel,
+    user: interaction.user,
   };
 
   songQueue.push(songEntry);
@@ -70,7 +71,8 @@ const searchThenAddToQueue = async (interaction) => {
       `Added by ${interaction.user.username}`,
       interaction.user.avatarURL()
     )
-    .setColor(`#17d9eb`)    .setThumbnail(interaction.guild.iconURL())
+    .setColor(`#17d9eb`)
+    .setThumbnail(interaction.guild.iconURL())
     .setURL(songEntry.url)
     .addField("Song Name", songEntry.title, true)
     .addField("Song Length", `\`${songEntry.duration}\``, true);
@@ -109,7 +111,8 @@ const addToQueue = async (interaction) => {
       url: videoInfo.url,
       title: videoInfo.title,
       duration: videoInfo.durationRaw,
-      interaction,
+      channel: interaction.channel,
+      user: interaction.user,
     };
 
     songQueue.push(songEntry);
@@ -145,9 +148,8 @@ const playAudio = async (force) => {
     force
   ) {
     let songEntry = songQueue[0];
-    let interaction = songEntry.interaction;
 
-    let connection = getVoiceConnection(interaction.guild.id);
+    let connection = getVoiceConnection(songEntry.channel.guild.id);
 
     const stream = await play.stream(songEntry.url);
 
@@ -162,16 +164,16 @@ const playAudio = async (force) => {
     let embed = new MessageEmbed()
       .setTitle("Now Playing")
       .setAuthor(
-        `Added by ${interaction.user.username}`,
-        interaction.user.avatarURL()
+        `Added by ${songEntry.user.username}`,
+        songEntry.user.avatarURL()
       )
       .setColor(`#11d632`)
-      .setThumbnail(interaction.guild.iconURL())
+      .setThumbnail(songEntry.channel.guild.iconURL())
       .setURL(songEntry.url)
       .addField("Song Name", songEntry.title, true)
       .addField("Song Length", `\`${songEntry.duration}\``, true);
 
-    songEntry.interaction.channel.send({ embeds: [embed] });
+    songEntry.channel.send({ embeds: [embed] });
   }
 };
 
@@ -198,24 +200,24 @@ const leaveChannel = (interaction) => {
   interaction.reply({ embeds: [embed] });
 };
 
-const waitThenLeave = (interaction) => {
+const waitThenLeave = (channel) => {
   setTimeout(() => {
     if (player.state.status == "idle") {
-      disconnectFromChannel(interaction);
+      disconnectFromChannel(channel);
     }
   }, 1000 * 60 * 2);
 };
 
-const disconnectFromChannel = (interaction) => {
-  let connection = getVoiceConnection(interaction.guild.id);
+const disconnectFromChannel = (channel) => {
+  let connection = getVoiceConnection(channel.guild.id);
   connection.destroy();
 
   let embed = new MessageEmbed()
-    .setAuthor(`Disconnected`, interaction.user.avatarURL())
+    .setAuthor(`Disconnected`)
     .setColor("#500982")
     .setTitle("Finished Playing and Disconnected, Cya!");
 
-  interaction.channel.send({ embeds: [embed] });
+  channel.send({ embeds: [embed] });
 };
 
 module.exports = {
