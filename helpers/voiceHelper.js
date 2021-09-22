@@ -52,35 +52,43 @@ const addToQueue = async (interaction) => {
     });
   }
 
-  let videoInfo = await play.video_basic_info(
-    interaction.options.get("url").value
-  );
-  videoInfo = videoInfo.video_details;
+  try {
+    let videoInfo = await play.video_basic_info(
+      interaction.options.get("url").value
+    );
+    videoInfo = videoInfo.video_details;
 
-  let songEntry = {
-    url: videoInfo.url,
-    title: videoInfo.title,
-    duration: videoInfo.durationRaw,
-    interaction,
-  };
+    let songEntry = {
+      url: videoInfo.url,
+      title: videoInfo.title,
+      duration: videoInfo.durationRaw,
+      interaction,
+    };
 
-  songQueue.push(songEntry);
+    songQueue.push(songEntry);
 
-  let embed = new MessageEmbed()
-    .setTitle("Added Song to Queue")
-    .setAuthor(
-      `Added by ${interaction.user.username}`,
-      interaction.user.avatarURL()
-    )
-    .setColor(`#17d9eb`)
-    .setThumbnail(interaction.guild.iconURL())
-    .setURL(songEntry.url)
-    .addField("Song Name", songEntry.title, true)
-    .addField("Song Length", `\`${songEntry.duration}\``, true);
+    let embed = new MessageEmbed()
+      .setTitle("Added Song to Queue")
+      .setAuthor(
+        `Added by ${interaction.user.username}`,
+        interaction.user.avatarURL()
+      )
+      .setColor(`#17d9eb`)
+      .setThumbnail(interaction.guild.iconURL())
+      .setURL(songEntry.url)
+      .addField("Song Name", songEntry.title, true)
+      .addField("Song Length", `\`${songEntry.duration}\``, true);
 
-  interaction.reply({ embeds: [embed] });
+    interaction.reply({ embeds: [embed] });
 
-  playAudio(false);
+    playAudio(false);
+  } catch (e) {
+    let embed = new MessageEmbed()
+      .setColor(`#ff0000`)
+      .addField("Invalid Song URL", "Please try again with another URL");
+
+    interaction.reply({ embeds: [embed] });
+  }
 };
 
 const playAudio = async (force) => {
