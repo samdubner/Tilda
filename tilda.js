@@ -25,35 +25,7 @@ const commandFiles = mainCommands.concat(musicCommands);
 const schedule = require("node-schedule");
 
 const coin = require("./helpers/coinHelper");
-
-const activities = [
-  "all the coin flips",
-  "everything that happens",
-  "all the fun commands",
-  "what /room does",
-  "nothing at all",
-  "how useful /help is",
-  "over you"
-];
-
-const randomizeRoleColor = async () => {
-  let guild;
-  try {
-    guild = await client.guilds.fetch("881621682870190091");
-  } catch (e) {
-    console.log("Main server not found... unable to change role colors");
-    return;
-  }
-  const role = await guild.roles.fetch("881627506908737546");
-  role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
-};
-
-const setActivity = async () => {
-  client.user.setActivity(
-    activities[Math.floor(Math.random() * activities.length)],
-    { type: "WATCHING" }
-  );
-};
+const clientHelper = require("./helpers/clientHelper")
 
 schedule.scheduleJob("0 0 * * *", async () => {
   let topUsers = await coin.bleedTopUser();
@@ -62,7 +34,7 @@ schedule.scheduleJob("0 0 * * *", async () => {
 
   coin.notifyDailyReset(client, topUsers);
   coin.checkChampion(client, topUsers);
-  randomizeRoleColor();
+  clientHelper.randomizeRoleColor(client);
 });
 
 client.on("ready", async () => {
@@ -87,10 +59,10 @@ client.on("ready", async () => {
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
-  setActivity();
+  clientHelper.setActivity(client);
 
   setInterval(() => {
-    setActivity();
+    clientHelper.setActivity(client);
   }, 1000 * 60 * 60);
 
   setInterval(() => {
