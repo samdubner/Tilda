@@ -1,6 +1,6 @@
 const {
-  VoiceConnectionStatus,
   AudioPlayerStatus,
+  NoSubscriberBehavior,
   getVoiceConnection,
   joinVoiceChannel,
   createAudioPlayer,
@@ -33,6 +33,35 @@ const playNextOrLeave = (force = false) => {
     channel.send({ embeds: [embed] });
     waitThenLeave(channel, force);
   }
+};
+
+const viewQueue = (interaction) => {
+  if (songQueue.length == 0) {
+    interaction.reply({
+      content: "There are currently no songs in queue",
+      ephemeral: true,
+    });
+    return;
+  }
+
+  let embed = new MessageEmbed()
+    .setTitle(`Queue`)
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+
+  songQueue.every((song, idx) => {
+    if (idx == 24) {
+      embed.addField(
+        "Queue Too Long",
+        "There are more songs in queue that cannot be dispalyed!"
+      );
+      return false;
+    }
+
+    embed.addField(`${idx + 1}`, song.title, true);
+    return true;
+  });
+
+  interaction.reply({ embeds: [embed], ephemeral: true });
 };
 
 const addToQueue = async (interaction) => {
@@ -101,11 +130,7 @@ const addToQueue = async (interaction) => {
 };
 
 const playAudio = async (force) => {
-  if (
-    player.state.status == "idle" ||
-    player.state.status == "paused" ||
-    force
-  ) {
+  if (["idle", "paused", "autopaused"].includes(player.state.status) || force) {
     let songEntry = songQueue[0];
 
     let connection = getVoiceConnection(songEntry.channel.guild.id);
@@ -183,4 +208,5 @@ module.exports = {
   addToQueue,
   leaveChannel,
   playNextOrLeave,
+  viewQueue,
 };
