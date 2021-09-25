@@ -6,7 +6,7 @@ const client = new Client({
     Intents.FLAGS.GUILD_MEMBERS,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_PRESENCES,
-    Intents.FLAGS.GUILD_VOICE_STATES
+    Intents.FLAGS.GUILD_VOICE_STATES,
   ],
 });
 client.commands = new Collection();
@@ -25,7 +25,7 @@ const commandFiles = mainCommands.concat(musicCommands);
 const schedule = require("node-schedule");
 
 const coin = require("./helpers/coinHelper");
-const clientHelper = require("./helpers/clientHelper")
+const clientHelper = require("./helpers/clientHelper");
 
 schedule.scheduleJob("0 0 * * *", async () => {
   let topUsers = await coin.bleedTopUser();
@@ -35,6 +35,7 @@ schedule.scheduleJob("0 0 * * *", async () => {
   coin.notifyDailyReset(client, topUsers);
   coin.checkChampion(client, topUsers);
   clientHelper.randomizeRoleColor(client);
+  clientHelper.randomizeServerName(client);
 });
 
 client.on("ready", async () => {
