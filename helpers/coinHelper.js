@@ -75,7 +75,7 @@ const claim = async (interaction, user) => {
         `${interaction.member.displayName}, there is currently no ongoing coin event to be claimed :(`
       );
 
-    interaction.reply({ embeds: [embed], ephemeral: true });
+    interaction.editReply({ embeds: [embed], ephemeral: true });
     return false;
   }
 
