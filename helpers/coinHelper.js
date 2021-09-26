@@ -67,7 +67,7 @@ const randomCoinEvent = async (client, guildId) => {
   }, 1000 * 60 * 60);
 };
 
-const claim = (interaction, user) => {
+const claim = async (interaction, user) => {
   if (!coinEvent.isUp) {
     let embed = new MessageEmbed()
       .setColor(`#ff0000`)
@@ -92,7 +92,7 @@ const claim = (interaction, user) => {
       false
     );
 
-  let message = interaction.channel.messages.fetch(coinEvent.messageId);
+  let message = await interaction.channel.messages.fetch(coinEvent.messageId);
   message.edit({ embeds: [embed] }).catch(console.error);
 
   coinEvent.isUp = false;
