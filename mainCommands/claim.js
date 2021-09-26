@@ -12,12 +12,6 @@ module.exports = {
         content: "You won the coin event!",
         ephemeral: true,
       });
-    } else {
-      interaction.reply({
-        content:
-          "Sorry, either you weren't first or there is no coin event to claim",
-        ephemeral: true,
-      });
     }
   },
 };

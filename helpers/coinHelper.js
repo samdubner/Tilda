@@ -75,6 +75,7 @@ const claim = (interaction, user) => {
         `${interaction.member.displayName}, there is currently no ongoing coin event to be claimed :(`
       );
 
+    interaction.reply({ embeds: [embed], ephemeral: true });
     return false;
   }
 
@@ -91,10 +92,9 @@ const claim = (interaction, user) => {
       false
     );
 
-  interaction.channel.messages.cache
-    .get(coinEvent.messageId)
-    .edit({ embeds: [embed] })
-    .catch(console.error);
+  let message = interaction.channel.messages.fetch(coinEvent.messageId);
+  message.edit({ embeds: [embed] }).catch(console.error);
+
   coinEvent.isUp = false;
 
   return true;
