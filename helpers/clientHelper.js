@@ -23,7 +23,10 @@ const adjectives = [
   "Calm",
   "Bustling",
   "Contemporary",
-  "Polluted"
+  "Toxic",
+  "Bussin",
+  "Quirky",
+  "Sexy"
 ];
 
 const nouns = [
@@ -38,7 +41,10 @@ const nouns = [
   "Island",
   "Landfill",
   "Space Station",
-  "Junkyard"
+  "Junkyard",
+  "Haunted House",
+  "Closet",
+  "Dungeon"
 ];
 
 const setActivity = async (client) => {

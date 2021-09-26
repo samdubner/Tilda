@@ -1,4 +1,3 @@
-const User = require("../models/User");
 const helper = require("../helpers/coinHelper");
 
 module.exports = {
