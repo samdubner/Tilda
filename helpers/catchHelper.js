@@ -1,7 +1,5 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-const coin = require("./coinHelper");
-const User = require("../models/User");
 const Fish = require("../models/Fish");
 
 const PONDS = {

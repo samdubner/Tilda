@@ -1,6 +1,5 @@
 const {
   AudioPlayerStatus,
-  NoSubscriberBehavior,
   getVoiceConnection,
   joinVoiceChannel,
   createAudioPlayer,
