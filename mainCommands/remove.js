@@ -5,21 +5,13 @@ module.exports = {
   description: "remove people from your room [only affects private rooms]",
   options: [
     {
-      type: "MENTIONABLE",
+      type: "USER",
       name: "person",
       description: "the person who you'd like to remove from your custom room",
       required: true,
     },
   ],
   async execute(interaction) {
-    if (!interaction.options.get("person").user) {
-      interaction.reply({
-        content: "You can only remove users to your room",
-        ephemeral: true,
-      });
-      return;
-    }
-
     mentionedUser = interaction.options.get("person").user;
 
     room.removeUserFromRoom(interaction, mentionedUser);

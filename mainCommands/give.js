@@ -8,7 +8,7 @@ module.exports = {
   description: "Sends some coins to a thankful person!",
   options: [
     {
-      type: "MENTIONABLE",
+      type: "USER",
       name: "person",
       description: "the person who you'd like to send coins to",
       required: true,
@@ -21,14 +21,6 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    if (!interaction.options.get("person").user) {
-      interaction.reply({
-        content: "You can only gives coins to users",
-        ephemeral: true,
-      });
-      return;
-    }
-
     let sender = await helper.checkInteraction(interaction);
     let receiptCheck = await helper.checkUser(
       interaction.options.get("person").user

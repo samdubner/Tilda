@@ -5,7 +5,7 @@ module.exports = {
   description: "Sends some basic info about the mentioned person",
   options: [
     {
-      type: "MENTIONABLE",
+      type: "USER",
       name: "person",
       description:
         "the person whose info you'd like to receive, can be yourself",
@@ -13,14 +13,6 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    if (!interaction.options.get("person").member) {
-      interaction.reply({
-        content: "You can only use UI on people",
-        ephemeral: true,
-      });
-      return;
-    }
-
     mentionedMember = interaction.options.get("person").member;
 
     let nick = mentionedMember.nickname;

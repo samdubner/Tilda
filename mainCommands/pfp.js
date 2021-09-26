@@ -5,7 +5,7 @@ module.exports = {
   description: "Sends the profile picture of the mentioned person",
   options: [
     {
-      type: "MENTIONABLE",
+      type: "USER",
       name: "person",
       description:
         "the person whose profile picture you'd like to receive, can be yourself",
@@ -13,14 +13,6 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    if (!interaction.options.get("person").user) {
-      interaction.reply({
-        content: "You can only use UI on people",
-        ephemeral: true,
-      });
-      return;
-    }
-
     mentionedUser = interaction.options.get("person").user;
 
     let embed = new MessageEmbed()
