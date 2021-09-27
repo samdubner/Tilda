@@ -1,6 +1,8 @@
 const mainGuildId = "881621682870190091";
 const mainRoleId = "881627506908737546";
 
+const User = require("../models/User");
+
 const activities = [
   "all the coin flips",
   "everything that happens",
@@ -15,7 +17,7 @@ const adjectives = [
   "Crazy",
   "Wild",
   "Wacky",
-  "Sane",
+  "Huge",
   "Insane",
   "Gamer",
   "Fantastic",
@@ -36,15 +38,17 @@ const nouns = [
   "Festival",
   "Boot Camp",
   "Hotel",
-  "Mansion",
   "Resort",
+  "Mansion",
+  "Room",
   "Island",
-  "Landfill",
+  "Hub",
   "Space Station",
   "Junkyard",
   "Haunted House",
   "Closet",
-  "Dungeon"
+  "Dungeon",
+  "Black Hole"
 ];
 
 const setActivity = async (client) => {
@@ -69,13 +73,17 @@ const randomizeRoleColor = async (client) => {
 const randomizeServerName = async (client) => {
   let guild;
   try {
-    guild = await client.guilds.fetch(mainGuildId);
+    guild = await client.guilds.fetch("469659852109643786");
   } catch (e) {
     console.log("Main server not found... unable to change server name");
     return;
   }
 
-  let randName = guild.members.cache.random().displayName;
+  let count = await User.countDocuments()
+  let randUser = await User.findOne().skip(Math.floor(Math.random() * count))
+  let member = await guild.members.fetch(randUser.userId)
+  let randName = member.user.username
+
   let randAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
   let randNoun = nouns[Math.floor(Math.random() * nouns.length)];
 
