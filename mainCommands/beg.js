@@ -23,7 +23,7 @@ module.exports = {
           } and ${seconds} ${seconds == 1 ? "second" : "seconds"}`
         )
         .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
-      interaction.reply({ embeds: [embed] });
+      interaction.reply({ embeds: [embed], ephemeral: true });
       return;
     }
 
