@@ -4,7 +4,7 @@ module.exports = {
   name: "claim",
   description: "Be the first one to claim the coin event!",
   async execute(interaction) {
-    await interaction.deferReply()
+    await interaction.deferReply({ephemeral: true})
     let user = await helper.checkInteraction(interaction);
     let result = await helper.claim(interaction, user);
 
