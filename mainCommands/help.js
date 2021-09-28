@@ -15,8 +15,8 @@ module.exports = {
           value: "basic",
         },
         {
-          name: "Room Commands",
-          value: "room",
+          name: "Music Commands",
+          value: "music",
         },
         {
           name: "Coin Commands",
@@ -27,12 +27,16 @@ module.exports = {
           value: "role",
         },
         {
-          name: "Shop Commands",
-          value: "shop",
+          name: "Room Commands",
+          value: "room",
         },
         {
           name: "Fish Commands",
           value: "fish",
+        },
+        {
+          name: "Shop Commands",
+          value: "shop",
         },
       ],
     },
@@ -91,6 +95,27 @@ module.exports = {
           {
             name: "/remove @user",
             value: "Remove users from your private room",
+          }
+        );
+        break;
+      case "music":
+        embed.setDescription("Music Commands").addFields(
+          {
+            name: "/play [query]",
+            value:
+              "search for a video or add a youtube url to the music queue",
+          },
+          {
+            name: "/skip",
+            value: "skip the song that is currently playing",
+          },
+          {
+            name: "/queue",
+            value: "see all songs currently in queue",
+          }
+          {
+            name: "/leave",
+            value: "have Tilda disconnect from the vc",
           }
         );
         break;
