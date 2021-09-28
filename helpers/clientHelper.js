@@ -73,7 +73,7 @@ const randomizeRoleColor = async (client) => {
 const randomizeServerName = async (client) => {
   let guild;
   try {
-    guild = await client.guilds.fetch("469659852109643786");
+    guild = await client.guilds.fetch(mainGuildId);
   } catch (e) {
     console.log("Main server not found... unable to change server name");
     return;

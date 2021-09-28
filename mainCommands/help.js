@@ -112,7 +112,7 @@ module.exports = {
           {
             name: "/queue",
             value: "see all songs currently in queue",
-          }
+          },
           {
             name: "/leave",
             value: "have Tilda disconnect from the vc",
