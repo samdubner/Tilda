@@ -76,8 +76,8 @@ module.exports = {
             value: "Will roll a x number sided die (default: 6)",
           },
           {
-            name: "/pingme",
-            value: "add/remove a role to be pinged for announcements",
+            name: "/pingme [role]",
+            value: "add/remove a role to be pinged from",
           }
         );
         break;
