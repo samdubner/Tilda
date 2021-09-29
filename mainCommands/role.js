@@ -29,6 +29,11 @@ module.exports = {
         "the name or hex code ex. [#fa0378] you would like to give your role",
       required: true,
     },
+    {
+      type: "SUB_COMMAND",
+      name: "delete",
+      description: "remove your custom role and delete it from the server/Tilda's db"
+    }
   ],
   async execute(interaction) {
     let user = await User.findOne({ userId: interaction.user.id });

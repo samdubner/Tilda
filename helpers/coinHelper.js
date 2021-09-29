@@ -212,7 +212,7 @@ const createUser = async (interaction) => {
       interaction.client.user.displayAvatarURL()
     );
 
-  interaction.reply({ embeds: [embed] });
+  interaction.channel.send({ embeds: [embed] });
 
   return newUser;
 };
