@@ -2,32 +2,55 @@ const MessageEmbed = require("discord.js").MessageEmbed;
 
 module.exports = {
   name: "pingme",
-  description: "enable/disable being pinged for server announcements!",
+  description: "enable/disable certain roles for notifications!",
+  options: [
+    {
+      name: "role",
+      type: "STRING",
+      description: "the role you'd like to add/remove for pings",
+      required: true,
+      choices: [
+        {
+          name: "Announcements",
+          value: "announcements"
+        },
+        {
+          name: "Events",
+          value: "events"
+        },
+      ]
+    },
+  ],
   async execute(interaction) {
     let announcementsRole = "881733593595011094";
-    let hasRole = interaction.member.roles.cache.has(announcementsRole);
+    let eventsRole = "892624445737422849"
+
+    let setRole = interaction.options.getString("role") == "announcements" ? announcementsRole : eventsRole;
+
+    let hasRole = interaction.member.roles.cache.has(setRole);
+    let role = await interaction.guild.roles.fetch(setRole)
 
     let embed = new MessageEmbed()
       .setAuthor(`Announcement Pings`, interaction.user.avatarURL())
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
 
     if (hasRole) {
-      interaction.member.roles.remove(announcementsRole);
+      interaction.member.roles.remove(setRole);
 
       embed
         .setColor(`#ff0000`)
         .addField(
-          `You have disabled announcement pings!`,
-          `You will no longer be pinged when there is a server announcement`
+          `You have removed the \`${role.name}\` role!`,
+          `You will no longer be pinged with the \`${role.name}\` role`
         );
     } else {
-      interaction.member.roles.add(announcementsRole);
+      interaction.member.roles.add(setRole);
 
       embed
         .setColor(`#00ff00`)
         .addField(
-          `You have enabled announcement pings!`,
-          `You will now be pinged whenever there is a server announcement`
+          `You now have the \`${role.name}\` role!`,
+          `You will now be pinged with the \`${role.name}\` role`
         );
     }
 
