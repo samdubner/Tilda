@@ -142,16 +142,20 @@ module.exports = {
       case "role":
         embed.setDescription("Role Commands").addFields(
           {
-            name: "/role",
+            name: "/role create",
             value: "creates your custom role and displays info",
           },
           {
-            name: "/role name [custom name]",
+            name: "/role edit name [custom name]",
             value: "change your role's name",
           },
           {
-            name: "/role color [hex code]",
+            name: "/role edit color [hex code]",
             value: "change your role's color `EX: ~role color #FF0000`",
+          },
+          {
+            name: "/role delete",
+            value: "removes and deletes your custom role",
           }
         );
         break;
