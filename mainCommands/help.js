@@ -62,17 +62,17 @@ module.exports = {
             value: "Ask the all powerful 8ball your questions",
           },
           {
-            name: "/ui <@person>",
+            name: "/ui [@person]",
             value: "Sends some basic info about the mentioned person",
           },
           { name: "/si", value: "Sends basic server information" },
           {
-            name: "/pfp <@person>",
+            name: "/pfp [@person]",
             value:
               "Sends the profile pictures of the mentioned people or yourself if nobody is mentioned",
           },
           {
-            name: "/roll <number of sides>",
+            name: "/roll [number of sides]",
             value: "Will roll a x number sided die (default: 6)",
           },
           {
@@ -198,7 +198,7 @@ module.exports = {
             value: "View all items available for you to purchase in the shop!",
           },
           {
-            name: "/shop buy <item name>",
+            name: "/shop buy [item name]",
             value: "Purchase an item from the shop",
           }
         );
