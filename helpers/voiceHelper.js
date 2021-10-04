@@ -44,7 +44,7 @@ const viewQueue = (interaction) => {
   }
 
   let embed = new MessageEmbed()
-    .setTitle(`Queue`)
+    .setTitle(`Song Queue`)
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
 
   songQueue.every((song, idx) => {
