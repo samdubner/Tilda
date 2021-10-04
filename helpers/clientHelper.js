@@ -28,7 +28,9 @@ const adjectives = [
   "Toxic",
   "Bussin",
   "Quirky",
-  "Sexy"
+  "Sexy",
+  "Love",
+  "Lovely"
 ];
 
 const nouns = [
@@ -44,6 +46,7 @@ const nouns = [
   "Island",
   "Hub",
   "Space Station",
+  "Shack",
   "Junkyard",
   "Haunted House",
   "Closet",
