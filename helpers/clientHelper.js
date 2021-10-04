@@ -30,7 +30,7 @@ const adjectives = [
   "Quirky",
   "Sexy",
   "Love",
-  "Lovely"
+  "Lovely",
 ];
 
 const nouns = [
@@ -51,7 +51,7 @@ const nouns = [
   "Haunted House",
   "Closet",
   "Dungeon",
-  "Black Hole"
+  "Black Hole",
 ];
 
 const setActivity = async (client) => {
@@ -82,15 +82,25 @@ const randomizeServerName = async (client) => {
     return;
   }
 
-  let count = await User.countDocuments()
-  let randUser = await User.findOne().skip(Math.floor(Math.random() * count))
-  let member = await guild.members.fetch(randUser.userId)
-  let randName = member.user.username
+  let count = await User.countDocuments();
+  let randUser = await User.findOne().skip(Math.floor(Math.random() * count));
+  let member = await guild.members.fetch(randUser.userId);
+  let randName = member.user.username;
 
   let randAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
   let randNoun = nouns[Math.floor(Math.random() * nouns.length)];
+  let randServerName = `${randName}'s ${randAdj} ${randNoun}`;
 
-  guild.setName(`${randName}'s ${randAdj} ${randNoun}`, "why not");
+  guild.setName(randServerName, "why not");
+
+  let embed = new MessageEmbed()
+    .setAuthor(`Updated Server Name`, interaction.user.avatarURL())
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setThumbnail(guild.iconURL)
+    .setTitle(randServerName);
+
+  let channel = await guild.channels.fetch("881621682870190094");
+  channel.send({ embeds: [embed] });
 };
 
 module.exports = {
