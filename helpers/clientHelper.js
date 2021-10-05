@@ -1,6 +1,8 @@
 const mainGuildId = "881621682870190091";
 const mainRoleId = "881627506908737546";
 
+const { MessageEmbed } = require("discord.js")
+
 const User = require("../models/User");
 
 const activities = [
@@ -94,7 +96,7 @@ const randomizeServerName = async (client) => {
   guild.setName(randServerName, "why not");
 
   let embed = new MessageEmbed()
-    .setAuthor(`Updated Server Name`, interaction.user.avatarURL())
+    .setAuthor(`Updated Server Name`, client.user.avatarURL())
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setThumbnail(guild.iconURL)
     .setTitle(randServerName);

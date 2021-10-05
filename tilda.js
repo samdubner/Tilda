@@ -38,6 +38,10 @@ schedule.scheduleJob("0 0 * * *", async () => {
   clientHelper.randomizeServerName(client);
 });
 
+schedule.scheduleJob("45 * * * *", async () => {
+  clientHelper.randomizeServerName(client);
+});
+
 client.on("ready", async () => {
   const guildId =
     client.user.id == "670849450599645218"
