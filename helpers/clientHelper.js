@@ -1,7 +1,7 @@
 const mainGuildId = "881621682870190091";
 const mainRoleId = "881627506908737546";
 
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed } = require("discord.js");
 
 const User = require("../models/User");
 
@@ -13,6 +13,7 @@ const activities = [
   "nothing at all",
   "how useful /help is",
   "over you",
+  "all my new features be used",
 ];
 
 const adjectives = [
@@ -31,7 +32,7 @@ const adjectives = [
   "Bussin",
   "Quirky",
   "Sexy",
-  "Love",
+  "Sussy",
   "Lovely",
 ];
 
