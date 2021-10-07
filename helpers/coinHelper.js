@@ -190,7 +190,7 @@ const createUser = async (interaction) => {
     begDate: new Date().getTime(),
   });
 
-  newUser.save().catch(console.error);
+  await newUser.save().catch(console.error);
 
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] Added <${newUser.userId}> ${
