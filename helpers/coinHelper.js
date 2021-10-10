@@ -6,7 +6,10 @@ const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
 
 const MAIN_GUILD_ID = "881621682870190091";
 const CHAMPION_ROLE_ID = "881626975649796097";
-const PODIUM_ROLE_ID = "881627048014151730"
+const PODIUM_ROLE_ID = "881627048014151730";
+
+const MAIN_BOT_CHANNEL = "881622803449774090";
+const TEST_BOT_CHANNEL = "469659852109643788";
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -35,8 +38,8 @@ const randomCoinEvent = async (client, guildId) => {
 
   let channelId =
     guildId == MAIN_GUILD_ID
-      ? "881622803449774090"
-      : "469659852109643788";
+      ? MAIN_BOT_CHANNEL
+      : TEST_BOT_CHANNEL;
 
   let botChannel = await client.channels.resolve(channelId);
 
@@ -137,7 +140,7 @@ const notifyDailyReset = async (client, topUsers) => {
   let member = await client.users.fetch(topUsers[0].userId);
 
   try {
-    let channel = await client.channels.fetch("881622803449774090");
+    let channel = await client.channels.fetch(MAIN_BOT_CHANNEL);
 
     let embed = new MessageEmbed()
       .setColor("#00ff00")

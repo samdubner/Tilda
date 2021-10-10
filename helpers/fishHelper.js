@@ -2,7 +2,6 @@ const MessageEmbed = require("discord.js").MessageEmbed;
 
 const coin = require("./coinHelper");
 const catchHelper = require("./catchHelper");
-const Fish = require("../models/Fish");
 
 const PONDS = catchHelper.PONDS;
 
