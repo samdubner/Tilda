@@ -31,9 +31,9 @@ schedule.scheduleJob("0 0 * * *", async () => {
   let topUsers = await coin.bleedTopUser();
   await coin.checkStreaks();
   coin.resetDailies();
-
   coin.notifyDailyReset(client, topUsers);
-  coin.checkChampion(client, topUsers);
+  await coin.checkChampion(client, topUsers);
+
   clientHelper.randomizeRoleColor(client);
   clientHelper.randomizeServerName(client);
 });
