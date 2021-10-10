@@ -177,6 +177,7 @@ const checkChampion = async (client, topUsers) => {
       podiumMember.roles.add(podiumRole.id);
     }
   } catch (e) {
+    console.log(e)
     console.log("Main server not found... unable to change coin roles");
   }
 };
