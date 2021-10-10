@@ -100,7 +100,12 @@ const randomizeServerName = async (client) => {
 
   let count = await User.countDocuments();
   let randUser = await User.findOne().skip(Math.floor(Math.random() * count));
-  let member = await guild.members.fetch(randUser.userId);
+  let member;
+  try {
+    member = await guild.members.fetch(randUser.userId);
+  } catch (e) {
+    member = await guild.members.fetch(randUser.userId);
+  }
   let randName = member.user.username;
 
   let randAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
