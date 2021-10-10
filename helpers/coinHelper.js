@@ -4,6 +4,10 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
 
+const MAIN_GUILD_ID = "881621682870190091";
+const CHAMPION_ROLE_ID = "881626975649796097";
+const PODIUM_ROLE_ID = "881627048014151730"
+
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() =>
@@ -30,7 +34,7 @@ const randomCoinEvent = async (client, guildId) => {
     .setDescription(`Use \`/claim\` to win ${coinAmount} coins!`);
 
   let channelId =
-    guildId == "881621682870190091"
+    guildId == MAIN_GUILD_ID
       ? "881622803449774090"
       : "469659852109643788";
 
@@ -151,30 +155,27 @@ const notifyDailyReset = async (client, topUsers) => {
 
 const checkChampion = async (client, topUsers) => {
   try {
-    let guild = await client.guilds.fetch("881621682870190091");
+    let guild = await client.guilds.fetch(MAIN_GUILD_ID);
 
     await guild.members.fetch();
-    let championRole = await guild.roles.fetch("881626975649796097");
-    let podiumRole = await guild.roles.fetch("881627048014151730");
-    let currentChampion = championRole.members.first();
 
-    let leadUser = topUsers[0];
-    let podiumUsers = topUsers.slice(1).map((user) => user.userId);
+    let championRole = await guild.roles.fetch(CHAMPION_ROLE_ID);
+    let podiumRole = await guild.roles.fetch(PODIUM_ROLE_ID);
 
-    if (!currentChampion || currentChampion.id != leadUser.userId) {
-      currentChampion.roles.remove(championRole.id);
+    championRole.members.each(member => {
+      member.roles.remove(CHAMPION_ROLE_ID)
+    })
 
-      let newChampion = await guild.members.fetch(leadUser.userId);
-      newChampion.roles.add(championRole.id);
-    }
+    let currentChampion = await guild.members.fetch(topUsers.shift().userId)
+    currentChampion.roles.add(CHAMPION_ROLE_ID)
 
-    podiumRole.members.each((member) => {
-      if (!podiumUsers.includes(member.id)) member.roles.remove(podiumRole.id);
-    });
+    podiumRole.members.each(member => {
+      member.roles.remove(PODIUM_ROLE_ID)
+    })
 
-    for (let podiumWinner of podiumUsers) {
-      let podiumMember = await guild.members.fetch(podiumWinner);
-      podiumMember.roles.add(podiumRole.id);
+    for (let user of topUsers) {
+      let podiumMember = await guild.members.fetch(user.userId)
+      podiumMember.roles.add(PODIUM_ROLE_ID)
     }
   } catch (e) {
     console.log(e)
