@@ -115,7 +115,7 @@ const randomizeServerName = async (client) => {
   guild.setName(randServerName, "why not");
 
   let embed = new MessageEmbed()
-    .setAuthor(`Updated Server Name`, client.user.avatarURL())
+    .setAuthor(`Updated Server Name`, guild.iconURL())
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setThumbnail(guild.iconURL)
     .setTitle(randServerName);
