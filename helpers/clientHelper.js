@@ -2,77 +2,20 @@ const MAIN_GUILD_ID = "881621682870190091";
 const MAIN_ROLE_ID = "881627506908737546";
 
 const { MessageEmbed } = require("discord.js");
+const fs = require("fs")
+
+let strings = JSON.parse(fs.readFileSync('./helpers/strings.json'))
+
+const ACTIVITIES = strings.activities
+
+const NOUNS = strings.nouns
+const ADJECTIVES = strings.adjectives
 
 const User = require("../models/User");
 
-const activities = [
-  "all the coin flips",
-  "everything that happens",
-  "all the fun commands",
-  "what /room does",
-  "nothing at all",
-  "how useful /help is",
-  "over you",
-  "all my new features be used",
-];
-
-const adjectives = [
-  "Bussin",
-  "Bustling",
-  "Calm",
-  "Contemporary",
-  "Crazy",
-  "Creepy",
-  "Cringy",
-  "Evil",
-  "Fantastic",
-  "Funny",
-  "Gamer",
-  "Huge",
-  "Insane",
-  "Lovely",
-  "Quirky",
-  "Sad",
-  "Sexy",
-  "Spooky",
-  "Superior",
-  "Sussy",
-  "Toxic",
-  "Wacky",
-  "Wild",
-  "Zesty",
-];
-
-const nouns = [
-  "Bathroom",
-  "Black Hole",
-  "Boot Camp",
-  "Closet",
-  "Dungeon",
-  "Festival",
-  "Garden",
-  "Haunted House",
-  "Hotel",
-  "House",
-  "Hub",
-  "Island",
-  "Junkyard",
-  "Kingdom",
-  "Lair",
-  "Madhouse",
-  "Mansion",
-  "Resort",
-  "Room",
-  "Prison",
-  "Server",
-  "Shack",
-  "Space Station",
-  "Supermarket",
-];
-
 const setActivity = async (client) => {
   client.user.setActivity(
-    activities[Math.floor(Math.random() * activities.length)],
+    ACTIVITIES[Math.floor(Math.random() * ACTIVITIES.length)],
     { type: "WATCHING" }
   );
 };
@@ -108,8 +51,8 @@ const randomizeServerName = async (client) => {
   }
   let randName = member.user.username;
 
-  let randAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
-  let randNoun = nouns[Math.floor(Math.random() * nouns.length)];
+  let randAdj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+  let randNoun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
   let randServerName = `${randName}'s ${randAdj} ${randNoun}`;
 
   guild.setName(randServerName, "why not");
