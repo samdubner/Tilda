@@ -22,7 +22,9 @@
     "Funny",
     "Gamer",
     "Huge",
+    "Humble",
     "Insane",
+    "Isolated",
     "Lovely",
     "Quirky",
     "Sad",
@@ -56,9 +58,11 @@
     "Resort",
     "Room",
     "Prison",
+    "Sanctuary",
     "Server",
     "Shack",
     "Space Station",
-    "Supermarket"
+    "Supermarket",
+    "Void"
   ]
 }
