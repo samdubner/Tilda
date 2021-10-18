@@ -110,6 +110,10 @@ module.exports = {
             value: "skip the song that is currently playing",
           },
           {
+            name: "/loop",
+            value: "Turn on/off the ability to loop the current song"
+          },
+          {
             name: "/queue",
             value: "see all songs currently in queue",
           },

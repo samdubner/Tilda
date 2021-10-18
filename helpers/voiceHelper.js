@@ -212,7 +212,7 @@ const loopCurrentSong = (interaction) => {
   let embed = new MessageEmbed()
   .setTitle("Loop")
   .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-  .setThumbnail(songEntry.channel.guild.iconURL())
+  .setThumbnail(interaction.guild.iconURL())
   .addField("Looping Status", `Looping is currently \`${status}\``, true);
 
   interaction.reply({embeds: [embed]})
