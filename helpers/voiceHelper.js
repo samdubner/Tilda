@@ -11,6 +11,7 @@ const { MessageEmbed } = require("discord.js");
 const play = require("play-dl");
 
 let songQueue = [];
+let loop = false;
 
 const player = createAudioPlayer();
 
@@ -18,7 +19,8 @@ player.on(AudioPlayerStatus.Idle, () => playNextOrLeave());
 
 const playNextOrLeave = (force = false) => {
   let channel = songQueue[0].channel;
-  songQueue.shift();
+  if (!loop) songQueue.shift();
+
 
   if (songQueue.length > 0) {
     playAudio(force);
@@ -203,9 +205,23 @@ const disconnectFromChannel = (channel) => {
   channel.send({ embeds: [embed] });
 };
 
+const loopCurrentSong = (interaction) => {
+  loop = !loop;
+  let status = loop ? "ON" : "OFF";
+
+  let embed = new MessageEmbed()
+  .setTitle("Loop")
+  .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+  .setThumbnail(songEntry.channel.guild.iconURL())
+  .addField("Looping Status", `Looping is currently \`${status}\``, true);
+
+  interaction.reply({embeds: [embed]})
+}
+
 module.exports = {
   addToQueue,
   leaveChannel,
   playNextOrLeave,
   viewQueue,
+  loopCurrentSong
 };
