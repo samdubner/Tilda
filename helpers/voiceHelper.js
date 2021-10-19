@@ -17,10 +17,21 @@ const player = createAudioPlayer();
 
 player.on(AudioPlayerStatus.Idle, () => playNextOrLeave());
 
-const playNextOrLeave = (force = false) => {
+const playNextOrLeave = (force = false, interaction = undefined) => {
+  if (!songQueue[0]) {
+    let embed = new MessageEmbed()
+      .setAuthor(`Cannot Skip Song`)
+      .setColor(`#ff0000`)
+      .setTitle("There is nothing in the queue to skip!");
+
+    interaction.reply({
+      embeds: [embed],
+      ephemeral: true,
+    });
+    return false;
+  }
   let channel = songQueue[0].channel;
   if (!loop) songQueue.shift();
-
 
   if (songQueue.length > 0) {
     playAudio(force);
@@ -34,12 +45,18 @@ const playNextOrLeave = (force = false) => {
     channel.send({ embeds: [embed] });
     waitThenLeave(channel, force);
   }
+  return true;
 };
 
 const viewQueue = (interaction) => {
   if (songQueue.length == 0) {
+    let embed = new MessageEmbed()
+      .setAuthor(`Queue is Empty`)
+      .setColor(`#ff0000`)
+      .setTitle("There are no songs in queue!");
+
     interaction.reply({
-      content: "There are currently no songs in queue",
+      embeds: [embed],
       ephemeral: true,
     });
     return;
@@ -210,18 +227,18 @@ const loopCurrentSong = (interaction) => {
   let status = loop ? "ON" : "OFF";
 
   let embed = new MessageEmbed()
-  .setTitle("Loop")
-  .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
-  .setThumbnail(interaction.guild.iconURL())
-  .addField("Looping Status", `Looping is currently \`${status}\``, true);
+    .setTitle("Loop")
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setThumbnail(interaction.guild.iconURL())
+    .addField("Looping Status", `Looping is currently \`${status}\``, true);
 
-  interaction.reply({embeds: [embed]})
-}
+  interaction.reply({ embeds: [embed] });
+};
 
 module.exports = {
   addToQueue,
   leaveChannel,
   playNextOrLeave,
   viewQueue,
-  loopCurrentSong
+  loopCurrentSong,
 };

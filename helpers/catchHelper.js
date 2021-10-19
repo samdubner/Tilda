@@ -171,7 +171,7 @@ const getColor = (rarity) => {
 };
 
 const generatePrice = (size, pondLevel) => {
-  return Math.floor(size / 3) * pondLevel;
+  return Math.floor(size / 2.8) * pondLevel;
 };
 
 const generateSize = (rarity) => {
@@ -198,7 +198,6 @@ const generateSize = (rarity) => {
     case "legendary":
       minVal = 183;
       maxVal = 243;
-      break;
   }
 
   return Math.floor(Math.random() * (maxVal - minVal)) + minVal + 1;
