@@ -211,15 +211,20 @@ const waitThenLeave = (channel) => {
 };
 
 const disconnectFromChannel = (channel) => {
-  let connection = getVoiceConnection(channel.guild.id);
-  connection.destroy();
+  try {
+    let connection = getVoiceConnection(channel.guild.id);
+    connection.destroy();
 
-  let embed = new MessageEmbed()
-    .setAuthor(`Disconnected`)
-    .setColor("#500982")
-    .setTitle("Finished Playing and Disconnected, Cya!");
+    let embed = new MessageEmbed()
+      .setAuthor(`Disconnected`)
+      .setColor("#500982")
+      .setTitle("Finished Playing and Disconnected, Cya!");
 
-  channel.send({ embeds: [embed] });
+    channel.send({ embeds: [embed] });
+  } catch (e) {
+    console.log(e)
+    console.log("voice connection most likely couldn't be retrieved")
+  }
 };
 
 const loopCurrentSong = (interaction) => {
