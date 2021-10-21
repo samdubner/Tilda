@@ -3,9 +3,9 @@ const MessageEmbed = require("discord.js").MessageEmbed;
 const coin = require("./coinHelper");
 const catchHelper = require("./catchHelper");
 
-const PONDS = catchHelper.PONDS;
+const FISH = catchHelper.FISH;
 
-const displayFish = async (interaction, pondName) => {
+const displayFish = async (interaction, rarity) => {
   let user = await coin.checkInteraction(interaction);
 
   if (!user.fish || user.fish.length == 0) {
@@ -13,23 +13,25 @@ const displayFish = async (interaction, pondName) => {
     return;
   }
 
-  let pond = PONDS[pondName];
-  let pondFish = user.fish.filter((fish) => fish.pond == pondName);
+  let selectedRarity = FISH.rarities.find((rar) => rar.type == rarity);
+  let userRarityFish = user.fish.filter(
+    (fish) => fish.rarity == selectedRarity.type
+  );
 
   let fishCount = {};
 
-  for (let fish of pond.names) {
+  for (let fish of selectedRarity.names) {
     fishCount[fish] = 0;
   }
 
-  for (let fish of pondFish) {
+  for (let fish of userRarityFish) {
     fishCount[fish.name]++;
   }
 
   const fishEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle(`${interaction.member.displayName}'s Fish Inventory`)
-    .setDescription(`${catchHelper.fName(pond.name)} Fish`)
+    .setDescription(`${catchHelper.fName(selectedRarity.type)} Fish`)
     .setThumbnail(interaction.user.displayAvatarURL())
     .setTimestamp();
 
@@ -46,8 +48,8 @@ const displayFish = async (interaction, pondName) => {
 
   if (!fishEmbed.fields.length) {
     fishEmbed.addField(
-      "You don't have any fish from this pond!",
-      "Try catching some and come back here later..."
+      "You don't have any fish of this rarity!",
+      "Try catching some and then come back here..."
     );
   }
 
@@ -69,11 +71,6 @@ const noFish = (interaction) => {
 const fishLog = async (interaction) => {
   let user = await coin.checkInteraction(interaction);
 
-  if (!user.fish || user.fish.length == 0) {
-    noFish(interaction);
-    return;
-  }
-
   const fishEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle(`${interaction.member.displayName}'s Fish Logbook`)
@@ -81,8 +78,8 @@ const fishLog = async (interaction) => {
 
   let fishNames = [];
 
-  for (let pond in PONDS) {
-    for (let fish of PONDS[pond].names) {
+  for (let rarity of FISH.rarities) {
+    for (let fish of rarity.names) {
       if (user.caughtFish.includes(fish)) {
         fishNames.push(fish);
       } else {
@@ -92,7 +89,7 @@ const fishLog = async (interaction) => {
 
     let fishString = fishNames.join("\n");
     fishEmbed.addField(
-      `${catchHelper.fName(PONDS[pond].name)} Pond`,
+      `${catchHelper.fName(rarity.type)} Fish`,
       fishString,
       true
     );

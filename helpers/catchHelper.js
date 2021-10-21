@@ -16,6 +16,7 @@ const FISH = {
         "tuna",
         "cod",
         "eel",
+        "guppy",
       ],
     },
     {
@@ -23,48 +24,45 @@ const FISH = {
       value: 1,
       names: [
         "goldfish",
-        "guppy",
         "anglerfish",
-        "slime",
         "mudfish",
         "mossfish",
         "crayfish",
-        "aerogill",
         "piranha",
+        "sand dollar",
+        "slime",
       ],
     },
     {
       type: "rare",
       value: 2,
       names: [
-        "sand dollar",
         "vacuumfish",
         "jellyfish",
         "eagle ray",
         "reaverfish",
         "magmaworm",
-        "guardian",
-        "astrofish",
+        "aerogill",
+        "ruinfish",
       ],
     },
     {
       type: "legendary",
       value: 3,
-      names: ["megalodon", "kraken", "leviathan", "truth", "ruinfish"],
+      names: ["megalodon", "kraken", "leviathan", "astrofish", "guardian"],
     },
     {
       type: "mythical",
       value: 4,
-      names: ["dreameater", "soulfish", "starfish"],
+      names: ["dreameater", "soulfish", "starfish", "truth"],
     },
   ],
 };
+
 const rodId = "606a5c0169756d515427c86e";
 const pondPrice = 25;
 
 const catchFish = async (interaction, user) => {
-  // let pond = PONDS[pondName];
-
   if (!user.items.includes(rodId)) {
     noRod(interaction);
     return;
@@ -143,7 +141,7 @@ const getColor = (rarity) => {
 };
 
 const generatePrice = (size, rarity) => {
-  return Math.floor(size / 2) + (10 ** rarity.value);
+  return Math.floor(size / 2) + 10 ** (rarity.value - 1);
 };
 
 const generateSize = (rarity) => {
@@ -208,7 +206,7 @@ const noRod = (interaction) => {
   });
 };
 
-const insufficientCoins = (interaction, pond) => {
+const insufficientCoins = (interaction) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription("You don't have enough coins to go fishing...")
@@ -223,6 +221,7 @@ const insufficientCoins = (interaction, pond) => {
 };
 
 module.exports = {
+  FISH,
   catchFish,
   fName,
 };

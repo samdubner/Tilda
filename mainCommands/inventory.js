@@ -6,39 +6,35 @@ module.exports = {
   options: [
     {
       type: "STRING",
-      name: "pond",
-      description: "the pond of fish you'd like to see",
+      name: "rarity",
+      description: "the rarity of the fish you'd like to see",
       required: true,
       choices: [
         {
-          name: "Plain Pond",
-          value: "plain",
+          name: "Common",
+          value: "common",
         },
         {
-          name: "Underground Pond",
-          value: "underground",
+          name: "Uncommon",
+          value: "uncommon",
         },
         {
-          name: "Underworld Pond",
-          value: "underworld",
+          name: "Rare",
+          value: "rare",
         },
         {
-          name: "Sky Pond",
-          value: "sky",
+          name: "Legendary",
+          value: "legendary",
         },
         {
-          name: "Ancient Pond",
-          value: "ancient",
-        },
-        {
-          name: "Void Pond",
-          value: "void",
+          name: "Mythical",
+          value: "mythical",
         },
       ],
     },
   ],
   async execute(interaction) {
-    let fishOption = interaction.options.get("pond").value;
+    let fishOption = interaction.options.get("rarity").value;
 
     fishHelper.displayFish(interaction, fishOption);
   },

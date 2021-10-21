@@ -166,11 +166,11 @@ module.exports = {
       case "fish":
         embed.setDescription("Fish Commands").addFields(
           {
-            name: "/catch [pond name]",
-            value: "Catch a fish! (will default to plain pond)",
+            name: "/catch",
+            value: "Catch a fish!",
           },
           {
-            name: "/inventory [pond name]",
+            name: "/inventory [rarity]",
             value: "See all the fish you've caught",
           },
           {
