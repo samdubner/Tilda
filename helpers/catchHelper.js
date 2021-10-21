@@ -2,128 +2,98 @@ const MessageEmbed = require("discord.js").MessageEmbed;
 
 const Fish = require("../models/Fish");
 
-const PONDS = {
-  plain: {
-    name: "plain",
-    rodId: "606a5c0169756d515427c86e",
-    level: 1,
-    cost: 25,
-    names: [
-      "bass",
-      "catfish",
-      "goldfish",
-      "guppy",
-      "salmon",
-      "sardine",
-      "trout",
-      "tuna",
-      "cod",
-    ],
-  },
-  underground: {
-    name: "underground",
-    rodId: "6074c897563e2b56fd529f07",
-    level: 2,
-    cost: 50,
-    names: [
-      "mudfish",
-      "eel",
-      "dirtfish",
-      "jellyfish",
-      "piranha",
-      "crayfish",
-      "anglerfish",
-      "slime",
-    ],
-  },
-  underworld: {
-    name: "underworld",
-    rodId: "6074c8ca563e2b56fd529f08",
-    level: 3,
-    cost: 75,
-    names: [
-      "magmaworm",
-      "devilfish",
-      "reaverfish",
-      "direfish",
-      "sand dollar",
-      "soulfish",
-    ],
-  },
-  sky: {
-    name: "sky",
-    rodId: "6074c8e8563e2b56fd529f09",
-    level: 4,
-    cost: 100,
-    names: [
-      "pigeon",
-      "gullifish",
-      "parrotfish",
-      "aerogill",
-      "eagle ray",
-      "pelican eel",
-    ],
-  },
-  ancient: {
-    name: "ancient",
-    rodId: "6074c905563e2b56fd529f0a",
-    level: 5,
-    cost: 125,
-    names: [
-      "megalodon",
-      "kraken",
-      "leviathan",
-      "mossfish",
-      "ruinfish",
-      "guardian",
-    ],
-  },
-  void: {
-    name: "void",
-    rodId: "6074c92c563e2b56fd529f0b",
-    level: 6,
-    cost: 150,
-    names: [
-      "dreameater",
-      "starfish",
-      "astrofish",
-      "truth",
-      "steve",
-      "vacuumfish",
-    ],
-  },
+const FISH = {
+  rarities: [
+    {
+      type: "common",
+      value: 0,
+      names: [
+        "bass",
+        "catfish",
+        "salmon",
+        "sardine",
+        "trout",
+        "tuna",
+        "cod",
+        "eel",
+      ],
+    },
+    {
+      type: "uncommon",
+      value: 1,
+      names: [
+        "goldfish",
+        "guppy",
+        "anglerfish",
+        "slime",
+        "mudfish",
+        "mossfish",
+        "crayfish",
+        "aerogill",
+        "piranha",
+      ],
+    },
+    {
+      type: "rare",
+      value: 2,
+      names: [
+        "sand dollar",
+        "vacuumfish",
+        "jellyfish",
+        "eagle ray",
+        "reaverfish",
+        "magmaworm",
+        "guardian",
+        "astrofish",
+      ],
+    },
+    {
+      type: "legendary",
+      value: 3,
+      names: ["megalodon", "kraken", "leviathan", "truth", "ruinfish"],
+    },
+    {
+      type: "mythical",
+      value: 4,
+      names: ["dreameater", "soulfish", "starfish"],
+    },
+  ],
 };
+const rodId = "606a5c0169756d515427c86e";
+const pondPrice = 25;
 
-const catchFish = async (interaction, user, pondName) => {
-  let pond = PONDS[pondName];
+const catchFish = async (interaction, user) => {
+  // let pond = PONDS[pondName];
 
-  if (!user.items.includes(pond.rodId)) {
+  if (!user.items.includes(rodId)) {
     noRod(interaction);
     return;
   }
 
-  if (user.score >= pond.cost) {
-    user.score -= pond.cost;
-    generateFish(interaction, user, pond);
+  if (user.score >= pondPrice) {
+    user.score -= pondPrice;
+    generateFish(interaction, user);
   } else {
-    insufficientCoins(interaction, pond);
+    insufficientCoins(interaction);
     return;
   }
 };
 
-const generateFish = (interaction, user, pond) => {
-  let pondSize = pond.names.length;
-  let name = pond.names[Math.floor(Math.random() * pondSize)];
+const generateFish = (interaction, user) => {
   let rarity = generateRarity();
+
+  let namesLength = rarity.names.length;
+  let name = rarity.names[Math.floor(Math.random() * namesLength)];
+
   let size = generateSize(rarity);
-  let price = generatePrice(size, pond.level);
-  let embedColor = getColor(rarity);
+  let price = generatePrice(size, rarity);
+
+  let embedColor = getColor(rarity.type);
 
   let fish = new Fish({
     name,
-    rarity,
+    rarity: rarity.type,
     size,
-    pond: pond.name,
     price,
   });
 
@@ -142,7 +112,7 @@ const generateFish = (interaction, user, pond) => {
     )
     .addField("Size", `${fish.size}cm`, true)
     .addField("Price", `${fish.price} coins`, true)
-    .setFooter(`Fishing Cost: ${pond.cost} coins`);
+    .setFooter(`Fishing Cost: ${pondPrice} coins`);
 
   interaction.reply({ embeds: [FishEmbed] });
 
@@ -160,61 +130,66 @@ const fName = (name) => {
 const getColor = (rarity) => {
   switch (rarity) {
     case "common":
-      return "#bec2bf";
+      return "#a3a3a3";
     case "uncommon":
-      return "#39ff36";
+      return "#33f230";
     case "rare":
-      return "#3647ff";
+      return "#2134ff";
     case "legendary":
-      return "#b300ff";
+      return "#9f00e3";
+    case "mythical":
+      return "#ff0073";
   }
 };
 
-const generatePrice = (size, pondLevel) => {
-  return Math.floor(size / 2.8) * pondLevel;
+const generatePrice = (size, rarity) => {
+  return Math.floor(size / 2) + (10 ** rarity.value);
 };
 
 const generateSize = (rarity) => {
   let minVal;
   let maxVal;
 
-  switch (rarity) {
-    // 1 - 2 feet
+  switch (rarity.type) {
     case "common":
       minVal = 30;
-      maxVal = 60;
+      maxVal = 70;
       break;
-    // 2 - 4
     case "uncommon":
-      minVal = 61;
-      maxVal = 121;
+      minVal = 71;
+      maxVal = 111;
       break;
-    // 4 - 6
     case "rare":
-      minVal = 122;
-      maxVal = 182;
+      minVal = 112;
+      maxVal = 152;
       break;
-    // 6 - 8
     case "legendary":
-      minVal = 183;
-      maxVal = 243;
+      minVal = 153;
+      maxVal = 193;
+      break;
+    case "mythical":
+      minVal = 194;
+      maxVal = 234;
   }
 
   return Math.floor(Math.random() * (maxVal - minVal)) + minVal + 1;
 };
 
 const generateRarity = () => {
-  let rarities = ["common", "uncommon", "rare", "legendary"];
-  let weights = [64, 20, 15, 1];
+  // [common, uncommon, rare, legendary, mythical]
+  let rarities = Object.keys(FISH.rarities);
+  let weights = [725, 175, 80, 19, 1];
 
   let totalWeight = weights.reduce((acc, cur) => acc + cur);
   let random = Math.floor(Math.random() * totalWeight);
 
-  for (let i = 0; i < rarities.length; i++) {
-    random -= weights[i];
+  let res = totalWeight - random;
 
-    if (random < 0) {
-      return rarities[i];
+  for (let i = 0; i <= weights.length; i++) {
+    res -= weights[i];
+
+    if (res <= 1) {
+      return FISH.rarities.find((rar) => rar.value == i);
     }
   }
 };
@@ -223,9 +198,9 @@ const noRod = (interaction) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
     .setDescription(
-      "You must purchase the correlating fishing rod in the shop in order to fish here..."
+      "You must purchase the fishing rod in the shop in order to fish..."
     )
-    .setTitle("You don't have the proper fishing rod!");
+    .setTitle("You don't have the fishing rod!");
 
   interaction.reply({
     embeds: [embed],
@@ -238,9 +213,7 @@ const insufficientCoins = (interaction, pond) => {
     .setColor("#ff0000")
     .setDescription("You don't have enough coins to go fishing...")
     .setTitle(
-      `You need at least ${pond.cost} coins to go fishing in the ${fName(
-        pond.name
-      )} Pond!`
+      `You need at least ${pondPrice} coins to go fishing in the Pond!`
     );
 
   interaction.reply({
@@ -252,5 +225,4 @@ const insufficientCoins = (interaction, pond) => {
 module.exports = {
   catchFish,
   fName,
-  PONDS,
 };

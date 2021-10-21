@@ -25,7 +25,7 @@ const eightBallResponses = [
 
 module.exports = {
   name: "8ball",
-  description: "uses the power of the all-might 8ball to answer your questions",
+  description: "uses the power of the all-mighty 8ball to answer your questions",
   options: [
     {
       type: "STRING",

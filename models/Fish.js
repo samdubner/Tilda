@@ -18,10 +18,6 @@ const FishSchema = new Schema({
     type: Number,
     required: true,
   },
-  pond: {
-    type: String,
-    required: true,
-  },
 });
 
 module.exports = Fish = mongoose.model("Fish", FishSchema);

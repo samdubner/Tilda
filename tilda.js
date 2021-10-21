@@ -57,7 +57,6 @@ client.on("ready", async () => {
     mainGuild.commands.create(command);
     client.commands.set(command.name, command);
   }
-
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
   clientHelper.setActivity(client);
@@ -69,7 +68,7 @@ client.on("ready", async () => {
   setInterval(() => {
     if (Math.floor(Math.random() * 2) && !coin.coinEvent.isUp)
       coin.randomCoinEvent(client, guildId);
-  }, 1000 * 60 * 60 * 3);
+  }, 1000 * 60 * 60 * 2);
 });
 
 client.on("guildMemberAdd", (member) => {
