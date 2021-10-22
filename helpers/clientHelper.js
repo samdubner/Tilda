@@ -29,10 +29,12 @@ const randomizeRoleColor = async (client) => {
     return;
   }
   const role = await guild.roles.fetch(MAIN_ROLE_ID);
-  role.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+  let color = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+  role.setColor(color);
+  return color
 };
 
-const randomizeServerName = async (client) => {
+const randomizeServerName = async (client, color) => {
   let guild;
   try {
     guild = await client.guilds.fetch(MAIN_GUILD_ID);
@@ -61,7 +63,8 @@ const randomizeServerName = async (client) => {
     .setAuthor(`Updated Server Name`, guild.iconURL())
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setThumbnail(guild.iconURL)
-    .setTitle(randServerName);
+    .setTitle(randServerName)
+    .setDescription(`The default role color was also changed to \`${color}\``);
 
   let channel = await guild.channels.fetch("881621682870190094");
   channel.send({ embeds: [embed] });

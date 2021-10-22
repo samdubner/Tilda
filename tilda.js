@@ -34,8 +34,8 @@ schedule.scheduleJob("0 0 * * *", async () => {
   coin.notifyDailyReset(client, topUsers);
   await coin.checkChampion(client, topUsers);
 
-  clientHelper.randomizeRoleColor(client);
-  clientHelper.randomizeServerName(client);
+  let color = clientHelper.randomizeRoleColor(client);
+  clientHelper.randomizeServerName(client, color);
 });
 
 client.on("ready", async () => {
