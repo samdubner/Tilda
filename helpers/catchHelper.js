@@ -141,7 +141,7 @@ const getColor = (rarity) => {
 };
 
 const generatePrice = (size, rarity) => {
-  return Math.floor(size / 2) + 10 ** (rarity.value - 1);
+  return Math.floor((size / 2) + 10 ** (rarity.value - 1));
 };
 
 const generateSize = (rarity) => {
@@ -150,24 +150,24 @@ const generateSize = (rarity) => {
 
   switch (rarity.type) {
     case "common":
-      minVal = 30;
-      maxVal = 70;
+      minVal = 25;
+      maxVal = 65;
       break;
     case "uncommon":
-      minVal = 71;
-      maxVal = 111;
+      minVal = 66;
+      maxVal = 106;
       break;
     case "rare":
-      minVal = 112;
-      maxVal = 152;
+      minVal = 107;
+      maxVal = 147;
       break;
     case "legendary":
-      minVal = 153;
-      maxVal = 193;
+      minVal = 148;
+      maxVal = 188;
       break;
     case "mythical":
-      minVal = 194;
-      maxVal = 234;
+      minVal = 189;
+      maxVal = 229;
   }
 
   return Math.floor(Math.random() * (maxVal - minVal)) + minVal + 1;

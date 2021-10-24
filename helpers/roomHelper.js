@@ -147,7 +147,7 @@ const changeCategoryPrivacy = async (interaction, privacy) => {
 };
 
 const notifyStatus = (interaction, status) => {
-  status = status === true ? "public" : "private";
+  status = status == true ? "public" : "private";
 
   const notifyEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)

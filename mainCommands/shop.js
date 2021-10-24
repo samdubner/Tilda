@@ -23,27 +23,7 @@ module.exports = {
             {
               name: "Plain Fishing Rod",
               value: "Plain Fishing Rod",
-            },
-            {
-              name: "Drill Fishing Rod",
-              value: "Drill Fishing Rod",
-            },
-            {
-              name: "Fireproof Fishing Rod",
-              value: "Fireproof Fishing Rod",
-            },
-            {
-              name: "Flying Fishing Rod",
-              value: "Flying Fishing Rod",
-            },
-            {
-              name: "Mythical Fishing Rod",
-              value: "Mythical Fishing Rod",
-            },
-            {
-              name: "Endless Fishing Rod",
-              value: "Endless Fishing Rod",
-            },
+            }
           ],
         },
       ],

@@ -10,8 +10,7 @@ const displayShop = async (interaction) => {
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
     .setTitle("Tilda's Shop")
     .setThumbnail(interaction.guild.iconURL())
-    .setDescription("Here are all the items available for sale!")
-    .setTimestamp();
+    .setDescription("Here are all the items available for sale!");
 
   for (let item of shopItems) {
     ShopEmbed.addField(item.name, `${item.price} coins`, true);
