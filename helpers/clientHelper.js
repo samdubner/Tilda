@@ -61,7 +61,7 @@ const randomizeServerName = async (client, color) => {
 
   let embed = new MessageEmbed()
     .setAuthor(`Updated Server Name`, guild.iconURL())
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setColor(color)
     .setThumbnail(guild.iconURL)
     .setTitle(randServerName)
     .setDescription(`The default role color was also changed to \`${color}\``);
