@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
-    "@discordjs/voice": "^0.6.0",
+    "@discordjs/voice": "^0.7.2",
     "discord.js": "^13.2.0",
     "libsodium-wrappers": "^0.7.9",
     "mongoose": "^5.12.3",
