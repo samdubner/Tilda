@@ -75,7 +75,7 @@ module.exports = {
         .setTitle(
           `${interaction.user.username} won ${scoreWon} ${coinVariation}!`
         )
-        .setDescription(`They now have ${totalCoins} ${totalCoinsVariation}`)
+        .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
       interaction.reply({ embeds: [embed] });
       scoreWon = bet;
@@ -88,7 +88,7 @@ module.exports = {
         .setTitle(
           `${interaction.user.username} lost ${scoreWon} ${coinVariation}`
         )
-        .setDescription(`They now have ${totalCoins} ${totalCoinsVariation}`)
+        .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
       interaction.reply({ embeds: [embed] });
       scoreWon = bet * -1;
