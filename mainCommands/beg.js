@@ -34,7 +34,7 @@ module.exports = {
     let embed = new MessageEmbed()
       .setColor(`#00ff00`)
       .setTitle(`${interaction.member.displayName} got 10 coins!`)
-      .setDescription(`They now have ${user.score} coins`)
+      .setDescription(`You now have ${user.score} coins`)
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
     interaction.reply({ embeds: [embed] });

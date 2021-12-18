@@ -210,7 +210,7 @@ const createUser = async (interaction) => {
     .addField("New Account Balance", `You currently have 100 coins`, false)
     .addField(
       "Cooldown Status",
-      "You have just received 100 coins, `~daily` and `~beg` are on cooldown"
+      "You have just received 100 coins, `/daily` and `/beg` are on cooldown"
     )
     .setFooter(
       "Thank you for registering with Tilda",

@@ -27,7 +27,7 @@ const schedule = require("node-schedule");
 const coin = require("./helpers/coinHelper");
 const clientHelper = require("./helpers/clientHelper");
 
-schedule.scheduleJob("0 23 * * *", async () => {
+schedule.scheduleJob("0 0 * * *", async () => {
   let topUsers = await coin.bleedTopUser();
   await coin.checkStreaks();
   coin.resetDailies();
