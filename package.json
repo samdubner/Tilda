@@ -14,7 +14,7 @@
     "@discordjs/voice": "^0.7.5",
     "discord.js": "^13.3.0",
     "libsodium-wrappers": "^0.7.9",
-    "mongoose": "^5.12.3",
+    "mongoose": "^6.1.4",
     "node-fetch": "^2.6.1",
     "node-schedule": "^2.0.0",
     "play-dl": "^0.9.9",
