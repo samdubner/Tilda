@@ -38,6 +38,14 @@ schedule.scheduleJob("0 0 * * *", async () => {
   clientHelper.randomizeServerName(client, color);
 });
 
+client.on("guildMemberRemove", async (guildMember) => {
+  let user = await coinHelper.getUser(guildMember.id);
+
+  if (!!user) {
+    user.remove();
+  }
+});
+
 client.on("ready", async () => {
   const guildId =
     client.user.id == "670849450599645218"
