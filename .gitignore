@@ -7,3 +7,6 @@ token.new.json
 
 #python restart script
 tildarestart.py
+
+#macOS
+.DS_Store

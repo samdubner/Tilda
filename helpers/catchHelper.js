@@ -151,7 +151,7 @@ const generateSize = (rarity) => {
   switch (rarity.type) {
     case "common":
       minVal = 25;
-      maxVal = 65;
+      maxVal = 50;
       break;
     case "uncommon":
       minVal = 66;
@@ -175,8 +175,7 @@ const generateSize = (rarity) => {
 
 const generateRarity = () => {
   // [common, uncommon, rare, legendary, mythical]
-  let rarities = Object.keys(FISH.rarities);
-  let weights = [725, 175, 80, 19, 1];
+  let weights = [725, 175, 80, 18, 2];
 
   let totalWeight = weights.reduce((acc, cur) => acc + cur);
   let random = Math.floor(Math.random() * totalWeight);
