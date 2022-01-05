@@ -37,9 +37,7 @@ const randomCoinEvent = async (client, guildId) => {
     .setDescription(`Use \`/claim\` to win ${coinAmount} coins!`);
 
   let channelId =
-    guildId == MAIN_GUILD_ID
-      ? MAIN_BOT_CHANNEL
-      : TEST_BOT_CHANNEL;
+    guildId == MAIN_GUILD_ID ? MAIN_BOT_CHANNEL : TEST_BOT_CHANNEL;
 
   let botChannel = await client.channels.resolve(channelId);
 
@@ -165,23 +163,23 @@ const checkChampion = async (client, topUsers) => {
     let championRole = await guild.roles.fetch(CHAMPION_ROLE_ID);
     let podiumRole = await guild.roles.fetch(PODIUM_ROLE_ID);
 
-    championRole.members.each(member => {
-      member.roles.remove(CHAMPION_ROLE_ID)
-    })
+    championRole.members.each((member) => {
+      member.roles.remove(CHAMPION_ROLE_ID);
+    });
 
-    let currentChampion = await guild.members.fetch(topUsers.shift().userId)
-    currentChampion.roles.add(CHAMPION_ROLE_ID)
+    let currentChampion = await guild.members.fetch(topUsers.shift().userId);
+    currentChampion.roles.add(CHAMPION_ROLE_ID);
 
-    podiumRole.members.each(member => {
-      member.roles.remove(PODIUM_ROLE_ID)
-    })
+    podiumRole.members.each((member) => {
+      member.roles.remove(PODIUM_ROLE_ID);
+    });
 
     for (let user of topUsers) {
-      let podiumMember = await guild.members.fetch(user.userId)
-      podiumMember.roles.add(PODIUM_ROLE_ID)
+      let podiumMember = await guild.members.fetch(user.userId);
+      podiumMember.roles.add(PODIUM_ROLE_ID);
     }
   } catch (e) {
-    console.log(e)
+    console.log(e);
     console.log("Main server not found... unable to change coin roles");
   }
 };
@@ -222,6 +220,13 @@ const createUser = async (interaction) => {
   return newUser;
 };
 
+const getUser = async (userId) => {
+  let user = await User.findOne({ userId });
+
+  if (!user) return false;
+  return user;
+};
+
 //check to see if the person using a command has registered
 const checkInteraction = async (interaction) => {
   let user = await User.findOne({ userId: interaction.user.id });
@@ -251,5 +256,6 @@ module.exports = {
   createUser,
   checkInteraction,
   checkUser,
+  getUser,
   claim,
 };
