@@ -2,14 +2,14 @@ const MAIN_GUILD_ID = "881621682870190091";
 const MAIN_ROLE_ID = "881627506908737546";
 
 const { MessageEmbed } = require("discord.js");
-const fs = require("fs")
+const fs = require("fs");
 
-let strings = JSON.parse(fs.readFileSync('./helpers/strings.json'))
+let strings = JSON.parse(fs.readFileSync("./helpers/strings.json"));
 
-const ACTIVITIES = strings.activities
+const ACTIVITIES = strings.activities;
 
-const NOUNS = strings.nouns
-const ADJECTIVES = strings.adjectives
+const NOUNS = strings.nouns;
+const ADJECTIVES = strings.adjectives;
 
 const User = require("../models/User");
 
@@ -29,12 +29,12 @@ const randomizeRoleColor = async (client) => {
     return;
   }
   const role = await guild.roles.fetch(MAIN_ROLE_ID);
-  let color = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+  let color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   role.setColor(color);
-  return color
+  return color;
 };
 
-const randomizeServerName = async (client, color) => {
+const randomizeServerName = async (client) => {
   let guild;
   try {
     guild = await client.guilds.fetch(MAIN_GUILD_ID);
@@ -57,7 +57,9 @@ const randomizeServerName = async (client, color) => {
   let randNoun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
   let randServerName = `${randName}'s ${randAdj} ${randNoun}`;
 
-  guild.setName(randServerName, "why not");
+  guild.setName(randServerName);
+
+  let color = guild.roles.fetch("881627506908737546").hexColor;
 
   let embed = new MessageEmbed()
     .setAuthor(`Updated Server Name`, guild.iconURL())

@@ -34,8 +34,8 @@ schedule.scheduleJob("0 0 * * *", async () => {
   coin.notifyDailyReset(client, topUsers);
   await coin.checkChampion(client, topUsers);
 
-  let color = await clientHelper.randomizeRoleColor(client);
-  clientHelper.randomizeServerName(client, color);
+  await clientHelper.randomizeRoleColor(client);
+  clientHelper.randomizeServerName(client);
 });
 
 client.on("guildMemberRemove", async (guildMember) => {
