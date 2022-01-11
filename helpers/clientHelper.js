@@ -1,5 +1,6 @@
 const MAIN_GUILD_ID = "881621682870190091";
-const MAIN_ROLE_ID = "881627506908737546";
+const PERSON_ROLE_ID = "881627506908737546";
+const GENERAL_CHANNEL_ID = "881621682870190094";
 
 const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
@@ -28,7 +29,7 @@ const randomizeRoleColor = async (client) => {
     console.log("Main server not found... unable to change role colors");
     return;
   }
-  const role = await guild.roles.fetch(MAIN_ROLE_ID);
+  const role = await guild.roles.fetch(PERSON_ROLE_ID);
   let color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   role.setColor(color);
   return color;
@@ -59,7 +60,8 @@ const randomizeServerName = async (client) => {
 
   guild.setName(randServerName);
 
-  let color = guild.roles.fetch("881627506908737546").hexColor;
+  let guildRole = await guild.roles.fetch(PERSON_ROLE_ID);
+  let color = guildRole.hexColor;
 
   let embed = new MessageEmbed()
     .setAuthor(`Updated Server Name`, guild.iconURL())
@@ -68,7 +70,7 @@ const randomizeServerName = async (client) => {
     .setTitle(randServerName)
     .setDescription(`The default role color was also changed to \`${color}\``);
 
-  let channel = await guild.channels.fetch("881621682870190094");
+  let channel = await guild.channels.fetch(GENERAL_CHANNEL_ID);
   channel.send({ embeds: [embed] });
 };
 

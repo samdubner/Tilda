@@ -4,9 +4,3 @@ node_modules
 token.json
 token.old.json
 token.new.json
-
-#python restart script
-tildarestart.py
-
-#macOS
-.DS_Store
