@@ -31,8 +31,7 @@ const randomizeRoleColor = async (client) => {
   }
   const role = await guild.roles.fetch(PERSON_ROLE_ID);
   let color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-  role.setColor(color);
-  return color;
+  await role.setColor(color);
 };
 
 const randomizeServerName = async (client) => {
