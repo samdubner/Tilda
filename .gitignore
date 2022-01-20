@@ -1,4 +1,5 @@
 node_modules
+updateDb.js
 
 # token and mongoURI for dev/prod respectively
 token.json
