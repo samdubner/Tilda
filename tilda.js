@@ -40,7 +40,7 @@ schedule.scheduleJob("0 0 * * *", async () => {
 
 client.on("guildMemberRemove", async (guildMember) => {
   console.log(`[${new Date().toLocaleTimeString("en-US")}] ${guildMember.user.username} is no longer in the server`)
-  let user = await coinHelper.getUser(guildMember.id);
+  let user = await coin.getUser(guildMember.id);
 
   if (!!user) {
     user.remove();
