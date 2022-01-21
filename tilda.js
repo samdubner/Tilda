@@ -39,10 +39,12 @@ schedule.scheduleJob("0 0 * * *", async () => {
 });
 
 client.on("guildMemberRemove", async (guildMember) => {
+  console.log(`[${new Date().toLocaleTimeString("en-US")}] ${guildMember.user.username} is no longer in the server`)
   let user = await coinHelper.getUser(guildMember.id);
 
   if (!!user) {
     user.remove();
+    console.log(`[${new Date().toLocaleTimeString("en-US")}] Removed ${guildMember.user.username} from Tilda's DB`)
   }
 });
 
