@@ -39,7 +39,7 @@ schedule.scheduleJob("0 0 * * *", async () => {
 });
 
 client.on("guildMemberRemove", async (guildMember) => {
-  let user = await coinHelper.getUser(guildMember.id);
+  let user = await coin.getUser(guildMember.id);
 
   if (!!user) {
     user.remove();
