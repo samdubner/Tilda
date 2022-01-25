@@ -32,8 +32,7 @@ module.exports = {
     }
 
     user.streak++;
-    let streakBonus = user.streak * 10;
-    if (streakBonus > 200) streakBonus = 200;
+    let streakBonus = Math.min(user.streak * 10, 400);
     let totalDaily = 100 + streakBonus;
 
     User.updateOne(
