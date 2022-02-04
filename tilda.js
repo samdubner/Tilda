@@ -60,7 +60,6 @@ client.on("ready", async () => {
     try {
       command = require(`./mainCommands/${file}`);
     } catch (e) {
-      // console.log(e)
       command = require(`./musicCommands/${file}`);
     }
 
