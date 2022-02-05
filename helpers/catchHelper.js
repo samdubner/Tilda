@@ -110,7 +110,7 @@ const generateFish = (interaction, user) => {
     )
     .addField("Size", `${fish.size}cm`, true)
     .addField("Price", `${fish.price} coins`, true)
-    .setFooter(`Fishing Cost: ${pondPrice} coins`);
+    .setFooter({ text: `Fishing Cost: ${pondPrice} coins` });
 
   interaction.reply({ embeds: [FishEmbed] });
 
@@ -141,7 +141,7 @@ const getColor = (rarity) => {
 };
 
 const generatePrice = (size, rarity) => {
-  return Math.floor((size / 2) + 10 ** (rarity.value - 1));
+  return Math.floor(size / 2 + 10 ** (rarity.value - 1));
 };
 
 const generateSize = (rarity) => {

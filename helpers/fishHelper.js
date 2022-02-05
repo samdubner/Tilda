@@ -38,7 +38,7 @@ const displayFish = async (interaction, rarity) => {
   if (user.fish.length) {
     let totalFishPrice = 0;
     user.fish.forEach((fish) => (totalFishPrice += fish.price));
-    fishEmbed.setFooter(`FW: ${totalFishPrice} coins`);
+    fishEmbed.setFooter({ text: `FW: ${totalFishPrice} coins` });
   }
 
   for (fish in fishCount) {
@@ -159,7 +159,7 @@ const checkForFish = async (interaction, fishName) => {
 
   let fishList = user.fish.filter((fish) => fish.name == fishName);
 
-  if (fishList.length == 0) {
+  if (!fishList.length) {
     invalidFish(interaction);
     return;
   }

@@ -14,7 +14,7 @@ module.exports = {
   async execute(interaction) {
     let suggestion = interaction.options.get("suggestion").value;
     console.log(
-      `[SUGGESTION] ${interaction.user.username}#${interaction.user.discriminator} => ${suggestion}`
+      `[SUGGESTION] (${interaction.guild.name}) ${interaction.user.username}#${interaction.user.discriminator} => ${suggestion}`
     );
 
     let embed = new MessageEmbed()

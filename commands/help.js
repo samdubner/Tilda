@@ -49,76 +49,80 @@ module.exports = {
       case "basic":
         embed.setDescription("Basic Commands").addFields(
           {
-            name: "/request [message]",
-            value:
-              "Sends <@340002869912666114> a message with your idea to improve Tilda",
-          },
-          {
             name: "/8ball [question]",
             value: "Ask the all powerful 8ball your questions",
           },
           {
-            name: "/ui [@person]",
-            value: "Sends some basic info about the mentioned person",
+            name: "/activity [activity type]",
+            value:
+              "use tilda to start any activity (youtube watch together, chess, etc...)",
           },
-          { name: "/si", value: "Sends basic server information" },
           {
             name: "/pfp [@person]",
             value:
               "Sends the profile pictures of the mentioned people or yourself if nobody is mentioned",
           },
           {
+            name: "/pingme [role]",
+            value: "add/remove a role to be pinged from",
+          },
+          {
+            name: "/request [message]",
+            value:
+              "Sends <@340002869912666114> a message with your idea to improve Tilda",
+          },
+          {
             name: "/roll [number of sides]",
             value: "Will roll a x number sided die (default: 6)",
           },
+          { name: "/si", value: "Sends basic server information" },
           {
-            name: "/pingme [role]",
-            value: "add/remove a role to be pinged from",
+            name: "/ui [@person]",
+            value: "Sends some basic info about the mentioned person",
           }
         );
         break;
       case "music":
         embed.setDescription("Music Commands").addFields(
           {
-            name: "/play [query]",
-            value:
-              "search for a video or add a youtube url to the music queue",
-          },
-          {
-            name: "/skip",
-            value: "skip the song that is currently playing",
+            name: "/leave",
+            value: "have Tilda disconnect from the vc",
           },
           {
             name: "/loop",
-            value: "Turn on/off the ability to loop the current song"
+            value: "Turn on/off the ability to loop the current song",
+          },
+          {
+            name: "/play [query]",
+            value: "search for a video or add a youtube url to the music queue",
           },
           {
             name: "/queue",
             value: "see all songs currently in queue",
           },
           {
-            name: "/leave",
-            value: "have Tilda disconnect from the vc",
+            name: "/skip",
+            value: "skip the song that is currently playing",
           }
         );
         break;
       case "coin":
         embed.setDescription("Coin Commands").addFields(
-          {
-            name: "/leaderboard",
-            value: "Shows the coins of the top 5 users in the server!",
-          },
           { name: "/balance", value: "View the amount of coins you have" },
-          { name: "/flip [amount of coins]", value: "50/50" },
+          { name: "/beg", value: "Receive 10 coins every 10 minutes!" },
           {
             name: "/daily",
             value:
               "Get 100 coins once every 24 hours (do it every day for a bonus)!",
           },
-          { name: "/beg", value: "Receive 10 coins every 10 minutes!" },
+          { name: "/flip [amount of coins]", value: "50/50" },
           {
             name: "/give @person [coins]",
             value: "Sends some coins to a thankful person!",
+          },
+          {
+            name: "/leaderboard",
+            value: "Shows the coins of the top 5 users in the server!",
           }
         );
         break;

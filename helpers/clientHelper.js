@@ -62,7 +62,7 @@ const randomizeServerName = async (client) => {
     .setThumbnail(guild.iconURL)
     .setTitle(randServerName)
     .setDescription(
-      `The <@&881627506908737546> role color was also changed to \`${color}\``
+      `The <@&${PERSON_ROLE_ID}> role color was also changed to \`${color}\``
     );
 
   let channel = await guild.channels.fetch(GENERAL_CHANNEL_ID);

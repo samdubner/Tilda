@@ -27,7 +27,9 @@ module.exports = {
         )
         .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
-      interaction.reply({ embeds: [embed], ephemeral: true }).catch(console.error);
+      interaction
+        .reply({ embeds: [embed], ephemeral: true })
+        .catch(console.error);
       return;
     }
 
@@ -48,7 +50,7 @@ module.exports = {
       .setColor(`#00ff00`)
       .setTitle(`${interaction.member.displayName} got ${totalDaily} coins!`)
       .setDescription(`You now have ${user.score + totalDaily} coins`)
-      .setFooter(`Daily Streak: ${user.streak} days`)
+      .setFooter({ text: `Daily Streak: ${user.streak} days` })
       .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
 
     interaction.reply({ embeds: [embed] }).catch(console.error);

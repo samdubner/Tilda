@@ -75,19 +75,19 @@ client.on("guildMemberAdd", (member) => {
     member.roles.add(PERSON_ROLE_ID);
     updateGuildStatus(member, true);
   }
-  
+
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] ${
       member.displayName
-    } has joined the server`
+    } has joined ${member.guild.name}`
   );
 });
 
 client.on("guildMemberRemove", async (member) => {
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] ${
-      guildMember.user.username
-    } is no longer in \'${guildMember.guild.name}\'`
+      member.user.username
+    } is no longer in \'${member.guild.name}\'`
   );
   if (member.guild.id == MAIN_GUILD_ID) updateGuildStatus(member, false);
 });
