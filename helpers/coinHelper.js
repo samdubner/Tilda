@@ -191,6 +191,7 @@ const createUser = async (interaction) => {
     streak: 0,
     dailyDone: true,
     begDate: new Date().getTime(),
+    inMainGuild: interaction.guildId == MAIN_GUILD_ID,
   });
 
   await newUser.save().catch(console.error);
