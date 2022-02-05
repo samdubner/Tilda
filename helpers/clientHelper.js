@@ -43,20 +43,14 @@ const randomizeServerName = async (client) => {
     return;
   }
 
-  let count = await User.countDocuments();
-  let randUser = await User.findOne().skip(Math.floor(Math.random() * count));
-  let member;
-  try {
-    member = await guild.members.fetch(randUser.userId);
-  } catch (e) {
-    member = await guild.members.fetch(randUser.userId);
-  }
-  let randName = member.user.username;
+  let users = await User.find({ inMainGuild: true });
+  let randUser = users[Math.floor(Math.random() * users.length)];
+  let member = await guild.members.fetch(randUser.userId);
 
   let randAdj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
   let randNoun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
-  let randServerName = `${randName}'s ${randAdj} ${randNoun}`;
 
+  let randServerName = `${member.user.username}'s ${randAdj} ${randNoun}`;
   guild.setName(randServerName);
 
   let guildRole = await guild.roles.fetch(PERSON_ROLE_ID);
@@ -67,7 +61,9 @@ const randomizeServerName = async (client) => {
     .setColor(color)
     .setThumbnail(guild.iconURL)
     .setTitle(randServerName)
-    .setDescription(`The <@&881627506908737546> role color was also changed to \`${color}\``);
+    .setDescription(
+      `The <@&881627506908737546> role color was also changed to \`${color}\``
+    );
 
   let channel = await guild.channels.fetch(GENERAL_CHANNEL_ID);
   channel.send({ embeds: [embed] });

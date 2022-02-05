@@ -26,10 +26,6 @@ module.exports = {
           name: "Role Commands",
           value: "role",
         },
-        // {
-        //   name: "Room Commands",
-        //   value: "room",
-        // },
         {
           name: "Fish Commands",
           value: "fish",
@@ -81,23 +77,6 @@ module.exports = {
           }
         );
         break;
-      // case "room":
-      //   embed.setDescription("Room Commands").addFields(
-      //     {
-      //       name: "/room",
-      //       value:
-      //         "General command to start/end your room as well as manage it's privacy",
-      //     },
-      //     {
-      //       name: "/add @user",
-      //       value: "Add other users to your private room",
-      //     },
-      //     {
-      //       name: "/remove @user",
-      //       value: "Remove users from your private room",
-      //     }
-      //   );
-      //   break;
       case "music":
         embed.setDescription("Music Commands").addFields(
           {

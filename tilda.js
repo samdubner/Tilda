@@ -1,3 +1,6 @@
+const MAIN_GUILD_ID = "881621682870190091";
+const PERSON_ROLE_ID = "881627506908737546";
+
 const { Client, Collection, Intents, MessageEmbed } = require("discord.js");
 
 const client = new Client({
@@ -13,14 +16,9 @@ client.commands = new Collection();
 
 const fs = require("fs");
 
-const mainCommands = fs
-  .readdirSync("./mainCommands")
+const commandFiles = fs
+  .readdirSync("./commands")
   .filter((file) => file.endsWith(".js"));
-const musicCommands = fs
-  .readdirSync("./musicCommands")
-  .filter((file) => file.endsWith(".js"));
-
-const commandFiles = mainCommands.concat(musicCommands);
 
 const schedule = require("node-schedule");
 
@@ -38,34 +36,20 @@ schedule.scheduleJob("0 0 * * *", async () => {
   clientHelper.randomizeServerName(client);
 });
 
-client.on("guildMemberRemove", async (guildMember) => {
-  console.log(`[${new Date().toLocaleTimeString("en-US")}] ${guildMember.user.username} is no longer in the server`)
-  let user = await coin.getUser(guildMember.id);
-
-  if (!!user) {
-    user.remove();
-    console.log(`[${new Date().toLocaleTimeString("en-US")}] Removed ${guildMember.user.username} from Tilda's DB`)
-  }
-});
-
 client.on("ready", async () => {
   const guildId =
     client.user.id == "670849450599645218"
-      ? "881621682870190091"
+      ? MAIN_GUILD_ID
       : "469659852109643786";
   const mainGuild = await client.guilds.fetch(guildId);
 
   for (let file of commandFiles) {
-    let command;
-    try {
-      command = require(`./mainCommands/${file}`);
-    } catch (e) {
-      command = require(`./musicCommands/${file}`);
-    }
+    let command = require(`./commands/${file}`)
 
-    mainGuild.commands.create(command);
+    client.application.commands.create(command);
     client.commands.set(command.name, command);
   }
+
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
   clientHelper.setActivity(client);
@@ -81,7 +65,8 @@ client.on("ready", async () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-  member.roles.add("881627506908737546");
+  member.roles.add(PERSON_ROLE_ID);
+  if (member.guild.id == MAIN_GUILD_ID) updateGuildStatus(member, true);
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] ${
       member.displayName
@@ -89,28 +74,49 @@ client.on("guildMemberAdd", (member) => {
   );
 });
 
+client.on("guildMemberRemove", async (member) => {
+  console.log(
+    `[${new Date().toLocaleTimeString("en-US")}] ${
+      guildMember.user.username
+    } is no longer in \'${guildMember.guild.name}\'`
+  );
+  if (member.guild.id == MAIN_GUILD_ID) updateGuildStatus(member, false);
+});
+
+let updateGuildStatus = async (guildMember, status) => {
+  let user = await coin.getUser(guildMember.id);
+
+  if (!!user) {
+    user.inMainGuild = status;
+    user.save();
+    console.log(
+      `[${new Date().toLocaleTimeString("en-US")}] Updated ${
+        guildMember.user.username
+      }'s guild status in Tilda's DB`
+    );
+  }
+};
+
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 
   if (!client.commands.has(interaction.commandName)) return;
 
-  let isInRoom = false;
+  // let isInRoom = false;
 
-  if (await coin.checkUser(interaction.user)) {
-    let user = await User.findOne({ userId: interaction.user.id });
-    if (user.categoryId == interaction.channel.id) isInRoom = true;
-  }
+  // if (await coin.checkUser(interaction.user)) {
+  //   let user = await User.findOne({ userId: interaction.user.id });
+  //   if (user.categoryId == interaction.channel.id) isInRoom = true;
+  // }
 
   if (
-    interaction.channelId != "881622803449774090" &&
-    !["340002869912666114", "171330866189041665"].includes(
-      interaction.user.id
-    ) &&
-    !isInRoom
+    !["881622803449774090", "939372816887857202"].includes(interaction.channelId) &&
+    !interaction.user.id == "340002869912666114" //&&
+    // !isInRoom
   ) {
     interaction.reply({
       content:
-        "You cannot use commands outside of the bot channel or your room",
+        "You cannot use commands outside of the bot channel",
       ephemeral: true,
     });
     return;

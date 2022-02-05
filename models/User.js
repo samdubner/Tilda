@@ -17,6 +17,9 @@ const UserSchema = new Schema({
   dailyDone: {
     type: Boolean,
   },
+  inMainGuild: {
+    type: Boolean,
+  },
   begDate: {
     type: Number,
   },
