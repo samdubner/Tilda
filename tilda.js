@@ -1,3 +1,5 @@
+const MAIN_GUILD_ID = "881621682870190091";
+
 const { Client, Collection, Intents, MessageEmbed } = require("discord.js");
 
 const client = new Client({
@@ -41,7 +43,7 @@ schedule.scheduleJob("0 0 * * *", async () => {
 client.on("ready", async () => {
   const guildId =
     client.user.id == "670849450599645218"
-      ? "881621682870190091"
+      ? MAIN_GUILD_ID
       : "469659852109643786";
   const mainGuild = await client.guilds.fetch(guildId);
 
@@ -72,7 +74,7 @@ client.on("ready", async () => {
 
 client.on("guildMemberAdd", (member) => {
   member.roles.add("881627506908737546");
-  updateGuildStatus(member, true);
+  if (member.guild.id == MAIN_GUILD_ID) updateGuildStatus(member, true);
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] ${
       member.displayName
@@ -86,7 +88,7 @@ client.on("guildMemberRemove", async (member) => {
       guildMember.user.username
     } is no longer in \'${guildMember.guild.name}\'`
   );
-  updateGuildStatus(member, false);
+  if (member.guild.id == MAIN_GUILD_ID) updateGuildStatus(member, false);
 });
 
 let updateGuildStatus = (guildMember, status) => {
