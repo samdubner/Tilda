@@ -159,7 +159,7 @@ const checkForFish = async (interaction, fishName) => {
 
   let fishList = user.fish.filter((fish) => fish.name == fishName);
 
-  if (fishList.length == 0) {
+  if (!fishList.length) {
     invalidFish(interaction);
     return;
   }

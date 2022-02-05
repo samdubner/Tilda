@@ -20,6 +20,6 @@ module.exports = {
       .setTitle(`${mentionedUser.username}'s pfp`)
       .setImage(mentionedUser.displayAvatarURL());
 
-    interaction.reply({ embeds: [embed] }).catch(console.error);
+    interaction.reply({ embeds: [embed], ephemeral: true }).catch(console.error);
   },
 };
