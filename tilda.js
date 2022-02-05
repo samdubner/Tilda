@@ -50,10 +50,10 @@ client.on("ready", async () => {
   }
 
   for (let file of testingFiles) {
-    let command = require(`./testing/${file}`)
+    let command = require(`./testing/${file}`);
 
-    mainGuild.commands.create(command)
-    client.commands.set(command.name, command)
+    mainGuild.commands.create(command);
+    client.commands.set(command.name, command);
   }
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
@@ -71,8 +71,11 @@ client.on("ready", async () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-  member.roles.add(PERSON_ROLE_ID);
-  if (member.guild.id == MAIN_GUILD_ID) updateGuildStatus(member, true);
+  if (member.guild.id == MAIN_GUILD_ID) {
+    member.roles.add(PERSON_ROLE_ID);
+    updateGuildStatus(member, true);
+  }
+  
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] ${
       member.displayName
