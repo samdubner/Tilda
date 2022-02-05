@@ -21,7 +21,10 @@ module.exports = {
     if (roleColor == "#000000") roleColor = "#99aab5";
 
     let embed = new MessageEmbed()
-      .setAuthor("User Info", mentionedMember.user.avatarURL())
+      .setAuthor({
+        name: "User Info",
+        iconURL: mentionedMember.user.avatarURL(),
+      })
       .setColor(roleColor)
       .setThumbnail(mentionedMember.user.avatarURL())
       .addField("Username", mentionedMember.user.username, false);

@@ -10,7 +10,10 @@ module.exports = {
 
     if (result) {
       let embed = new MessageEmbed()
-        .setAuthor(`Skipped Song`, interaction.user.avatarURL())
+        .setAuthor({
+          name: `Skipped Song`,
+          iconURL: interaction.user.avatarURL(),
+        })
         .setColor(`#d1580d`)
         .setThumbnail(interaction.guild.iconURL())
         .setTitle("Skipping Current Song....");

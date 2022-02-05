@@ -25,7 +25,8 @@ const eightBallResponses = [
 
 module.exports = {
   name: "8ball",
-  description: "uses the power of the all-mighty 8ball to answer your questions",
+  description:
+    "uses the power of the all-mighty 8ball to answer your questions",
   options: [
     {
       type: "STRING",
@@ -39,7 +40,7 @@ module.exports = {
       eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)];
 
     let embed = new MessageEmbed()
-      .setAuthor(`8ball`, interaction.user.avatarURL())
+      .setAuthor({ name: `8ball`, iconURL: interaction.user.avatarURL() })
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setThumbnail("https://i.imgur.com/z7ayPJL.gif")
       .addField("Question", interaction.options.get("question").value)

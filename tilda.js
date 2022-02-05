@@ -16,9 +16,8 @@ client.commands = new Collection();
 
 const fs = require("fs");
 
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
+const commandFiles = fs.readdirSync("./commands");
+const testingFiles = fs.readdirSync("./testing");
 
 const schedule = require("node-schedule");
 
@@ -44,10 +43,17 @@ client.on("ready", async () => {
   const mainGuild = await client.guilds.fetch(guildId);
 
   for (let file of commandFiles) {
-    let command = require(`./commands/${file}`)
+    let command = require(`./commands/${file}`);
 
     client.application.commands.create(command);
     client.commands.set(command.name, command);
+  }
+
+  for (let file of testingFiles) {
+    let command = require(`./testing/${file}`)
+
+    mainGuild.commands.create(command)
+    client.commands.set(command.name, command)
   }
 
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
@@ -110,13 +116,14 @@ client.on("interactionCreate", async (interaction) => {
   // }
 
   if (
-    !["881622803449774090", "939372816887857202"].includes(interaction.channelId) &&
+    !["881622803449774090", "939372816887857202"].includes(
+      interaction.channelId
+    ) &&
     !interaction.user.id == "340002869912666114" //&&
     // !isInRoom
   ) {
     interaction.reply({
-      content:
-        "You cannot use commands outside of the bot channel",
+      content: "You cannot use commands outside of the bot channel",
       ephemeral: true,
     });
     return;

@@ -57,7 +57,7 @@ const randomizeServerName = async (client) => {
   let color = guildRole.hexColor;
 
   let embed = new MessageEmbed()
-    .setAuthor(`Updated Server Name`, guild.iconURL())
+    .setAuthor({name: `Updated Server Name`, iconURL: guild.iconURL()})
     .setColor(color)
     .setThumbnail(guild.iconURL)
     .setTitle(randServerName)
