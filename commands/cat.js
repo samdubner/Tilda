@@ -1,3 +1,4 @@
+const axios = require("axios");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply();
 
-    let response = await axios("https://api.thecatapi.com/v1/images/search")
+    let response = await axios("https://api.thecatapi.com/v1/images/search");
     let cat = response.data[0].url;
 
     let embed = new MessageEmbed()
