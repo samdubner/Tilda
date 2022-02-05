@@ -18,7 +18,7 @@ module.exports = {
 
     randomResult = Math.floor(Math.random() * numSides) + 1;
     let embed = new MessageEmbed()
-      .setAuthor(`Roll`, interaction.user.avatarURL())
+      .setAuthor({ name: `Roll`, iconURL: interaction.user.avatarURL() })
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .addField(
         `You rolled a ${numSides} sided die`,

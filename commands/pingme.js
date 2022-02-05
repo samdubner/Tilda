@@ -12,31 +12,40 @@ module.exports = {
       choices: [
         {
           name: "Announcements",
-          value: "announcements"
+          value: "announcements",
         },
         {
           name: "Events",
-          value: "events"
+          value: "events",
         },
-      ]
+      ],
     },
   ],
   async execute(interaction) {
-    if(interaction.guild.id != "881621682870190091") {
-      interaction.reply({content: "You cannot use this command outside of Tilda's main server", ephemeral: true})
-      return
+    if (interaction.guild.id != "881621682870190091") {
+      interaction.reply({
+        content: "You cannot use this command outside of Tilda's main server",
+        ephemeral: true,
+      });
+      return;
     }
 
     let announcementsRole = "881733593595011094";
-    let eventsRole = "892624445737422849"
+    let eventsRole = "892624445737422849";
 
-    let setRole = interaction.options.getString("role") == "announcements" ? announcementsRole : eventsRole;
+    let setRole =
+      interaction.options.getString("role") == "announcements"
+        ? announcementsRole
+        : eventsRole;
 
     let hasRole = interaction.member.roles.cache.has(setRole);
-    let role = await interaction.guild.roles.fetch(setRole)
+    let role = await interaction.guild.roles.fetch(setRole);
 
     let embed = new MessageEmbed()
-      .setAuthor(`Announcement Pings`, interaction.user.avatarURL())
+      .setAuthor({
+        name: `Announcement Pings`,
+        iconURL: interaction.user.avatarURL(),
+      })
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
 
     if (hasRole) {

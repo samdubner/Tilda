@@ -5,7 +5,7 @@ module.exports = {
   description: "Sends basic server information",
   async execute(interaction) {
     let embed = new MessageEmbed()
-      .setAuthor({name: "Server Info", iconURL: interaction.user.avatarURL()})
+      .setAuthor({ name: "Server Info", iconURL: interaction.user.avatarURL() })
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setThumbnail(interaction.guild.iconURL())
       .addFields([

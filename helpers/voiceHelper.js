@@ -20,7 +20,7 @@ player.on(AudioPlayerStatus.Idle, () => playNextOrLeave());
 const playNextOrLeave = (force = false, interaction = undefined) => {
   if (!songQueue[0]) {
     let embed = new MessageEmbed()
-      .setAuthor(`Cannot Skip Song`)
+      .setAuthor({ name: "Cannot Skip Song" })
       .setColor(`#ff0000`)
       .setTitle("There is nothing in the queue to skip!");
 
@@ -38,7 +38,7 @@ const playNextOrLeave = (force = false, interaction = undefined) => {
   } else {
     if (force) player.pause();
     let embed = new MessageEmbed()
-      .setAuthor(`Finished Queue`)
+      .setAuthor({ name: "Finished Queue" })
       .setColor(`#b00dd1`)
       .setTitle("Finished Queue and Will Disconnect Shortly!");
 
@@ -51,7 +51,7 @@ const playNextOrLeave = (force = false, interaction = undefined) => {
 const viewQueue = (interaction) => {
   if (songQueue.length == 0) {
     let embed = new MessageEmbed()
-      .setAuthor(`Queue is Empty`)
+      .setAuthor({ name: "Queue is Empty" })
       .setColor(`#ff0000`)
       .setTitle("There are no songs in queue!");
 
@@ -132,10 +132,10 @@ const addToQueue = async (interaction) => {
 
   let embed = new MessageEmbed()
     .setTitle("Added Song to Queue")
-    .setAuthor(
-      `Added by ${interaction.user.username}`,
-      interaction.user.avatarURL()
-    )
+    .setAuthor({
+      name: `Added by ${interaction.user.username}`,
+      iconURL: interaction.user.avatarURL(),
+    })
     .setColor(`#17d9eb`)
     .setThumbnail(interaction.guild.iconURL())
     .setURL(songEntry.url)
@@ -165,10 +165,10 @@ const playAudio = async (force) => {
 
     let embed = new MessageEmbed()
       .setTitle("Now Playing")
-      .setAuthor(
-        `Added by ${songEntry.user.username}`,
-        songEntry.user.avatarURL()
-      )
+      .setAuthor({
+        name: `Added by ${songEntry.user.username}`,
+        iconURL: songEntry.user.avatarURL(),
+      })
       .setColor(`#11d632`)
       .setThumbnail(songEntry.channel.guild.iconURL())
       .setURL(songEntry.url)
@@ -194,7 +194,10 @@ const leaveChannel = (interaction) => {
   connection.destroy();
 
   let embed = new MessageEmbed()
-    .setAuthor(`Disconnected From VC`, interaction.user.avatarURL())
+    .setAuthor({
+      name: `Disconnected From VC`,
+      iconURL: interaction.user.avatarURL(),
+    })
     .setColor(`#990909`)
     .setThumbnail(interaction.guild.iconURL())
     .setTitle("Thank you for listening, have a nice day!");
@@ -216,14 +219,14 @@ const disconnectFromChannel = (channel) => {
     connection.destroy();
 
     let embed = new MessageEmbed()
-      .setAuthor(`Disconnected`)
+      .setAuthor({ name: "Disconnected" })
       .setColor("#500982")
       .setTitle("Finished Playing and Disconnected, Cya!");
 
     channel.send({ embeds: [embed] });
   } catch (e) {
-    console.log(e)
-    console.log("voice connection most likely couldn't be retrieved")
+    console.log(e);
+    console.log("voice connection most likely couldn't be retrieved");
   }
 };
 
