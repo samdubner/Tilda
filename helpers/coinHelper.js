@@ -167,16 +167,20 @@ const checkChampion = async (client, topUsers) => {
       member.roles.remove(CHAMPION_ROLE_ID);
     });
 
-    let currentChampion = await guild.members.fetch(topUsers.shift().userId);
-    currentChampion.roles.add(CHAMPION_ROLE_ID);
+    guild.members
+      .fetch(topUsers.shift().userId)
+      .then((currentChampion) => currentChampion.roles.add(CHAMPION_ROLE_ID))
+      .catch(console.log("the coin champion is not in the main guild"));
 
     podiumRole.members.each((member) => {
       member.roles.remove(PODIUM_ROLE_ID);
     });
 
     for (let user of topUsers) {
-      let podiumMember = await guild.members.fetch(user.userId);
-      podiumMember.roles.add(PODIUM_ROLE_ID);
+      guild.members
+        .fetch(user.userId)
+        .then((podiumMember) => podiumMember.roles.add(PODIUM_ROLE_ID))
+        .catch(console.log("a coin contender is not in the main guild"));
     }
   } catch (e) {
     console.log(e);

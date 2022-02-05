@@ -82,7 +82,7 @@ client.on("guildMemberRemove", async (member) => {
   if (member.guild.id == MAIN_GUILD_ID) updateGuildStatus(member, false);
 });
 
-let updateGuildStatus = (guildMember, status) => {
+let updateGuildStatus = async (guildMember, status) => {
   let user = await coin.getUser(guildMember.id);
 
   if (!!user) {
