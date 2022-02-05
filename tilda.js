@@ -1,4 +1,5 @@
 const MAIN_GUILD_ID = "881621682870190091";
+const PERSON_ROLE_ID = "881627506908737546";
 
 const { Client, Collection, Intents, MessageEmbed } = require("discord.js");
 
@@ -15,14 +16,9 @@ client.commands = new Collection();
 
 const fs = require("fs");
 
-const mainCommands = fs
-  .readdirSync("./mainCommands")
+const commandFiles = fs
+  .readdirSync("./commands")
   .filter((file) => file.endsWith(".js"));
-const musicCommands = fs
-  .readdirSync("./musicCommands")
-  .filter((file) => file.endsWith(".js"));
-
-const commandFiles = mainCommands.concat(musicCommands);
 
 const schedule = require("node-schedule");
 
@@ -48,12 +44,7 @@ client.on("ready", async () => {
   const mainGuild = await client.guilds.fetch(guildId);
 
   for (let file of commandFiles) {
-    let command;
-    try {
-      command = require(`./mainCommands/${file}`);
-    } catch (e) {
-      command = require(`./musicCommands/${file}`);
-    }
+    let command = require(`./commands/${file}`)
 
     mainGuild.commands.create(command);
     client.commands.set(command.name, command);
@@ -73,7 +64,7 @@ client.on("ready", async () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-  member.roles.add("881627506908737546");
+  member.roles.add(PERSON_ROLE_ID);
   if (member.guild.id == MAIN_GUILD_ID) updateGuildStatus(member, true);
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] ${
@@ -110,23 +101,21 @@ client.on("interactionCreate", async (interaction) => {
 
   if (!client.commands.has(interaction.commandName)) return;
 
-  let isInRoom = false;
+  // let isInRoom = false;
 
-  if (await coin.checkUser(interaction.user)) {
-    let user = await User.findOne({ userId: interaction.user.id });
-    if (user.categoryId == interaction.channel.id) isInRoom = true;
-  }
+  // if (await coin.checkUser(interaction.user)) {
+  //   let user = await User.findOne({ userId: interaction.user.id });
+  //   if (user.categoryId == interaction.channel.id) isInRoom = true;
+  // }
 
   if (
     interaction.channelId != "881622803449774090" &&
-    !["340002869912666114", "171330866189041665"].includes(
-      interaction.user.id
-    ) &&
-    !isInRoom
+    !interaction.user.id == "340002869912666114" //&&
+    // !isInRoom
   ) {
     interaction.reply({
       content:
-        "You cannot use commands outside of the bot channel or your room",
+        "You cannot use commands outside of the bot channel",
       ephemeral: true,
     });
     return;
