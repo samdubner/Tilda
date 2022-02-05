@@ -38,16 +38,6 @@ schedule.scheduleJob("0 0 * * *", async () => {
   clientHelper.randomizeServerName(client);
 });
 
-client.on("guildMemberRemove", async (guildMember) => {
-  console.log(`[${new Date().toLocaleTimeString("en-US")}] ${guildMember.user.username} is no longer in \'${guildMember.guild.name}\'`)
-  // let user = await coin.getUser(guildMember.id);
-
-  // if (!!user) {
-  //   user.remove();
-  //   console.log(`[${new Date().toLocaleTimeString("en-US")}] Removed ${guildMember.user.username} from Tilda's DB`)
-  // }
-});
-
 client.on("ready", async () => {
   const guildId =
     client.user.id == "670849450599645218"
@@ -82,12 +72,36 @@ client.on("ready", async () => {
 
 client.on("guildMemberAdd", (member) => {
   member.roles.add("881627506908737546");
+  updateGuildStatus(member, true);
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] ${
       member.displayName
     } has joined the server`
   );
 });
+
+client.on("guildMemberRemove", async (member) => {
+  console.log(
+    `[${new Date().toLocaleTimeString("en-US")}] ${
+      guildMember.user.username
+    } is no longer in \'${guildMember.guild.name}\'`
+  );
+  updateGuildStatus(member, false);
+});
+
+let updateGuildStatus = (guildMember, status) => {
+  let user = await coin.getUser(guildMember.id);
+
+  if (!!user) {
+    user.inMainGuild = status;
+    user.save();
+    console.log(
+      `[${new Date().toLocaleTimeString("en-US")}] Updated ${
+        guildMember.user.username
+      }'s guild status in Tilda's DB`
+    );
+  }
+};
 
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
