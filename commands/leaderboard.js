@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 module.exports = {
   name: "leaderboard",
-  description: "Shows the coins of the top 5 users in the server!",
+  description: "Shows the coins of the top 5 users registered with Tilda!",
   async execute(interaction) {
     let userList = await User.find()
       .sort([["score", -1]])

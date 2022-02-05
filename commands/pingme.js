@@ -22,6 +22,11 @@ module.exports = {
     },
   ],
   async execute(interaction) {
+    if(interaction.guild.id != "881621682870190091") {
+      interaction.reply({content: "You cannot use this command outside of Tilda's main server", ephemeral: true})
+      return
+    }
+
     let announcementsRole = "881733593595011094";
     let eventsRole = "892624445737422849"
 
