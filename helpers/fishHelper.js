@@ -38,7 +38,7 @@ const displayFish = async (interaction, rarity) => {
   if (user.fish.length) {
     let totalFishPrice = 0;
     user.fish.forEach((fish) => (totalFishPrice += fish.price));
-    fishEmbed.setFooter(`FW: ${totalFishPrice} coins`);
+    fishEmbed.setFooter({ text: `FW: ${totalFishPrice} coins` });
   }
 
   for (fish in fishCount) {

@@ -215,10 +215,10 @@ const createUser = async (interaction) => {
       "Cooldown Status",
       "You have just received 100 coins, `/daily` and `/beg` are on cooldown"
     )
-    .setFooter(
-      "Thank you for registering with Tilda",
-      interaction.client.user.displayAvatarURL()
-    );
+    .setFooter({
+      text: "Thank you for registering with Tilda",
+      iconURL: interaction.client.user.displayAvatarURL(),
+    });
 
   interaction.channel.send({ embeds: [embed] });
 
