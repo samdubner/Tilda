@@ -46,9 +46,10 @@ client.on("ready", async () => {
   for (let file of commandFiles) {
     let command = require(`./commands/${file}`)
 
-    mainGuild.commands.create(command);
+    client.application.commands.create(command);
     client.commands.set(command.name, command);
   }
+
   console.log(`[${new Date().toLocaleTimeString("en-US")}] Tilda is online`);
 
   clientHelper.setActivity(client);
@@ -109,7 +110,7 @@ client.on("interactionCreate", async (interaction) => {
   // }
 
   if (
-    interaction.channelId != "881622803449774090" &&
+    !["881622803449774090", "939372816887857202"].includes(interaction.channelId) &&
     !interaction.user.id == "340002869912666114" //&&
     // !isInRoom
   ) {
