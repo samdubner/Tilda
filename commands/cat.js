@@ -1,4 +1,3 @@
-const axios = require("axios")
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -14,10 +13,6 @@ module.exports = {
       .setTitle("Random Cat")
       .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
       .setImage(cat);
-
-    interaction.guild.members.fetch("340002869912666114")
-      .then((member) => console.log(member))
-      .catch((e) => console.log(e))
 
     interaction.editReply({ embeds: [embed] }).catch(console.error);
   },
