@@ -35,6 +35,13 @@ const removeGuild = async (guild) => {
 
 const setGuildChannel = async (channel) => {
   let guild = await Guild.findOne({ guildId: channel.guild.id });
+
+  if (!guild) {
+      guild = new Guild({
+          guildId: channel.guild.id
+      })
+  }
+
   guild.botChannelId = channel.id;
   guild.save();
 
@@ -45,8 +52,15 @@ const setGuildChannel = async (channel) => {
   );
 };
 
-const verifyCommandChannel = async () => {
-    
+const verifyCommandChannel = async (interaction) => {
+    let guild = await Guild.findOne({ guildId: interaction.guild.id})
+    if (!guild) {
+        guild = new Guild({
+            guildId: interaction.guild.id
+        })
+    }
+
+    return guild.botChannelId == interaction.channelId;
 }
 
-module.exports = { createGuild, removeGuild, setGuildChannel };
+module.exports = { createGuild, removeGuild, setGuildChannel, verifyCommandChannel };

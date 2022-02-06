@@ -112,19 +112,10 @@ client.on("interactionCreate", async (interaction) => {
 
   if (!client.commands.has(interaction.commandName)) return;
 
-  // let isInRoom = false;
-
-  // if (await coin.checkUser(interaction.user)) {
-  //   let user = await User.findOne({ userId: interaction.user.id });
-  //   if (user.categoryId == interaction.channel.id) isInRoom = true;
-  // }
-
   if (
-    !["881622803449774090", "939372816887857202"].includes(
-      interaction.channelId
-    ) &&
-    !interaction.user.id == "340002869912666114" //&&
-    // !isInRoom
+    !(await guildHelper.verifyCommandChannel(interaction)) &&
+    interaction.commandName != "config" &&
+    interaction.user.id != "340002869912666114"
   ) {
     interaction.reply({
       content: "You cannot use commands outside of the bot channel",
@@ -158,11 +149,11 @@ client.on("guildCreate", async (guild) => {
     .setThumbnail(guild.iconURL())
     .setTitle("How to set up Tilda in your server!")
     .setDescription(
-      "Use the \`/config\` command in your server to select the channel you would like Tilda to use! (NOTE: the /config command can only be run by the server owner or anyone with the ADMINISTRATOR permission)"
+      "Use the `/config` command in your server to select the channel you would like Tilda to use! (NOTE: the /config command can only be run by the server owner or anyone with the ADMINISTRATOR permission)"
     )
     .addFields({
       name: "config command",
-      value: "\`/config channel <#channel here>\`",
+      value: "`/config channel <#channel here>`",
     });
 
   guildOwner.send({ embeds: [embed] });
