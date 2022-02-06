@@ -23,6 +23,7 @@ const schedule = require("node-schedule");
 
 const coin = require("./helpers/coinHelper");
 const clientHelper = require("./helpers/clientHelper");
+const guildHelper = require("./helpers/guildHelper.js");
 
 schedule.scheduleJob("0 0 * * *", async () => {
   let topUsers = await coin.bleedTopUser();
@@ -149,8 +150,25 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-client.on("guildCreate", (guild) => {
-  
-})
+client.on("guildCreate", async (guild) => {
+  let guildOwner = await guild.fetchOwner();
+
+  let embed = new MessageEmbed()
+    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setThumbnail(guild.iconURL())
+    .setTitle("How to set up Tilda in your server!")
+    .setDescription(
+      "use the \`/config\` command in your server to select the channel you would like Tilda to use! (NOTE: the /config command can only be run by the server owner or anyone with the ADMINISTRATOR permission)"
+    )
+    .addFields({
+      name: "config command",
+      value: "/config channel <#channel here>",
+    });
+
+  guildOwner.send({ embeds: [embed] });
+  guildHelper.createGuild(guild);
+});
+
+client.on("guildDelete", async (guild) => guildHelper.removeGuild(guild));
 
 client.login(JSON.parse(fs.readFileSync("./token.json")).token);
