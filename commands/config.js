@@ -20,6 +20,11 @@ module.exports = {
     },
   ],
   async execute(interaction) {
+    if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+      interaction.reply({ content: "Sorry, this command can only be run by people with the ADMINISTRATOR permission", ephemeral: true });
+      return;
+    }
+
     let subcommand = interaction.options.getSubcommand();
 
     switch (subcommand) {
