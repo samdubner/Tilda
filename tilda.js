@@ -158,11 +158,11 @@ client.on("guildCreate", async (guild) => {
     .setThumbnail(guild.iconURL())
     .setTitle("How to set up Tilda in your server!")
     .setDescription(
-      "use the \`/config\` command in your server to select the channel you would like Tilda to use! (NOTE: the /config command can only be run by the server owner or anyone with the ADMINISTRATOR permission)"
+      "Use the \`/config\` command in your server to select the channel you would like Tilda to use! (NOTE: the /config command can only be run by the server owner or anyone with the ADMINISTRATOR permission)"
     )
     .addFields({
       name: "config command",
-      value: "/config channel <#channel here>",
+      value: "\`/config channel <#channel here>\`",
     });
 
   guildOwner.send({ embeds: [embed] });

@@ -22,8 +22,9 @@ const createGuild = async (guild) => {
 };
 
 const removeGuild = async (guild) => {
-  Guild.deleteOne({ guildId: guild.id })
-    .then(res => console.log(`Deleted ${res.deletedCount} document(s)`));
+  Guild.deleteOne({ guildId: guild.id }).then((res) =>
+    console.log(`Deleted ${res.deletedCount} document(s)`)
+  );
 
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] Removed ${
@@ -32,4 +33,20 @@ const removeGuild = async (guild) => {
   );
 };
 
-module.exports = { createGuild, removeGuild };
+const setGuildChannel = async (channel) => {
+  let guild = await Guild.findOne({ guildId: channel.guild.id });
+  guild.botChannelId = channel.id;
+  guild.save();
+
+  console.log(
+    `[${new Date().toLocaleTimeString("en-US")}] updated bot channel in ${
+      channel.guild
+    } to #${channel.name}`
+  );
+};
+
+const verifyCommandChannel = async () => {
+    
+}
+
+module.exports = { createGuild, removeGuild, setGuildChannel };

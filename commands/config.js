@@ -1,4 +1,4 @@
-const MessageEmbed = require("discord.js").MessageEmbed;
+const guildHelper = require("../helpers/guildHelper");
 
 module.exports = {
     name: "config",
@@ -32,6 +32,9 @@ module.exports = {
     }
 }
 
-let changeCommandChannel = (interaction) => {
-    
+let changeCommandChannel = async (interaction) => {
+    let channel = interaction.options.getChannel("channel");
+    await guildHelper.setGuildChannel(channel)
+
+    interaction.reply(`This guild's bot channel was updated to #${channel.name}`)
 }
