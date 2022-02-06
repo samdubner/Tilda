@@ -149,4 +149,8 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
+client.on("guildCreate", (guild) => {
+  
+})
+
 client.login(JSON.parse(fs.readFileSync("./token.json")).token);
