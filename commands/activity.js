@@ -18,6 +18,12 @@ module.exports = {
         { name: "Chess in the Park", value: "Chess in the Park" },
         { name: "Poker Night", value: "Poker Night" },
         { name: "Betrayal", value: "Betrayal" },
+        { name: "Decoders", value: "Decoders"},
+        { name: "Ocho", value: "Ocho"},
+        { name: "Sketchy Artist", value: "Sketchy Artust"},
+        { name: "Awkword", value: "Awkword"},
+        { name: "Doodle Crew", value: "Doodle Crew"}
+
       ],
     },
   ],
@@ -40,6 +46,11 @@ module.exports = {
       "Chess in the Park": "832012774040141894",
       "Poker Night": "755827207812677713",
       "Betrayal": "773336526917861400",
+      "Decoders": "891001866073296967",
+      "Ocho": "832025144389533716",
+      "Sketchy Artist": "879864070101172255",
+      "Awkword": "879863881349087252",
+      "Doodle Crew": "878067389634314250"
     };
     let activityName = interaction.options.get("type").value;
     let activityCode = activityIds[activityName];
