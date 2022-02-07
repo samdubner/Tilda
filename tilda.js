@@ -112,13 +112,22 @@ client.on("interactionCreate", async (interaction) => {
 
   if (!client.commands.has(interaction.commandName)) return;
 
+  if (!interaction.inGuild()) {
+    interaction.reply({
+      content: "Tilda's commands can only be used inside of a server",
+      ephemeral: true,
+    });
+    return;
+  }
+
   if (
     !(await guildHelper.verifyCommandChannel(interaction)) &&
     interaction.commandName != "config" &&
     interaction.user.id != "340002869912666114"
   ) {
     interaction.reply({
-      content: "You cannot use commands outside of the bot channel",
+      content:
+        "You cannot use commands outside of the bot channel, make sure a server admin has used the `/config` command!",
       ephemeral: true,
     });
     return;
