@@ -7,16 +7,20 @@ const {
 } = require("@discordjs/voice");
 
 const { MessageEmbed } = require("discord.js");
-
 const play = require("play-dl");
 
+//use an array to store the songs in a queue
 let songQueue = [];
 let loop = false;
 
 const player = createAudioPlayer();
 
+//if the player is idle check if there are more songs to play otherwise disconnect
 player.on(AudioPlayerStatus.Idle, () => playNextOrLeave());
 
+//send an embed notifying the user there are no more songs to play in the queue or
+//shift the next song in the queue and play it or
+//if there are no songs send an embed notifying the user the queue is empty
 const playNextOrLeave = (force = false, interaction = undefined) => {
   if (!songQueue[0]) {
     let embed = new MessageEmbed()
@@ -48,6 +52,7 @@ const playNextOrLeave = (force = false, interaction = undefined) => {
   return true;
 };
 
+//send an embed displaying all the songs in the queue
 const viewQueue = (interaction) => {
   if (songQueue.length == 0) {
     let embed = new MessageEmbed()
@@ -66,6 +71,7 @@ const viewQueue = (interaction) => {
     .setTitle(`Song Queue`)
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
 
+  //embed can have 25 fields at most, so if idx is too high add a warning field
   songQueue.every((song, idx) => {
     if (idx == 24) {
       embed.addField(
@@ -82,6 +88,8 @@ const viewQueue = (interaction) => {
   interaction.reply({ embeds: [embed], ephemeral: true });
 };
 
+//check if a user is in a voice channel and if so add a song to queue
+//if there is no voice connection already, create one
 const addToQueue = async (interaction) => {
   let connection = getVoiceConnection(interaction.guild.id);
 
@@ -104,6 +112,7 @@ const addToQueue = async (interaction) => {
   let songEntry;
   let query = interaction.options.get("query").value;
 
+  //use play-dl to retrieve video information to be added to queue
   try {
     let videoInfo = await play.video_basic_info(query);
     videoInfo = videoInfo.video_details;
@@ -116,6 +125,7 @@ const addToQueue = async (interaction) => {
       user: interaction.user,
     };
   } catch (e) {
+    //if an invalid url was provided search youtube instead
     let results = await play.search(query, { limit: 1 });
     let topResult = results[0];
 
@@ -147,6 +157,7 @@ const addToQueue = async (interaction) => {
   playAudio(false);
 };
 
+//play the first song in the queue and send an embed displaying the currently playing song
 const playAudio = async (force) => {
   if (["idle", "paused", "autopaused"].includes(player.state.status) || force) {
     let songEntry = songQueue[0];
@@ -179,6 +190,7 @@ const playAudio = async (force) => {
   }
 };
 
+//verify their is a voice connection and if so destroy it and notify the user
 const leaveChannel = (interaction) => {
   let connection = getVoiceConnection(interaction.guild.id);
 
@@ -205,6 +217,7 @@ const leaveChannel = (interaction) => {
   interaction.reply({ embeds: [embed] });
 };
 
+//if the player has been idle for 2 minutes then disconnect
 const waitThenLeave = (channel) => {
   setTimeout(() => {
     if (player.state.status == "idle") {
@@ -212,6 +225,7 @@ const waitThenLeave = (channel) => {
     }
   }, 1000 * 60 * 2);
 };
+
 
 const disconnectFromChannel = (channel) => {
   try {

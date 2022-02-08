@@ -1,5 +1,3 @@
-const { MessageEmbed } = require("discord.js");
-
 const fs = require("fs");
 const mongoose = require("mongoose");
 const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
@@ -8,6 +6,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const Guild = require("../models/Guild");
 
+//create a new guild document and save to DB then return the guild
 const createGuild = async (guild) => {
   const newGuild = new Guild({
     guildId: guild.id,
@@ -19,8 +18,10 @@ const createGuild = async (guild) => {
       guild.name
     } to Tilda's DB`
   );
+  return newGuild;
 };
 
+//remove a guild from the DB
 const removeGuild = async (guild) => {
   Guild.deleteOne({ guildId: guild.id }).then((res) =>
     console.log(`Deleted ${res.deletedCount} document(s)`)
@@ -33,13 +34,13 @@ const removeGuild = async (guild) => {
   );
 };
 
+//set the bot channel of a given guild
+//create a mew guild if one is not found
 const setGuildChannel = async (channel) => {
   let guild = await Guild.findOne({ guildId: channel.guild.id });
 
   if (!guild) {
-      guild = new Guild({
-          guildId: channel.guild.id
-      })
+    guild = await createGuild(channel.guild);
   }
 
   guild.botChannelId = channel.id;
@@ -52,15 +53,20 @@ const setGuildChannel = async (channel) => {
   );
 };
 
+//compare if an interaction's channel matches a guild's bot channel and return the result
+//create a new guild if one is not found
 const verifyCommandChannel = async (interaction) => {
-    let guild = await Guild.findOne({ guildId: interaction.guild.id})
-    if (!guild) {
-        guild = new Guild({
-            guildId: interaction.guild.id
-        })
-    }
+  let guild = await Guild.findOne({ guildId: interaction.guild.id });
+  if (!guild) {
+    guild = await createGuild(interaction.guild);
+  }
 
-    return guild.botChannelId == interaction.channelId;
-}
+  return guild.botChannelId == interaction.channelId;
+};
 
-module.exports = { createGuild, removeGuild, setGuildChannel, verifyCommandChannel };
+module.exports = {
+  createGuild,
+  removeGuild,
+  setGuildChannel,
+  verifyCommandChannel,
+};

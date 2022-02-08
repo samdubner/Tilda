@@ -1,8 +1,8 @@
 const MessageEmbed = require("discord.js").MessageEmbed;
 
-const coin = require("./coinHelper");
 const Role = require("../models/Role");
 
+//create a role in the main guild and add the role's id to the user in the DB
 const createRole = async (user, interaction) => {
   if (user.role) {
     let embed = new MessageEmbed()
@@ -55,6 +55,7 @@ const createRole = async (user, interaction) => {
   interaction.reply({ embeds: [embed] });
 };
 
+//verify user has a role listed in the DB and check if they want to edit the role's name or color
 const editRole = async (user, interaction) => {
   if (!user.role) {
     let embed = new MessageEmbed()
@@ -89,6 +90,7 @@ const editRole = async (user, interaction) => {
   interaction.reply({ embeds: [embed] });
 };
 
+//change the custom role's name or color
 const updateRole = (type, data, role, interaction) => {
   console.log(
     `[${new Date().toLocaleTimeString("en-US")}] Changing ${
@@ -106,6 +108,7 @@ const updateRole = (type, data, role, interaction) => {
   }
 };
 
+//delete a user's custom role in the server and the id in the DB
 const deleteRole = async (user, interaction) => {
   if (!user.role) {
     let embed = new MessageEmbed()

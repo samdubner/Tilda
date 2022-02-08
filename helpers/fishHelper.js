@@ -1,10 +1,11 @@
-const MessageEmbed = require("discord.js").MessageEmbed;
+const { MessageEmbed } = require("discord.js");
 
 const coin = require("./coinHelper");
 const catchHelper = require("./catchHelper");
 
 const FISH = catchHelper.FISH;
 
+//show all of a users's fish in a given rarity
 const displayFish = async (interaction, rarity) => {
   let user = await coin.checkInteraction(interaction);
 
@@ -56,6 +57,7 @@ const displayFish = async (interaction, rarity) => {
   interaction.reply({ embeds: [fishEmbed] });
 };
 
+//display an embed to the user if they have no fish
 const noFish = (interaction) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
@@ -68,6 +70,7 @@ const noFish = (interaction) => {
   });
 };
 
+//show a logbook of all the species fish the user has captured
 const fishLog = async (interaction) => {
   let user = await coin.checkInteraction(interaction);
 
@@ -99,6 +102,8 @@ const fishLog = async (interaction) => {
   interaction.reply({ embeds: [fishEmbed] }).catch(console.error);
 };
 
+//verify the user has fish to sell and the fish they are trying to sell
+//is valid before selling
 const sellFishCheck = async (interaction, user, result) => {
   if (!user.fish.length) {
     noFish(interaction);
@@ -113,6 +118,7 @@ const sellFishCheck = async (interaction, user, result) => {
   sellFish(interaction, user, [...result]);
 };
 
+//sell a user's fish
 sellFish = (interaction, user, fish) => {
   let totalSale = 0;
   let totalFish = fish.length;
@@ -140,6 +146,7 @@ sellFish = (interaction, user, fish) => {
   interaction.reply({ embeds: [fishEmbed] }).catch(console.error);
 };
 
+//let a user know they have no fish of that kind to sell
 const invalidFish = (interaction) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
@@ -149,6 +156,7 @@ const invalidFish = (interaction) => {
   interaction.reply({ embeds: [embed] });
 };
 
+//check a user to see if they have a single kind of fish
 const checkForFish = async (interaction, fishName) => {
   let user = await coin.checkInteraction(interaction);
 
@@ -167,6 +175,7 @@ const checkForFish = async (interaction, fishName) => {
   displaySingleFish(interaction, fishList);
 };
 
+//send an embed displaying all of a user's fish of a given species
 const displaySingleFish = (interaction, fishList) => {
   const fishEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)

@@ -1,8 +1,9 @@
-const MessageEmbed = require("discord.js").MessageEmbed;
+const { MessageEmbed } = require("discord.js");
 
 const coin = require("./coinHelper");
 const Item = require("../models/Item");
 
+//send an embed displaying all the items in the shop
 const displayShop = async (interaction) => {
   let shopItems = await Item.find();
 
@@ -19,6 +20,8 @@ const displayShop = async (interaction) => {
   interaction.reply({ embeds: [ShopEmbed] }).catch(console.error);
 };
 
+//verify the user doesn't already have the selected item and check
+//if they have enough coins to purchase the selected item
 const handlePurchase = async (interaction, item) => {
   let user = await coin.checkInteraction(interaction);
 
@@ -43,6 +46,7 @@ const handlePurchase = async (interaction, item) => {
     .catch(console.error);
 };
 
+//send an embed telling the user they don't have enough coins to buy the selected item
 const insufficientCoins = (interaction) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
@@ -51,6 +55,7 @@ const insufficientCoins = (interaction) => {
   interaction.reply({ embeds: [embed], ephemeral: true });
 };
 
+//send an embed notifying the user of their successful purchase
 const successfulPurchase = async (interaction, user, selectedItem) => {
   let guildMember = await interaction.guild.members.fetch(user.userId);
   const ShopEmbed = new MessageEmbed()
@@ -63,6 +68,7 @@ const successfulPurchase = async (interaction, user, selectedItem) => {
   interaction.reply({ embeds: [ShopEmbed] });
 };
 
+//send the user an embed if they already own the item they are attempting to purchase
 const failedPurchase = (interaction) => {
   const FailEmbed = new MessageEmbed()
     .setColor(`#ff0000`)

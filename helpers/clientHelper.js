@@ -2,18 +2,18 @@ const MAIN_GUILD_ID = "881621682870190091";
 const PERSON_ROLE_ID = "881627506908737546";
 const GENERAL_CHANNEL_ID = "881621682870190094";
 
+const User = require("../models/User");
+
 const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
 
+//store random strings in another file
 let strings = JSON.parse(fs.readFileSync("./helpers/strings.json"));
-
 const ACTIVITIES = strings.activities;
-
 const NOUNS = strings.nouns;
 const ADJECTIVES = strings.adjectives;
 
-const User = require("../models/User");
-
+//set the bot's activity to a random string
 const setActivity = async (client) => {
   client.user.setActivity(
     ACTIVITIES[Math.floor(Math.random() * ACTIVITIES.length)],
@@ -21,6 +21,7 @@ const setActivity = async (client) => {
   );
 };
 
+//randomize the role color in the bot's main server
 const randomizeRoleColor = async (client) => {
   let guild;
   try {
@@ -34,6 +35,7 @@ const randomizeRoleColor = async (client) => {
   await role.setColor(color);
 };
 
+//randomize the server in the bot's main server
 const randomizeServerName = async (client) => {
   let guild;
   try {
@@ -57,7 +59,7 @@ const randomizeServerName = async (client) => {
   let color = guildRole.hexColor;
 
   let embed = new MessageEmbed()
-    .setAuthor({name: `Updated Server Name`, iconURL: guild.iconURL()})
+    .setAuthor({ name: `Updated Server Name`, iconURL: guild.iconURL() })
     .setColor(color)
     .setThumbnail(guild.iconURL)
     .setTitle(randServerName)

@@ -18,7 +18,7 @@ module.exports = {
   async execute(interaction) {
     if (interaction.user.id != "340002869912666114") {
       interaction.reply({
-        content: "Sorry, only administrators can run this command",
+        content: "Sorry, only the bot owner can run this command",
         ephemeral: true,
       });
       return;

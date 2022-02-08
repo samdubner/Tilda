@@ -1,7 +1,8 @@
-const MessageEmbed = require("discord.js").MessageEmbed;
+const { MessageEmbed } = require("discord.js");
 
 const Fish = require("../models/Fish");
 
+//constant array storing all rarities along with their respective values and fish names
 const FISH = {
   rarities: [
     {
@@ -59,9 +60,11 @@ const FISH = {
   ],
 };
 
+//the database in the id for the rod store item & fishing cost
 const rodId = "606a5c0169756d515427c86e";
 const pondPrice = 25;
 
+//verify user has a rod and enough money to catch a fish before generating a fish
 const catchFish = async (interaction, user) => {
   if (!user.items.includes(rodId)) {
     noRod(interaction);
@@ -77,6 +80,7 @@ const catchFish = async (interaction, user) => {
   }
 };
 
+//generate a fish's rarity then using the rarity generate a size and price
 const generateFish = (interaction, user) => {
   let rarity = generateRarity();
 
@@ -114,10 +118,12 @@ const generateFish = (interaction, user) => {
 
   interaction.reply({ embeds: [FishEmbed] });
 
+  //add fish to the user and then save to the DB
   user.fish.push(fish);
   user.save().catch(console.error);
 };
 
+//format fish names for friendliness
 const fName = (name) => {
   arr = name.split(" ");
   arr = arr.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
@@ -125,6 +131,7 @@ const fName = (name) => {
   return name;
 };
 
+//determine the color of the embed of the fish's rarity
 const getColor = (rarity) => {
   switch (rarity) {
     case "common":
@@ -140,10 +147,12 @@ const getColor = (rarity) => {
   }
 };
 
+//generate a fish's price using its size and rarity
 const generatePrice = (size, rarity) => {
   return Math.floor(size / 2 + 10 ** (rarity.value - 1));
 };
 
+//generate a fish's size given its rarity
 const generateSize = (rarity) => {
   let minVal;
   let maxVal;
@@ -173,6 +182,7 @@ const generateSize = (rarity) => {
   return Math.floor(Math.random() * (maxVal - minVal)) + minVal + 1;
 };
 
+//generate a fish's rarity using weighted values
 const generateRarity = () => {
   // [common, uncommon, rare, legendary, mythical]
   let weights = [725, 175, 80, 18, 2];
@@ -191,6 +201,7 @@ const generateRarity = () => {
   }
 };
 
+//send an embed informing the user that they don't have the fishing rod
 const noRod = (interaction) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
@@ -205,6 +216,7 @@ const noRod = (interaction) => {
   });
 };
 
+//send an embed informing the user that they don't have enough coins to fish
 const insufficientCoins = (interaction) => {
   const embed = new MessageEmbed()
     .setColor("#ff0000")
