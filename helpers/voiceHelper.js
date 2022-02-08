@@ -217,16 +217,16 @@ const leaveChannel = (interaction) => {
   interaction.reply({ embeds: [embed] });
 };
 
-//if the player has been idle for 2 minutes then disconnect
+//create a timeout for 2 minutes before disconnected from the channel
 const waitThenLeave = (channel) => {
   setTimeout(() => {
-    if (player.state.status == "idle") {
+    if (player.state.status == "idle" || player.state.status == "paused") {
       disconnectFromChannel(channel);
     }
   }, 1000 * 60 * 2);
 };
 
-
+//destroy the connection and send a message to the user that the bot has disconnected
 const disconnectFromChannel = (channel) => {
   try {
     let connection = getVoiceConnection(channel.guild.id);
@@ -244,6 +244,7 @@ const disconnectFromChannel = (channel) => {
   }
 };
 
+//change the status of "loop" and send an embed with the updated status
 const loopCurrentSong = (interaction) => {
   loop = !loop;
   let status = loop ? "ON" : "OFF";
