@@ -17,7 +17,6 @@ client.commands = new Collection();
 const fs = require("fs");
 
 const commandFiles = fs.readdirSync("./commands");
-const testingFiles = fs.readdirSync("./testing");
 
 const schedule = require("node-schedule");
 
@@ -47,13 +46,6 @@ client.on("ready", async () => {
     let command = require(`./commands/${file}`);
 
     client.application.commands.create(command);
-    client.commands.set(command.name, command);
-  }
-
-  for (let file of testingFiles) {
-    let command = require(`./testing/${file}`);
-
-    mainGuild.commands.create(command);
     client.commands.set(command.name, command);
   }
 
