@@ -1,4 +1,4 @@
-// const voice = require("../helpers/voiceHelper");
+import voice from "../helpers/voiceHelper";
 
 module.exports = {
   name: "loop",

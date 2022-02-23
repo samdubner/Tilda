@@ -1,4 +1,4 @@
-// const MessageEmbed = require("discord.js").MessageEmbed;
+import { MessageEmbed } from "discord.js";
 
 module.exports = {
   name: "roll",

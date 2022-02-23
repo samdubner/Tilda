@@ -1,6 +1,5 @@
-const voice = require("../helpers/voiceHelper");
-
-// const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
+import voice from "../helpers/voiceHelper";
 
 module.exports = {
   name: "skip",

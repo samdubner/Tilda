@@ -1,5 +1,5 @@
 // const fishHelper = require("../helpers/fishHelper");
-// const coin = require("../helpers/coinHelper");
+import coin from "../helpers/coinHelper";
 
 module.exports = {
   name: "sell",

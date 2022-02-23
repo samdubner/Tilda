@@ -1,4 +1,4 @@
-// const coin = require("../helpers/coinHelper.js");
+import coinHelper from "../helpers/coinHelper"
 // const User = require("../models/User");
 // const Role = require("../models/Role");
 const roleHelper = require("../helpers/roleHelper");
@@ -54,7 +54,7 @@ module.exports = {
       interaction.reply({content: "You cannot use this command outside of Tilda's main server", ephemeral: true})
       return
     }
-    let user = await coin.checkInteraction(interaction);
+    let user = await coinHelper.checkInteraction(interaction);
 
     let sub = interaction.options.getSubcommand()
 

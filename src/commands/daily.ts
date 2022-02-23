@@ -1,15 +1,13 @@
-// const MessageEmbed = require("discord.js").MessageEmbed;
-
-// const User = require("../models/User");
-const helper = require("../helpers/coinHelper");
-import User from "../models/User"
+import { MessageEmbed } from "discord.js";
+import coinHelper from "../helpers/coinHelper";
+import User from "../models/User";
 
 module.exports = {
   name: "daily",
   description:
     "Get 100 coins once every 24 hours (do it every day for a bonus)!",
   async execute(interaction) {
-    let user = await helper.checkInteraction(interaction);
+    let user = await coinHelper.checkInteraction(interaction);
 
     let dailyDone = user.dailyDone;
 

@@ -258,7 +258,7 @@ const loopCurrentSong = (interaction) => {
   interaction.reply({ embeds: [embed] });
 };
 
-module.exports = {
+export default {
   addToQueue,
   leaveChannel,
   playNextOrLeave,

@@ -1,4 +1,4 @@
-// const MessageEmbed = require("discord.js").MessageEmbed;
+import { MessageEmbed } from "discord.js";
 
 import User from "../models/User"
 const helper = require("../helpers/coinHelper");

@@ -1,9 +1,7 @@
-// const MessageEmbed = require("discord.js").MessageEmbed;
+import { MessageEmbed } from "discord.js";
+import coinHelper from "../helpers/coinHelper";
 
-// const User = require("../models/User");
-const helper = require("../helpers/coinHelper");
-
-import User from "../models/User"
+import User from "../models/User";
 
 module.exports = {
   name: "give",
@@ -23,8 +21,8 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    let sender = await helper.checkInteraction(interaction);
-    let receiptCheck = await helper.checkUser(
+    let sender = await coinHelper.checkInteraction(interaction);
+    let receiptCheck = await coinHelper.checkUser(
       interaction.options.get("person").user
     );
 

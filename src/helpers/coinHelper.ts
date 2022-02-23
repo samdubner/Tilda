@@ -1,8 +1,7 @@
-// const MessageEmbed = require("discord.js").MessageEmbed;
+import { MessageEmbed } from "discord.js";
 
-// const mongoose = require("mongoose");
 import * as fs from "fs";
-import * as mongoose from "mongoose"
+import * as mongoose from "mongoose";
 const db = JSON.parse(fs.readFileSync("./token.json").toString()).mongoURI;
 
 const MAIN_GUILD_ID = "881621682870190091";
@@ -21,12 +20,12 @@ mongoose
   )
   .catch((err) => console.log(err));
 
-const User = require("../models/User");
+import User from "../models/User";
 
 interface CoinEvent {
-  isUp: boolean,
-  messageId: string,
-  coinAmount?: number
+  isUp: boolean;
+  messageId: string;
+  coinAmount?: number;
 }
 
 let coinEvent: CoinEvent = {
@@ -257,7 +256,7 @@ const checkUser = async (user) => {
   return !!check;
 };
 
- export default {
+export default {
   randomCoinEvent,
   bleedTopUser,
   checkStreaks,

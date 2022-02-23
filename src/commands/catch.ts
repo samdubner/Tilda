@@ -1,7 +1,6 @@
+import { MessageEmbed } from "discord.js";
+// import coinHelper from "../helpers/coinHelper";
 // const catchHelper = require("../helpers/catchHelper");
-// const coin = require("../helpers/coinHelper");
-
-// const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "catch",
@@ -12,7 +11,7 @@ module.exports = {
       .setTitle("Sorry, this command has been temporarily disabled")
       
     interaction.reply({embeds: [embed], ephemeral: true})
-    // let user = await coin.checkInteraction(interaction);
+    // let user = await coinHelper.checkInteraction(interaction);
 
     // catchHelper.catchFish(interaction, user);
   },
