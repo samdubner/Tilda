@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./out",
+        "target": "ES2019",
+        "module": "CommonJS",
+        "removeComments": true
+    },
+    "include": ["./src/**/*"]
+}

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node tilda.js"
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node ./out/tilda.js"
   },
   "author": "Samuel Dubner",
   "repository": "https://github.com/samdubner/Tilda",
