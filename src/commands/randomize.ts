@@ -1,4 +1,4 @@
-const clientHelper = require("../helpers/clientHelper");
+import clientHelper from "../helpers/clientHelper";
 
 module.exports = {
   name: "randomize",

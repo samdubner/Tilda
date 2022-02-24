@@ -80,4 +80,4 @@ const failedPurchase = (interaction) => {
   interaction.reply({ embeds: [FailEmbed], ephemeral: true });
 };
 
-module.exports = { displayShop, handlePurchase };
+export default { displayShop, handlePurchase };

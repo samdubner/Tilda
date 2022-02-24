@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
 // import coinHelper from "../helpers/coinHelper";
-// const catchHelper = require("../helpers/catchHelper");
+// import catchHelper from "../helpers/catchHelper";
 
 module.exports = {
   name: "catch",

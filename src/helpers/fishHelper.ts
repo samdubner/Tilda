@@ -1,13 +1,12 @@
-// const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
 
-// const coin = require("./coinHelper");
-const catchHelper = require("./catchHelper");
-
-// const FISH = catchHelper.FISH;
+import coinHelper from "../helpers/coinHelper";
+import catchHelper from "../helpers/catchHelper";
+const FISH = catchHelper.FISH;
 
 //show all of a users's fish in a given rarity
 const displayFish = async (interaction, rarity) => {
-  let user = await coin.checkInteraction(interaction);
+  let user = await coinHelper.checkInteraction(interaction);
 
   if (!user.fish || user.fish.length == 0) {
     noFish(interaction);
@@ -72,7 +71,7 @@ const noFish = (interaction) => {
 
 //show a logbook of all the species fish the user has captured
 const fishLog = async (interaction) => {
-  let user = await coin.checkInteraction(interaction);
+  let user = await coinHelper.checkInteraction(interaction);
 
   const fishEmbed = new MessageEmbed()
     .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
@@ -158,7 +157,7 @@ const invalidFish = (interaction) => {
 
 //check a user to see if they have a single kind of fish
 const checkForFish = async (interaction, fishName) => {
-  let user = await coin.checkInteraction(interaction);
+  let user = await coinHelper.checkInteraction(interaction);
 
   if (!user.fish) {
     noFish(interaction);
@@ -198,7 +197,7 @@ const displaySingleFish = (interaction, fishList) => {
   interaction.reply({ embeds: [fishEmbed] });
 };
 
-module.exports = {
+export default {
   displayFish,
   fishLog,
   sellFishCheck,

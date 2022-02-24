@@ -1,4 +1,4 @@
-// const fishHelper = require("../helpers/fishHelper");
+import fishHelper from "../helpers/fishHelper";
 
 module.exports = {
   name: "inventory",

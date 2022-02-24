@@ -1,4 +1,4 @@
-// const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
 
 const Fish = require("../models/Fish");
 
@@ -104,7 +104,7 @@ const generateFish = (interaction, user) => {
   }
 
   const FishEmbed = new MessageEmbed()
-    .setColor(embedColor)
+    .setColor(`#${embedColor}`)
     .setTitle("You caught a fish!")
     .setThumbnail(interaction.user.displayAvatarURL())
     .setDescription(
@@ -231,7 +231,7 @@ const insufficientCoinsForPond = (interaction) => {
   });
 };
 
-module.exports = {
+export default {
   FISH,
   catchFish,
   fName,

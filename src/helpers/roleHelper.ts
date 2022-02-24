@@ -1,6 +1,5 @@
-// const MessageEmbed = require("discord.js").MessageEmbed;
-
-const Role = require("../models/Role");
+import { MessageEmbed } from "discord.js";
+import Role from "../models/Role";
 
 //create a role in the main guild and add the role's id to the user in the DB
 const createRole = async (user, interaction) => {
@@ -130,7 +129,7 @@ const deleteRole = async (user, interaction) => {
   user.save();
 
   let embed = new MessageEmbed()
-    .setColor("00ff00")
+    .setColor("#00ff00")
     .setTitle("Deleted your custom role")
     .setDescription("Deleted and removed your custom role");
 

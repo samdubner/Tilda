@@ -2,6 +2,8 @@ const MAIN_GUILD_ID = "881621682870190091";
 const PERSON_ROLE_ID = "881627506908737546";
 const GENERAL_CHANNEL_ID = "881621682870190094";
 
+import { MessageEmbed } from "discord.js";
+
 import User from "../models/User";
 import * as fs from "fs";
 
@@ -69,7 +71,7 @@ const randomizeServerName = async (client) => {
   channel.send({ embeds: [embed] });
 };
 
-module.exports = {
+export default {
   setActivity,
   randomizeRoleColor,
   randomizeServerName,

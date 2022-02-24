@@ -34,9 +34,9 @@ const commandFiles = fs.readdirSync("./out/commands");
 
 const schedule = require("node-schedule");
 
-const coinHelper = require("./helpers/coinHelper");
-const clientHelper = require("./helpers/clientHelper");
-const guildHelper = require("./helpers/guildHelper.js");
+import clientHelper from "./helpers/clientHelper";
+import coinHelper from "./helpers/coinHelper";
+import guildHelper from "./helpers/guildHelper";
 
 schedule.scheduleJob("0 0 * * *", async () => {
   let topUsers = await coinHelper.bleedTopUser();

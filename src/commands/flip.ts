@@ -1,7 +1,7 @@
 import { MessageEmbed } from "discord.js";
 
-import User from "../models/User"
-const helper = require("../helpers/coinHelper");
+import coinHelper from "../helpers/coinHelper";
+import User from "../models/User";
 
 module.exports = {
   name: "flip",
@@ -15,11 +15,12 @@ module.exports = {
     },
   ],
   async execute(interaction) {
-    let user = await helper.checkInteraction(interaction);
-    let args = interaction.options.get("amount").value.toLowerCase();
+    let user = await coinHelper.checkInteraction(interaction);
+    let bet = interaction.options.get("amount").value.trim().toLowerCase();
+
+    if (bet == "all" || bet == "a") bet = user.score;
 
     let flipResult = Math.floor(Math.random() * 2);
-    let bet = Math.ceil(args.split(" ")[0]);
 
     if (user.score == 0) {
       sendErrorMessage(
@@ -29,10 +30,10 @@ module.exports = {
       return;
     }
 
-    if (bet <= 0) {
+    if (bet <= 0 || !bet) {
       sendErrorMessage(
         interaction,
-        "You cannot bet a number of coins less than or equal to zero"
+        "You have to bet a valid amount, please try again with a valid number"
       );
       return;
     }
@@ -45,60 +46,33 @@ module.exports = {
       return;
     }
 
-    if (
-      (args == null || args == undefined || isNaN(args) || args == "") &&
-      args != "all" &&
-      args != "a"
-    ) {
-      sendErrorMessage(
-        interaction,
-        "You have to bet a valid amount, please try again with a valid number"
-      );
-      return;
-    }
-
-    if (args == "all" || args == "a") bet = user.score;
-
-    let scoreWon = bet;
-
-    let totalCoins;
-    let totalCoinsVariation;
-
-    let coinVariation;
-
-    if (flipResult) {
-      totalCoins = parseInt(user.score) + scoreWon;
-      coinVariation = scoreWon == 1 ? "coin" : "coins";
-      totalCoinsVariation = totalCoins == 1 ? "coin" : "coins";
-      let embed = new MessageEmbed()
-        .setColor("#00ff00")
-        .setTitle(
-          `${interaction.user.username} won ${scoreWon} ${coinVariation}!`
-        )
-        .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
-        .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
-      interaction.reply({ embeds: [embed] });
-      scoreWon = bet;
-    } else {
-      totalCoins = parseInt(user.score) - scoreWon;
-      coinVariation = scoreWon == 1 ? "coin" : "coins";
-      totalCoinsVariation = totalCoins == 1 ? "coin" : "coins";
-      let embed = new MessageEmbed()
-        .setColor("#ff0000")
-        .setTitle(
-          `${interaction.user.username} lost ${scoreWon} ${coinVariation}`
-        )
-        .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
-        .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
-      interaction.reply({ embeds: [embed] });
-      scoreWon = bet * -1;
-    }
+    let scoreWon = sendResultEmbed(interaction, !!flipResult, user, bet);
 
     User.updateOne(
       { userId: interaction.user.id },
       { score: parseInt(user.score) + scoreWon }
     ).catch(console.error);
   },
+};
+
+const sendResultEmbed = (
+  interaction,
+  result: boolean,
+  user,
+  bet: number
+): number => {
+  let coinVariation = bet == 1 ? "coin" : "coins";
+  let totalCoins = parseInt(user.score) + bet;
+  let totalCoinsVariation = totalCoins == 1 ? "coin" : "coins";
+
+  let embed = new MessageEmbed()
+    .setColor(`#${result ? "00ff00" : "ff0000"}`)
+    .setTitle(`${interaction.user.username} won ${bet} ${coinVariation}!`)
+    .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
+    .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
+
+  interaction.reply({ embeds: [embed] });
+  return result ? bet : -1 * bet;
 };
 
 const sendErrorMessage = (interaction, error) => {

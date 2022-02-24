@@ -1,4 +1,4 @@
-const guildHelper = require("../helpers/guildHelper");
+import guildHelper from "../helpers/guildHelper";
 
 module.exports = {
   name: "config",
@@ -21,7 +21,11 @@ module.exports = {
   ],
   async execute(interaction) {
     if (!interaction.member.permissions.has("ADMINISTRATOR")) {
-      interaction.reply({ content: "Sorry, this command can only be run by people with the ADMINISTRATOR permission", ephemeral: true });
+      interaction.reply({
+        content:
+          "Sorry, this command can only be run by people with the ADMINISTRATOR permission",
+        ephemeral: true,
+      });
       return;
     }
 
@@ -32,8 +36,7 @@ module.exports = {
         changeCommandChannel(interaction);
         break;
       default:
-        console.log("subcommand not found in config.js");
-        return;
+        console.log("subcommand not found in config.js");       return;
     }
   },
 };

@@ -5,9 +5,9 @@ const {
   createAudioPlayer,
   createAudioResource,
 } = require("@discordjs/voice");
-
-// const { MessageEmbed } = require("discord.js");
 const play = require("play-dl");
+
+import { MessageEmbed } from "discord.js";
 
 //use an array to store the songs in a queue
 let songQueue = [];

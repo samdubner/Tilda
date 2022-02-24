@@ -1,10 +1,10 @@
-const fs = require("fs");
-const mongoose = require("mongoose");
-const db = JSON.parse(fs.readFileSync("./token.json")).mongoURI;
+import * as fs from "fs";
+import * as mongoose from "mongoose";
+const db = JSON.parse(fs.readFileSync("./token.json").toString()).mongoURI;
 
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true });
 
-import Guild from "../models/Guild"
+import Guild from "../models/Guild";
 
 //create a new guild document and save to DB then return the guild
 const createGuild = async (guild) => {
@@ -64,7 +64,7 @@ const verifyCommandChannel = async (interaction) => {
   return guild.botChannelId == interaction.channelId;
 };
 
-module.exports = {
+export default {
   createGuild,
   removeGuild,
   setGuildChannel,

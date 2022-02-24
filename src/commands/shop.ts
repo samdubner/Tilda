@@ -1,4 +1,4 @@
-const shop = require("../helpers/shopHelper");
+import shopHelper from "../helpers/shopHelper";
 
 module.exports = {
   name: "shop",
@@ -34,11 +34,11 @@ module.exports = {
 
     switch (options) {
       case "list":
-        shop.displayShop(interaction);
+        shopHelper.displayShop(interaction);
         break;
       case "buy":
         let item = interaction.options.get("item").value;
-        shop.handlePurchase(interaction, item);
+        shopHelper.handlePurchase(interaction, item);
     }
   },
 };
