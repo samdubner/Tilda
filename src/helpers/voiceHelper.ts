@@ -5,7 +5,7 @@ const {
   createAudioPlayer,
   createAudioResource,
 } = require("@discordjs/voice");
-const play = require("play-dl");
+import play from "play-dl";
 
 import { MessageEmbed } from "discord.js";
 
@@ -115,12 +115,12 @@ const addToQueue = async (interaction) => {
   //use play-dl to retrieve video information to be added to queue
   try {
     let videoInfo = await play.video_basic_info(query);
-    videoInfo = videoInfo.video_details;
+    let videoDetails = videoInfo.video_details;
 
     songEntry = {
-      url: videoInfo.url,
-      title: videoInfo.title,
-      duration: videoInfo.durationRaw,
+      url: videoDetails.url,
+      title: videoDetails.title,
+      duration: videoDetails.durationRaw,
       channel: interaction.channel,
       user: interaction.user,
     };
@@ -163,7 +163,6 @@ const playAudio = async (force) => {
     let songEntry = songQueue[0];
 
     let connection = getVoiceConnection(songEntry.channel.guild.id);
-
     const stream = await play.stream(songEntry.url);
 
     let resource = createAudioResource(stream.stream, {

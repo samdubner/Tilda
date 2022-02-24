@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as mongoose from "mongoose";
 const db = JSON.parse(fs.readFileSync("./token.json").toString()).mongoURI;
 
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(db);
 
 import Guild from "../models/Guild";
 

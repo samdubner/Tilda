@@ -12,7 +12,7 @@ const MAIN_BOT_CHANNEL = "881622803449774090";
 const TEST_BOT_CHANNEL = "469659852109643788";
 
 mongoose
-  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(db)
   .then(() =>
     console.log(
       `[${new Date().toLocaleTimeString("en-US")}] Connected to Tilda's DB`
