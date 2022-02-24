@@ -46,33 +46,38 @@ module.exports = {
       return;
     }
 
-    let scoreWon = sendResultEmbed(interaction, !!flipResult, user, bet);
+    let scoreWon = await sendResultEmbed(interaction, !!flipResult, user, bet);
 
     User.updateOne(
       { userId: interaction.user.id },
-      { score: parseInt(user.score) + scoreWon }
+      { score: user.score + scoreWon }
     ).catch(console.error);
   },
 };
 
-const sendResultEmbed = (
+const sendResultEmbed = async (
   interaction: CommandInteraction,
   result: boolean,
   user,
-  bet: number
-): number => {
+  bet
+) => {
   let coinVariation = bet == 1 ? "coin" : "coins";
-  let totalCoins = parseInt(user.score) + bet;
+  let totalCoins = result
+    ? user.score + parseInt(bet)
+    : user.score - parseInt(bet);
   let totalCoinsVariation = totalCoins == 1 ? "coin" : "coins";
+  let resultText = result ? "won" : "lost";
 
   let embed = new MessageEmbed()
     .setColor(`#${result ? "00ff00" : "ff0000"}`)
-    .setTitle(`${interaction.user.username} won ${bet} ${coinVariation}!`)
+    .setTitle(
+      `${interaction.user.username} ${resultText} ${bet} ${coinVariation}`
+    )
     .setDescription(`You now have ${totalCoins} ${totalCoinsVariation}`)
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif");
 
-  interaction.reply({ embeds: [embed] });
-  return result ? bet : -1 * bet;
+  await interaction.reply({ embeds: [embed] });
+  return result ? parseInt(bet) : -1 * parseInt(bet);
 };
 
 const sendErrorMessage = (interaction, error) => {
