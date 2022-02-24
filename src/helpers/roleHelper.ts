@@ -142,7 +142,7 @@ const deleteRole = async (user, interaction) => {
   );
 };
 
-module.exports = {
+export default {
   createRole,
   editRole,
   deleteRole,

@@ -1,7 +1,5 @@
 import coinHelper from "../helpers/coinHelper"
-// const User = require("../models/User");
-// const Role = require("../models/Role");
-const roleHelper = require("../helpers/roleHelper");
+import roleHelper from "../helpers/roleHelper";
 
 module.exports = {
   name: "role",

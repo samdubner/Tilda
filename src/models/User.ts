@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-// const Role = require("./Role");
-import Role from "./Role"
-const Fish = require("./Fish");
+
+import Role from "./Role";
+import Fish from "./Fish";
 
 const UserSchema = new Schema({
   userId: {
@@ -45,4 +45,4 @@ const UserSchema = new Schema({
   },
 });
 
-export default mongoose.model("User", UserSchema)
+export default mongoose.model("User", UserSchema);

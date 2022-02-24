@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { CommandInteraction, MessageEmbed } from "discord.js";
 
 import coinHelper from "../helpers/coinHelper";
 import User from "../models/User";
@@ -56,7 +56,7 @@ module.exports = {
 };
 
 const sendResultEmbed = (
-  interaction,
+  interaction: CommandInteraction,
   result: boolean,
   user,
   bet: number
