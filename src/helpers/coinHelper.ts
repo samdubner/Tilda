@@ -5,11 +5,10 @@ import * as mongoose from "mongoose";
 const db = JSON.parse(fs.readFileSync("./token.json").toString()).mongoURI;
 
 const MAIN_GUILD_ID = "881621682870190091";
+const MAIN_BOT_CHANNEL = "881622803449774090";
+
 const CHAMPION_ROLE_ID = "881626975649796097";
 const PODIUM_ROLE_ID = "881627048014151730";
-
-const MAIN_BOT_CHANNEL = "881622803449774090";
-const TEST_BOT_CHANNEL = "469659852109643788";
 
 mongoose
   .connect(db)
@@ -36,7 +35,7 @@ let coinEvent: CoinEvent = {
   currentAmount: 0,
 };
 
-const randomCoinEvent = async (client, guildId) => {
+const randomCoinEvent = async (client) => {
   let startingAmount = Math.floor(Math.random() * 100) + 51;
 
   let embed = new MessageEmbed()
@@ -45,10 +44,7 @@ const randomCoinEvent = async (client, guildId) => {
     .setTitle("Random Coin Event")
     .setDescription(`Use \`/claim\` to win ${startingAmount} coins!`);
 
-  let channelId =
-    guildId == MAIN_GUILD_ID ? MAIN_BOT_CHANNEL : TEST_BOT_CHANNEL;
-
-  let botChannel = await client.channels.resolve(channelId);
+  let botChannel = await client.channels.fetch(MAIN_BOT_CHANNEL);
 
   botChannel
     .send({ embeds: [embed] })
