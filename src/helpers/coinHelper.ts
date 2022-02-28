@@ -68,22 +68,23 @@ const randomCoinEvent = async (client, guildId) => {
     .catch(console.error);
 
   let eventInterval = setInterval(() => {
-    coinEvent.currentAmount -= 15;
+    coinEvent.currentAmount -= Math.floor(Math.random() * 15) + 5;
 
     let percentLeft = Math.trunc(
       (coinEvent.currentAmount / coinEvent.startingAmount) * 100
     );
 
+    let redVal = ((100 - percentLeft) * 2.56).toString(16).substring(0, 2);
+    let greenVal = (percentLeft * 2.56).toString(16).substring(0, 2);
+
     if (coinEvent.currentAmount > 0) {
       let embed = new MessageEmbed()
-        .setColor(
-          `#${((100 - percentLeft) * 2.56).toString(16)}${(
-            percentLeft * 2.56
-          ).toString(16)}0`
-        )
+        .setColor(`#${redVal}${greenVal}00`)
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
         .setTitle("Random Coin Event")
-        .setDescription(`Use \`/claim\` to win ${startingAmount} coins!`);
+        .setDescription(
+          `Use \`/claim\` to win ${coinEvent.currentAmount} coins!`
+        );
 
       botChannel.messages.cache
         .get(coinEvent.messageId)
@@ -97,6 +98,10 @@ const randomCoinEvent = async (client, guildId) => {
           `This coin event has expired and can no longer be claimed!`
         );
 
+      botChannel.messages.cache
+        .get(coinEvent.messageId)
+        .edit({ embeds: [embed] });
+
       coinEvent = {
         isUp: false,
         startingAmount: 0,
@@ -104,13 +109,9 @@ const randomCoinEvent = async (client, guildId) => {
         messageId: "",
       };
 
-      botChannel.messages.cache
-        .get(coinEvent.messageId)
-        .edit({ embeds: [embed] });
-
       clearInterval(eventInterval);
     }
-  }, 1000 * 60 * 6);
+  }, 1000 * 60 * 10);
 };
 
 const claim = async (interaction, user) => {
