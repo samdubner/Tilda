@@ -34,6 +34,7 @@ let coinEvent: CoinEvent = {
   startingAmount: 0,
   currentAmount: 0,
 };
+let eventInterval;
 
 const randomCoinEvent = async (client) => {
   let startingAmount = Math.floor(Math.random() * 100) + 51;
@@ -63,7 +64,7 @@ const randomCoinEvent = async (client) => {
     })
     .catch(console.error);
 
-  let eventInterval = setInterval(() => {
+  eventInterval = setInterval(() => {
     coinEvent.currentAmount -= Math.floor(Math.random() * 15) + 5;
 
     let percentLeft = Math.trunc(
@@ -85,7 +86,7 @@ const randomCoinEvent = async (client) => {
       botChannel.messages.cache
         .get(coinEvent.messageId)
         .edit({ embeds: [embed] });
-    } else {
+    } else if (coinEvent.isUp) {
       let embed = new MessageEmbed()
         .setColor(`#ff0000`)
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
@@ -144,6 +145,7 @@ const claim = async (interaction, user) => {
     currentAmount: 0,
     messageId: "",
   };
+  clearInterval(eventInterval);
 
   return true;
 };
