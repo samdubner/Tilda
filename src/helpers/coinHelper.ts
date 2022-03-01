@@ -5,11 +5,10 @@ import * as mongoose from "mongoose";
 const db = JSON.parse(fs.readFileSync("./token.json").toString()).mongoURI;
 
 const MAIN_GUILD_ID = "881621682870190091";
+const MAIN_BOT_CHANNEL = "881622803449774090";
+
 const CHAMPION_ROLE_ID = "881626975649796097";
 const PODIUM_ROLE_ID = "881627048014151730";
-
-const MAIN_BOT_CHANNEL = "881622803449774090";
-const TEST_BOT_CHANNEL = "469659852109643788";
 
 mongoose
   .connect(db)
@@ -25,42 +24,69 @@ import User from "../models/User";
 interface CoinEvent {
   isUp: boolean;
   messageId: string;
-  coinAmount?: number;
+  startingAmount: number;
+  currentAmount: number;
 }
 
 let coinEvent: CoinEvent = {
   isUp: false,
   messageId: "",
+  startingAmount: 0,
+  currentAmount: 0,
 };
+let eventInterval;
 
-const randomCoinEvent = async (client, guildId) => {
-  let coinAmount = Math.floor(Math.random() * 50) + 51;
+const randomCoinEvent = async (client) => {
+  let startingAmount = Math.floor(Math.random() * 100) + 51;
 
   let embed = new MessageEmbed()
-    .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    .setColor(`#00ff00`)
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
     .setTitle("Random Coin Event")
-    .setDescription(`Use \`/claim\` to win ${coinAmount} coins!`);
+    .setDescription(`Use \`/claim\` to win ${startingAmount} coins!`);
 
-  let channelId =
-    guildId == MAIN_GUILD_ID ? MAIN_BOT_CHANNEL : TEST_BOT_CHANNEL;
-
-  let botChannel = await client.channels.resolve(channelId);
+  let botChannel = await client.channels.fetch(MAIN_BOT_CHANNEL);
 
   botChannel
     .send({ embeds: [embed] })
     .then((message) => {
-      coinEvent = { isUp: true, messageId: message.id, coinAmount };
+      coinEvent = {
+        isUp: true,
+        messageId: message.id,
+        startingAmount,
+        currentAmount: startingAmount,
+      };
       console.log(
         `[${new Date().toLocaleTimeString(
           "en-US"
-        )}] Generated new coin event for ${coinAmount} coins`
+        )}] Generated new coin event for ${startingAmount} coins`
       );
     })
     .catch(console.error);
 
-  setTimeout(() => {
-    if (coinEvent.isUp) {
+  eventInterval = setInterval(() => {
+    coinEvent.currentAmount -= Math.floor(Math.random() * 15) + 5;
+
+    let percentLeft = Math.trunc(
+      (coinEvent.currentAmount / coinEvent.startingAmount) * 100
+    );
+
+    let redVal = ((100 - percentLeft) * 2.56).toString(16).substring(0, 2);
+    let greenVal = (percentLeft * 2.56).toString(16).substring(0, 2);
+
+    if (coinEvent.currentAmount > 0) {
+      let embed = new MessageEmbed()
+        .setColor(`#${redVal}${greenVal}00`)
+        .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
+        .setTitle("Random Coin Event")
+        .setDescription(
+          `Use \`/claim\` to win ${coinEvent.currentAmount} coins!`
+        );
+
+      botChannel.messages.cache
+        .get(coinEvent.messageId)
+        .edit({ embeds: [embed] });
+    } else if (coinEvent.isUp) {
       let embed = new MessageEmbed()
         .setColor(`#ff0000`)
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
@@ -69,13 +95,20 @@ const randomCoinEvent = async (client, guildId) => {
           `This coin event has expired and can no longer be claimed!`
         );
 
-      coinEvent.isUp = false;
-
       botChannel.messages.cache
         .get(coinEvent.messageId)
         .edit({ embeds: [embed] });
+
+      coinEvent = {
+        isUp: false,
+        startingAmount: 0,
+        currentAmount: 0,
+        messageId: "",
+      };
+
+      clearInterval(eventInterval);
     }
-  }, 1000 * 60 * 60);
+  }, 1000 * 60 * 10);
 };
 
 const claim = async (interaction, user) => {
@@ -90,7 +123,7 @@ const claim = async (interaction, user) => {
     return false;
   }
 
-  user.score += coinEvent.coinAmount;
+  user.score += coinEvent.currentAmount;
   user.save();
 
   let embed = new MessageEmbed()
@@ -98,7 +131,7 @@ const claim = async (interaction, user) => {
     .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
     .setTitle("Coin Event Over")
     .addField(
-      `${interaction.user.username} won the coin event and gained ${coinEvent.coinAmount} coins! :tada:`,
+      `${interaction.user.username} won the coin event and gained ${coinEvent.currentAmount} coins! :tada:`,
       `They now have ${user.score} coins`,
       false
     );
@@ -106,7 +139,13 @@ const claim = async (interaction, user) => {
   let message = await interaction.channel.messages.fetch(coinEvent.messageId);
   message.edit({ embeds: [embed] }).catch(console.error);
 
-  coinEvent.isUp = false;
+  coinEvent = {
+    isUp: false,
+    startingAmount: 0,
+    currentAmount: 0,
+    messageId: "",
+  };
+  clearInterval(eventInterval);
 
   return true;
 };

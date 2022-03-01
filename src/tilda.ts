@@ -50,11 +50,6 @@ schedule.scheduleJob("0 0 * * *", async () => {
 });
 
 client.on("ready", async () => {
-  const guildId =
-    client.user.id == "670849450599645218"
-      ? MAIN_GUILD_ID
-      : "469659852109643786";
-
   for (let file of commandFiles) {
     let command = require(`./commands/${file}`);
 
@@ -71,8 +66,7 @@ client.on("ready", async () => {
   }, 1000 * 60 * 60);
 
   setInterval(() => {
-    if (Math.floor(Math.random() * 2))
-    coinHelper.randomCoinEvent(client, guildId);
+    if (Math.floor(Math.random() * 2)) coinHelper.randomCoinEvent(client);
   }, 1000 * 60 * 60 * 2);
 });
 
