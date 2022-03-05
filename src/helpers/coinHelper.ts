@@ -71,12 +71,12 @@ const randomCoinEvent = async (client) => {
       (coinEvent.currentAmount / coinEvent.startingAmount) * 100
     );
 
-    let redVal = ((100 - percentLeft) * 2.56).toString(16).substring(0, 2);
-    let greenVal = (percentLeft * 2.56).toString(16).substring(0, 2);
+    let redVal = Math.min(255, (100 - percentLeft) * 2.56);
+    let greenVal = Math.min(255, percentLeft * 2.56);
 
     if (coinEvent.currentAmount > 0) {
       let embed = new MessageEmbed()
-        .setColor(`#${redVal}${greenVal}00`)
+        .setColor([redVal, greenVal, 0])
         .setThumbnail("https://i.imgur.com/hPCYkuG.gif")
         .setTitle("Random Coin Event")
         .setDescription(
