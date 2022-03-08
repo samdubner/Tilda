@@ -37,7 +37,7 @@ let coinEvent: CoinEvent = {
 let eventInterval;
 
 const randomCoinEvent = async (client) => {
-  let startingAmount = Math.floor(Math.random() * 100) + 51;
+  let startingAmount = Math.floor(Math.random() * 150) + 51;
 
   let embed = new MessageEmbed()
     .setColor(`#00ff00`)
@@ -108,7 +108,7 @@ const randomCoinEvent = async (client) => {
 
       clearInterval(eventInterval);
     }
-  }, 1000 * 60 * 10);
+  }, 1000 * 60 * 15);
 };
 
 const claim = async (interaction, user) => {
