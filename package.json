@@ -14,12 +14,12 @@
   "dependencies": {
     "@discordjs/opus": "^0.7.0",
     "@discordjs/voice": "^0.8.0",
-    "axios": "^0.26.0",
+    "axios": "^0.26.1",
     "discord.js": "^13.3.1",
     "libsodium-wrappers": "^0.7.9",
     "mongoose": "^6.2.3",
     "node-schedule": "^2.0.0",
-    "play-dl": "^1.7.9",
+    "play-dl": "^1.9.0",
     "tweetnacl": "^1.0.3"
   }
 }
