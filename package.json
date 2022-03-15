@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "start": "node ./out/tilda.js"
+    "start": "node ./out/tilda.js",
+    "update": "git pull && npm run build && npm start"
   },
   "author": "Samuel Dubner",
   "repository": "https://github.com/samdubner/Tilda",

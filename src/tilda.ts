@@ -121,8 +121,7 @@ client.on("interactionCreate", async (interaction) => {
 
   if (
     !(await guildHelper.verifyCommandChannel(interaction)) &&
-    interaction.commandName != "config" &&
-    interaction.user.id != "340002869912666114"
+    interaction.commandName != "config"
   ) {
     interaction.reply({
       content:
