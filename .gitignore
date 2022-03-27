@@ -6,3 +6,6 @@ out
 token.json
 token.old.json
 token.new.json
+
+#ignore macOS specific files
+**/.DS_Store

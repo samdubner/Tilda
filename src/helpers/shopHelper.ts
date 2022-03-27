@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
-const coin = require("./coinHelper");
+const coinHelper = require("./coinHelper");
 const Item = require("../models/Item");
 
 //send an embed displaying all the items in the shop
@@ -23,7 +23,7 @@ const displayShop = async (interaction) => {
 //verify the user doesn't already have the selected item and check
 //if they have enough coins to purchase the selected item
 const handlePurchase = async (interaction, item) => {
-  let user = await coin.checkInteraction(interaction);
+  let user = await coinHelper.checkInteraction(interaction);
 
   let selectedItem = await Item.findOne({ name: item });
 
