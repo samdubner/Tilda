@@ -1,4 +1,6 @@
-# Tilda
+# Harmony
+![Tilda's Logo](https://i.imgur.com/wqK3Lx4.png)
+
 Tilda is a discord bot written in typescript made for basic server management, role commands, fun games, and more!
 
 ## Features
