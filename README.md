@@ -1,4 +1,8 @@
 # Tilda
+<p align="center">
+  <img width="200" height="200" src="https://i.imgur.com/wqK3Lx4.png">
+</p>
+
 Tilda is a discord bot written in typescript made for basic server management, role commands, fun games, and more!
 
 ## Features
