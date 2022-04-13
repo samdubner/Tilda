@@ -67,7 +67,7 @@ client.on("ready", async () => {
 
   setInterval(() => {
     if (Math.floor(Math.random() * 2)) coinHelper.randomCoinEvent(client);
-  }, 1000 * 60 * 60 * 2);
+  }, 1000 * 60 * 60 * 3);
 });
 
 client.on("guildMemberAdd", (member) => {
