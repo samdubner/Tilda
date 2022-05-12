@@ -297,7 +297,7 @@ const checkUser = async (user) => {
 };
 
 const notifyUsers = async () => {
-  let users = await User.find({ notifyStatus: true, dailyDone: false, streak: { $gt: 0 } })
+  let users = await User.find({ dailyDone: false, streak: { $gt: 0 } })
 
   console.log(users)
 }
