@@ -40,8 +40,8 @@ const UserSchema = new Schema({
   categoryId: {
     type: String,
   },
-  baitUsed: {
-    type: Number,
+  notifyStatus: {
+    type: Boolean,
   },
 });
 

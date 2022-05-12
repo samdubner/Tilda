@@ -241,6 +241,7 @@ const createUser = async (interaction) => {
     dailyDone: true,
     begDate: new Date().getTime(),
     inMainGuild: interaction.guildId == MAIN_GUILD_ID,
+    notifyStatus: true
   });
 
   await newUser.save().catch(console.error);
@@ -295,6 +296,12 @@ const checkUser = async (user) => {
   return !!check;
 };
 
+const notifyUsers = async () => {
+  let users = await User.find({ dailyDone: false, streak: { $gt: 0 } })
+
+  console.log(users)
+}
+
 export default {
   randomCoinEvent,
   bleedTopUser,
@@ -307,4 +314,5 @@ export default {
   checkUser,
   getUser,
   claim,
+  notifyUsers
 };
