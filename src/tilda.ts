@@ -38,7 +38,7 @@ import clientHelper from "./helpers/clientHelper";
 import coinHelper from "./helpers/coinHelper";
 import guildHelper from "./helpers/guildHelper";
 
-schedule.scheduleJob("0 9 * * *", async () => {
+schedule.scheduleJob("0 20 * * *", async () => {
   coinHelper.notifyUsers(client);
 });
 
