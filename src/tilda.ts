@@ -38,8 +38,8 @@ import clientHelper from "./helpers/clientHelper";
 import coinHelper from "./helpers/coinHelper";
 import guildHelper from "./helpers/guildHelper";
 
-schedule.scheduleJob("0 8 * * *", async () => {
-  coinHelper.notifyUsers();
+schedule.scheduleJob("0 9 * * *", async () => {
+  coinHelper.notifyUsers(client);
 });
 
 schedule.scheduleJob("0 0 * * *", async () => {
