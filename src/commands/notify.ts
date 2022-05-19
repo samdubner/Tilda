@@ -8,7 +8,8 @@ module.exports = {
   async execute(interaction) {
     let user = await coinHelper.checkInteraction(interaction);
 
-    user.notifyStatus = !user.notifyStatus
+    user.notifyStatus = !user.notifyStatus;
+    user.save();
 
     interaction
       .reply(`Your notification settings is now set to ${user.notifyStatus}`)
