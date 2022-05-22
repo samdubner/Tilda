@@ -115,13 +115,13 @@ client.on("interactionCreate", async (interaction) => {
 
   if (!COMMANDS.has(interaction.commandName)) return;
 
-  // if (interaction.inGuild() == false) {
-  //   interaction.reply({
-  //     content: "Tilda's commands can only be used inside of a server",
-  //     ephemeral: true,
-  //   });
-  //   return;
-  // }
+  if (!interaction.inGuild()) {
+    interaction.reply({
+      content: "Tilda's commands can only be used inside of a server",
+      ephemeral: true,
+    });
+    return;
+  }
 
   if (
     !(await guildHelper.verifyCommandChannel(interaction)) &&
