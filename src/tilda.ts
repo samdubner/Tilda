@@ -115,7 +115,7 @@ client.on("interactionCreate", async (interaction) => {
 
   if (!COMMANDS.has(interaction.commandName)) return;
 
-  if (!interaction.inGuild()) {
+  if (interaction.inGuild() == false) {
     interaction.reply({
       content: "Tilda's commands can only be used inside of a server",
       ephemeral: true,
