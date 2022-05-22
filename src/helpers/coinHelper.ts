@@ -37,6 +37,11 @@ let coinEvent: CoinEvent = {
 let eventInterval;
 
 const randomCoinEvent = async (client) => {
+  if (coinEvent.isUp) {
+    console.log("New coin event skipped; previous event is still up");
+    return;
+  }
+
   let startingAmount = Math.floor(Math.random() * 150) + 51;
 
   let embed = new MessageEmbed()
@@ -299,12 +304,25 @@ const checkUser = async (user) => {
 const notifyUsers = async (client) => {
   let users = await User.find({ dailyDone: false, streak: { $gt: 0 } });
 
+  let embed;
+
   for (let user of users) {
     let member = await client.users.fetch(user.userId);
 
-    member
-      .send("Don't forget to do your dailies before your streak expires!")
-      .catch(console.error);
+    embed = new MessageEmbed()
+      .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+      .setTitle(`Don't forget to use /daily!`)
+      .addField(
+        "Current Streak Status",
+        `You currently have a ${user.streak} day streak`,
+        false
+      )
+      .setFooter({
+        text: "Thank you for using Tilda",
+        iconURL: client.user.displayAvatarURL(),
+      });
+
+    member.send({ embeds: [embed] }).catch(console.error);
   }
 };
 
