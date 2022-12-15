@@ -2,6 +2,7 @@ node_modules
 updateDb.js
 localmodels/
 out
+test.js
 
 # token and mongoURI for dev/prod respectively
 token.json
