@@ -22,5 +22,8 @@
     "node-schedule": "^2.0.0",
     "play-dl": "^1.9.0",
     "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node-schedule": "^2.1.0"
   }
 }

@@ -32,17 +32,17 @@ import * as fs from "fs";
 
 const commandFiles = fs.readdirSync("./out/commands");
 
-const schedule = require("node-schedule");
+import { scheduleJob } from "node-schedule";
 
 import clientHelper from "./helpers/clientHelper";
 import coinHelper from "./helpers/coinHelper";
 import guildHelper from "./helpers/guildHelper";
 
-schedule.scheduleJob("0 20 * * *", async () => {
+scheduleJob("0 20 * * *", async () => {
   coinHelper.notifyUsers(client);
 });
 
-schedule.scheduleJob("0 0 * * *", async () => {
+scheduleJob("0 0 * * *", async () => {
   let topUsers = await coinHelper.bleedTopUser();
   await coinHelper.checkStreaks();
   coinHelper.resetDailies();
