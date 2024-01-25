@@ -24,7 +24,7 @@ module.exports = {
         .setDescription(
           `Daily will reset in ${hours} ${hourText} and ${minutes} ${minuteText}`
         )
-        .setThumbnail("https://i.imgur.com/PRhGygj.jpg");
+        .setThumbnail("https://i.imgur.com/g8rGeLB.png");
 
       interaction
         .reply({ embeds: [embed], ephemeral: true })
